@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mainpage</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"/>
+
+</head>
+<body>
+
+<h1>Willkommen auf der mainpage</h1>
+
+<a href="/upload/entry">Setzen eines Pin Status</a>
+<br>
+<!--<a href="/upload/note">NOTE upload</a>-->
+
+<table class="table">
+    <thead>
+    <tr>
+        <th> Name</th>
+        <th> Description</th>
+        <th> Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <p>Lexikoneinträge</p>
+    <tr th:if="${leds.isEmpty()}">
+        <td colspan="2"> No items Available</td>
+    </tr>
+    <tr scope="row" th:each="book : ${leds}">
+        <td><span th:text="${book.name}"> Name </span></td>
+        <td><span th:text="${book.name}"> Description </span></td>
+        <td><span th:text="${book.state}"> analyses </span></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+</html>
