@@ -1,6 +1,6 @@
 package me.weixler.Controller;
 
-import me.weixler.Pin.PinController;
+import me.weixler.BL.PinController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ public class MainController {
     @GetMapping("**")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        model.addAttribute("leds", PinController.getInstance().getAllLeds());
+        model.addAttribute("leds", null);
         return "main";
     }
 

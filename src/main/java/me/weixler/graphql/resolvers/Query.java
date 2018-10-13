@@ -1,7 +1,5 @@
 package me.weixler.graphql.resolvers;
 
-import me.weixler.Pin.GpioPin;
-import me.weixler.Pin.PinController;
 import me.weixler.graphql.Beans.Pin;
 import me.weixler.graphql.Beans.Post;
 import me.weixler.graphql.Beans.Schema;
@@ -28,9 +26,6 @@ class Query implements GraphQLQueryResolver {
     }
 
     List<Pin> getPins(int id) {
-//        return (GpioPin[]) PinController.getInstance().getAllLeds().toArray();pins
-        Pin[] pins = {new Pin()};
-
         return null;
     }
 

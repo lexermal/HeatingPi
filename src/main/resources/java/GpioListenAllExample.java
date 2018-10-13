@@ -35,7 +35,7 @@ import com.pi4j.system.SystemInfo;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
 import com.pi4j.util.ConsoleColor;
-import me.weixler.Pin.LedPin;
+import me.weixler.BL.LedPin;
 
 import java.io.IOException;
 import java.util.ArrayList;

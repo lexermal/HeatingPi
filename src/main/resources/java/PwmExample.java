@@ -31,7 +31,7 @@
 import com.pi4j.io.gpio.*;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
-import me.weixler.Pin.LedPin;
+import me.weixler.BL.LedPin;
 
 /**
  * <p>

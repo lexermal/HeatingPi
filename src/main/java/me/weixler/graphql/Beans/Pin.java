@@ -1,10 +1,10 @@
 package me.weixler.graphql.Beans;
 
+import me.weixler.BL.PinController;
+
 public class Pin {
     private String name;
     private int id;
-    private boolean activated;
-    private boolean default_activated;
 
     public String getName() {
         return name;
@@ -23,18 +23,18 @@ public class Pin {
     }
 
     public boolean isActivated() {
-        return activated;
+        return PinController.getInstance(id).getState();
     }
 
     public void setActivated(boolean activated) {
-        this.activated = activated;
+        PinController.getInstance(id).setState(activated);
     }
 
     public boolean isDefault_activated() {
-        return default_activated;
+        return PinController.getInstance(id).getDefaultState();
     }
 
-    public void setDefault_activated(boolean default_activated) {
-        this.default_activated = default_activated;
+    public void setDefault_activated(boolean state) {
+        PinController.getInstance(id).setDefaultState(state);
     }
 }
