@@ -1,19 +1,35 @@
 type Query {
-    post(id: ID!): Post
     # A simple example string
     example: String
+    pins(id: Int): [Pin]
+    schema(id: Int): [Schema]
 }
 type Mutation {
-    createPost(text:String):Post
-    createComment(post:ID!, text: String):Comment
-}
-type Post {
-    id: ID!
-    text: String
-    comments: [Comment!]!
+    editPin(id: Int!, name: String!): Pin
+    setPinState(id:Int!, state: Boolean!): Pin
+    setPinDefaultState(id:Int!, state: Boolean!): Pin
+    createSchema(name:String!, pins:[PinInput]!): Schema
+    editSchema(id: Int!, name:String!, pins:[PinInput]!): Schema
+    deleteSchema(id:Int!): Schema
 }
 
-type Comment {
-    id: ID!
-    description: String!
+input PinInput {
+    id: Int!
+    name: String!
+    activated: Boolean!
+    default_activated: Boolean!
+}
+
+type Pin {
+    id: Int!
+    name: String
+    activated: Boolean
+    default_activated: Boolean
+}
+
+type Schema {
+    pins: [Pin]!
+    name: String
+    id: Int
+    active: Boolean
 }

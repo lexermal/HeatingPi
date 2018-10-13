@@ -1,7 +1,9 @@
 package me.weixler.graphql.resolvers;
 
 import me.weixler.graphql.Beans.Comment;
+import me.weixler.graphql.Beans.Pin;
 import me.weixler.graphql.Beans.Post;
+import me.weixler.graphql.Beans.Schema;
 import me.weixler.graphql.DataFetching.DataHolder;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
@@ -13,13 +15,13 @@ import java.util.List;
  */
 
 @Component
-class PostResolver implements GraphQLResolver<Post> {
-    public PostResolver() {
+class SchemaResolver implements GraphQLResolver<Schema> {
+    public SchemaResolver() {
 
     }
 
-    public List<Comment> getComments(Post post){
-        return DataHolder.getInstance().getComments(post);
+    public List<Pin> getPins(Schema schema) {
+        return null;
     }
 
 }
