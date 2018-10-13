@@ -33,7 +33,7 @@ import com.pi4j.platform.PlatformAlreadyAssignedException;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
 import com.pi4j.util.ConsoleColor;
-import hello.upload.LedPin;
+import me.weixler.Pin.LedPin;
 
 /**
  * This example code demonstrates how to setup a listener

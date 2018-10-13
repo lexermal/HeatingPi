@@ -1,0 +1,19 @@
+type Query {
+    post(id: ID!): Post
+    # A simple example string
+    example: String
+}
+type Mutation {
+    createPost(text:String):Post
+    createComment(post:ID!, text: String):Comment
+}
+type Post {
+    id: ID!
+    text: String
+    comments: [Comment!]!
+}
+
+type Comment {
+    id: ID!
+    description: String!
+}

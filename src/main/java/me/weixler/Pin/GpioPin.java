@@ -1,16 +1,16 @@
-package hello.upload;
+package me.weixler.Pin;
 
 import com.pi4j.io.gpio.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LedPin {
+public class GpioPin {
 
     private String name;
     private GpioPinDigitalOutput led;
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public LedPin(int pinnumber) {
+    public GpioPin(int pinnumber) {
         final GpioController gpio = GpioFactory.getInstance();
 
         Pin pin = getPin(pinnumber);

@@ -1,6 +1,6 @@
-package hello.Controller;
+package me.weixler.Controller;
 
-import hello.upload.LedController;
+import me.weixler.Pin.PinController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class EmployeeController {
 
         System.out.println(queryMap);
 
-        LedController controller = LedController.getInstance();
+        PinController controller = PinController.getInstance();
         controller.setState(
                 Integer.parseInt(queryMap.get("pin")),
                 Boolean.parseBoolean(queryMap.get("state"))

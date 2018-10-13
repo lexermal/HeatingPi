@@ -1,6 +1,6 @@
-package hello.Controller;
+package me.weixler.Controller;
 
-import hello.upload.LedController;
+import me.weixler.Pin.PinController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
 
 
-    @GetMapping("/")
+    @GetMapping("**")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        model.addAttribute("leds", LedController.getInstance().getAllLeds());
+        model.addAttribute("leds", PinController.getInstance().getAllLeds());
         return "main";
     }
 
