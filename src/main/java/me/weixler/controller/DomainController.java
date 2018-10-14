@@ -1,23 +1,27 @@
-package me.weixler.Controller;
+package me.weixler.controller;
 
-import me.weixler.BL.PinController;
+import me.weixler.beans.Pin;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
-public class MainController {
+public class DomainController {
 
 
     @GetMapping("**")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        model.addAttribute("leds", null);
+        List<Pin> pins=new ArrayList<>();
+        model.addAttribute("leds", pins);
         return "main";
     }
 
-    @GetMapping("/upload/entry")
+    @GetMapping("/upload")
     public String upload(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         return "entry_add";

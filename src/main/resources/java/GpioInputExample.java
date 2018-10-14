@@ -32,7 +32,7 @@ import com.pi4j.platform.PlatformAlreadyAssignedException;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
 import com.pi4j.util.ConsoleColor;
-import me.weixler.BL.LedPin;
+import me.weixler.bl.LedPin;
 
 /**
  * This example code demonstrates how to perform simple GPIO

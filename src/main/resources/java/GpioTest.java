@@ -31,7 +31,7 @@ import com.pi4j.io.gpio.*;
 import com.pi4j.platform.Platform;
 import com.pi4j.platform.PlatformAlreadyAssignedException;
 import com.pi4j.platform.PlatformManager;
-import me.weixler.BL.LedPin;
+import me.weixler.bl.LedPin;
 
 import java.io.IOException;
 import java.util.Arrays;

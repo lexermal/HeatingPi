@@ -1,4 +1,4 @@
-package me.weixler.BL;
+package me.weixler.controller;
 
 import com.pi4j.io.gpio.*;
 import org.slf4j.Logger;

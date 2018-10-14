@@ -1,6 +1,6 @@
-package me.weixler.graphql.Beans;
+package me.weixler.beans;
 
-import me.weixler.BL.PinController;
+import me.weixler.controller.PinController;
 
 public class Pin {
     private String name;

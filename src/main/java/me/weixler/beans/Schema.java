@@ -1,4 +1,4 @@
-package me.weixler.graphql.Beans;
+package me.weixler.beans;
 
 public class Schema {
     private int id;

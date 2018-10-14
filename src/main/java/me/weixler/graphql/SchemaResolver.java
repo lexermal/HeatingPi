@@ -1,10 +1,7 @@
-package me.weixler.graphql.resolvers;
+package me.weixler.graphql;
 
-import me.weixler.graphql.Beans.Comment;
-import me.weixler.graphql.Beans.Pin;
-import me.weixler.graphql.Beans.Post;
-import me.weixler.graphql.Beans.Schema;
-import me.weixler.graphql.DataFetching.DataHolder;
+import me.weixler.beans.Pin;
+import me.weixler.beans.Schema;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
 
