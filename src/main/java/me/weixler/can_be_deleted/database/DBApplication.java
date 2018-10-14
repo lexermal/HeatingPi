@@ -1,9 +1,9 @@
-package me.weixler.database;
+package me.weixler.can_be_deleted.database;
 
 //import com.in28minutes.springboot.jpa.hibernate.h2.example.student.Student;
 //import com.in28minutes.springboot.jpa.hibernate.h2.example.student.StudentRepository;
 
-import me.weixler.database.student.StudentRepository;
+import me.weixler.can_be_deleted.database.student.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

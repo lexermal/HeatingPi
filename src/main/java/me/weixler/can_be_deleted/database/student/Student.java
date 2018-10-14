@@ -1,4 +1,4 @@
-package me.weixler.database.student;
+package me.weixler.can_be_deleted.database.student;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

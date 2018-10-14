@@ -1,4 +1,4 @@
-package me.weixler.database.student;
+package me.weixler.can_be_deleted.database.student;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
