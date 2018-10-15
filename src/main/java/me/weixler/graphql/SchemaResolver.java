@@ -18,7 +18,7 @@ class SchemaResolver implements GraphQLResolver<Schema> {
     }
 
     public List<Pin> getPins(Schema schema) {
-        return null;
+        return schema.getPins();
     }
 
 }

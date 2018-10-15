@@ -30,6 +30,10 @@ public class Schema {
         this.name = name;
     }
 
+    public void deleteAllPins() {
+        pins = new ArrayList<>();
+    }
+
     public int getId() {
         return id;
     }
@@ -52,5 +56,13 @@ public class Schema {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addPin(Pin pin) {
+        pins.add(pin);
+    }
+
+    public List<Pin> getPins() {
+        return pins;
     }
 }
