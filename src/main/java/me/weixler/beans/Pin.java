@@ -2,10 +2,7 @@ package me.weixler.beans;
 
 import me.weixler.controller.PinController;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +11,20 @@ import java.util.List;
 public class Pin {
     @Id
     private int id;
+    @Column
     private String name;
-    @ManyToMany(mappedBy = "pins")
-    private List<Schema> schemas = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "schema",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+
+    private List<State> schemas = new ArrayList<>();
+
+    public List<State> getSchemas() {
+        return schemas;
+    }
 
     public Pin() {
 

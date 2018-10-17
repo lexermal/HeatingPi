@@ -2,6 +2,7 @@ package me.weixler.beans;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -10,20 +11,21 @@ public class Schema {
     @Id
     @GeneratedValue
     private int id;
+    @Column
     private boolean active;
+    @Column
     private String name;
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "schema_pins",
-            joinColumns = {@JoinColumn(name = "schema_id")},
-            inverseJoinColumns = {@JoinColumn(name = "pins_id")}
-    )
-    private List<Pin> pins = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<State> pins = new ArrayList<>();
 
     public Schema() {
 
     }
 
+    public List<State> getPins() {
+        return pins;
+    }
 
     public Schema(String name) {
         this.active = false;
@@ -58,11 +60,22 @@ public class Schema {
         this.name = name;
     }
 
-    public void addPin(Pin pin) {
-        pins.add(pin);
+    public void addPin(Pin s) {
+        State postTag = new State(s, this);
+        pins.add(postTag);
+        s.getSchemas().add(postTag);
     }
 
-    public List<Pin> getPins() {
-        return pins;
+    public void removePin(Pin tag) {
+        for (Iterator<State> iterator = pins.iterator(); iterator.hasNext(); ) {
+            State postTag = iterator.next();
+
+            if (postTag.getSchema().equals(this) && postTag.getPin().equals(tag)) {
+                iterator.remove();
+                postTag.getPin().getSchemas().remove(postTag);
+                postTag.setSchema(null);
+                postTag.setPin(null);
+            }
+        }
     }
 }
