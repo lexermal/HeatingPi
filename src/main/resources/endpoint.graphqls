@@ -8,16 +8,14 @@ type Mutation {
     editPin(id: Int!, name: String!): Pin
     setPinState(id:Int!, state: Boolean!): Pin
     setPinDefaultState(id:Int!, state: Boolean!): Pin
-    createSchema(name:String!, pins:[PinInput]!): Schema
-    editSchema(id: Int!, name:String!, pins:[PinInput]!): Schema
+    createSchema(name:String!, pins:[StateInput]!): Schema
+    editSchema(id: Int!, name:String!, pins:[StateInput]!): Schema
     deleteSchema(id:Int!): Schema
 }
 
-input PinInput {
-    id: Int!
-    name: String!
-    activated: Boolean!
-    default_activated: Boolean!
+input StateInput {
+    pinid: Int!
+    state: Int!
 }
 
 type Pin {
