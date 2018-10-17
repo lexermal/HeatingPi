@@ -2,6 +2,7 @@ package me.weixler;
 
 import com.coxautodev.graphql.tools.ObjectMapperConfigurer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import me.weixler.controller.InitController;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +26,8 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
-            System.out.println("The server is ready to use");
+            new InitController().loadAll().createMissing();
+            Utils.getInstance().l().info("The Server is ready to use");
         };
     }
 
