@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Contains all Querys
@@ -34,7 +35,9 @@ class Query implements GraphQLQueryResolver {
     List<Pin> getPins(Long id) {
         new Authentication().accessAllowed("pins.get");
 
-        return (List<Pin>) (id > 0 ? pindb.findById(id) : pindb.findAll());
+        return pindb.findAll().stream().collect(Collectors.toList());
+
+//        return (List<Pin>) (id > 0 ? pindb.findById(id) : pindb.findAll());
 
 
 //        System.out.println("\n\n");

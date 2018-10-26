@@ -14,5 +14,5 @@ public interface PinRepository extends JpaRepository<Pin, Long> {
             "inner join State s on u.id=s.schema " +
             "inner join Pin p on s.pin=p.id " +
             "where u.id=:schemaid")
-    public List<Pin> getAllBy(@Param("schemaid") int schemaid);
+    public List<Pin> getAllBy(@Param("schemaid") long schemaid);
 }

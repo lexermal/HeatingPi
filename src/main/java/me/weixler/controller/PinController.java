@@ -8,22 +8,22 @@ import java.util.HashMap;
 
 public class PinController {
 
-    private HashMap<Integer, GpioPinDigitalOutput> leds = new HashMap<>();
-    private int activePin;
+    private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();
+    private long activePin;
     private Logger log = LoggerFactory.getLogger(this.getClass());
     final GpioController gpio = GpioFactory.getInstance();
 
 
     private static PinController ourInstance = new PinController();
 
-    public static PinController getInstance(int pin) {
+    public static PinController getInstance(long pin) {
         ourInstance.activePin = pin;
         ourInstance.createPin(pin);
         return ourInstance;
     }
 
 
-    private void createPin(int pinnumber) {
+    private void createPin(long pinnumber) {
 
         Pin pin = getPin(pinnumber);
 
@@ -51,7 +51,7 @@ public class PinController {
         //TODO
     }
 
-    private Pin getPin(int pinnumber) {
+    private Pin getPin(long pinnumber) {
         pinnumber = pinConversion(pinnumber);
         Pin[] pins = RaspiPin.allPins();
 
@@ -64,8 +64,8 @@ public class PinController {
         return null;
     }
 
-    public int pinConversion(int number) {
-        return new int[]{13, 12, 3, 2, 0, 7, 9, 8}[number - 1];
+    public int pinConversion(long number) {
+        return new int[]{13, 12, 3, 2, 0, 7, 9, 8}[(int) (number - 1)];
     }
 
 

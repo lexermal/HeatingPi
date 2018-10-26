@@ -44,14 +44,14 @@ public class InitController {
 
     public void createMissing() {
 
-        List<Integer> ids = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
 
         pins.stream().forEach(pin -> {
             ids.add(pin.getId());
         });
 
         int counter = 0;
-        for (int i = 1; i <= 8; i++) {
+        for (long i = 1; i <= 8; i++) {
             if (!ids.contains(i)) {
                 Pin p = new Pin();
                 p.setName("Pin " + i);
