@@ -5,9 +5,7 @@ import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Tuple;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Contains all Mutations
@@ -59,7 +57,6 @@ public class Mutation implements GraphQLMutationResolver {
         Schema s = new Schema(name);
 
         inputs.forEach(e -> s.addPin(pindb.getOne((long) e.getPinid()), e.getState()));
-
         schemadb.save(s);
 
         return s;
@@ -68,12 +65,11 @@ public class Mutation implements GraphQLMutationResolver {
     public Schema editSchema(long id, String name, List<InputState> inputs) {
         new Authentication().accessAllowed("schema.edit");
 
-        Schema s = schemadb.findById(id).get();
-        s.setName(name);
-        s.deleteAllPins();
+        this.deleteSchema(id);
+        Schema s = new Schema(name);
+        s.setId(id);
 
         inputs.forEach(e -> s.addPin(pindb.getOne((long) e.getPinid()), e.getState()));
-
         schemadb.save(s);
 
         return s;
@@ -82,6 +78,15 @@ public class Mutation implements GraphQLMutationResolver {
     public Schema deleteSchema(long id) {
         new Authentication().accessAllowed("schema.delete");
 
+        Schema s = schemadb.findById(id).get();
+        s.getPins().forEach(s::removePin);
+        schemadb.save(s);
+
+        System.out.println("pin remove worked");
+        s.removeAllStats();
+        schemadb.save(s);
+
+        System.out.println("state remove worked");
         schemadb.deleteById(id);
         return null;
     }

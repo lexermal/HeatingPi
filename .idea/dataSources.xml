@@ -17,5 +17,11 @@
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:mem:default</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="default [2]" uuid="88c54ea7-eb5e-42f5-994f-b9972a909cd1">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:mem:default</jdbc-url>
+    </data-source>
   </component>
 </project>

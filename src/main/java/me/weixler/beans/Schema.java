@@ -90,4 +90,8 @@ public class Schema {
             }
         }
     }
+
+    public void removeAllStats() {
+        pins = new ArrayList<>();
+    }
 }
