@@ -14,7 +14,7 @@ public class State implements Serializable {
     @MapsId("schema_id")
     private Schema schema;
     @Column
-    private int state; // 0...off, 1...on, 2....unchanged
+    private long state; // 0...off, 1...on, 2....unchanged
 
 
     public State() {
@@ -22,11 +22,11 @@ public class State implements Serializable {
     }
 
 
-    public int getState() {
+    public long getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(long state) {
         this.state = state;
     }
 
