@@ -36,7 +36,7 @@ class Query implements GraphQLQueryResolver {
     List<Pin> getPins(Long id) {
         new Authentication().accessAllowed("pins.get");
 
-        if (id > 0) {
+        if (id != null && id > 0) {
             return Arrays.asList(pindb.findById(id).get());
         }
 
