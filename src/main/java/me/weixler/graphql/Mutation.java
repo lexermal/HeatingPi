@@ -65,16 +65,14 @@ public class Mutation implements GraphQLMutationResolver {
         return s;
     }
 
-    public Schema editSchema(long id, String name, List<InputState> stateInputs) {
+    public Schema editSchema(long id, String name, List<InputState> inputs) {
         new Authentication().accessAllowed("schema.edit");
 
         Schema s = schemadb.findById(id).get();
         s.setName(name);
         s.deleteAllPins();
 
-//        for (Pin p : pins) {
-//            s.addPin(p);
-//        }
+        inputs.forEach(e -> s.addPin(pindb.getOne((long) e.getPinid()), e.getState()));
 
         schemadb.save(s);
 
