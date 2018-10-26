@@ -4,6 +4,7 @@ import me.weixler.Utils;
 import me.weixler.beans.Pin;
 import me.weixler.beans.PinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,13 +24,20 @@ public class InitController {
 
     }
 
+    @Bean
+    public InitController createInitController() {
+
+        return new InitController();
+    }
+
+
     public InitController loadAll() {
         Utils.getInstance().l().info("Init creation check");
 
-        System.out.println(pindb.toString());
+//        System.out.println(pindb.toString());
 
         pins = pindb.findAll();
-        Utils.getInstance().l().info("Loading all pins");
+        Utils.getInstance().l().info("Loaded all pins");
 
         return this;
     }
@@ -42,17 +50,20 @@ public class InitController {
             ids.add(pin.getId());
         });
 
+        int counter = 0;
         for (int i = 1; i <= 8; i++) {
             if (!ids.contains(i)) {
                 Pin p = new Pin();
                 p.setName("Pin " + i);
                 p.setId(i);
                 pindb.save(p);
+
                 Utils.getInstance().l().info("Creating pin " + i);
 
+                counter++;
             }
         }
-        Utils.getInstance().l().info("Created all pins");
+        Utils.getInstance().l().info("Created " + counter + " missing pins");
     }
 
 
