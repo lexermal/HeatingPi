@@ -5,6 +5,7 @@ import me.weixler.controller.PinController;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "pin")
@@ -22,8 +23,12 @@ public class Pin {
 
     private List<State> schemas = new ArrayList<>();
 
-    public List<State> getSchemas() {
+    public List<State> getStates() {
         return schemas;
+    }
+
+    public List<Schema> getSchemas() {
+        return schemas.stream().map(e -> e.getSchema()).collect(Collectors.toList());
     }
 
     public Pin() {

@@ -5,11 +5,14 @@ gebaut.
 
 https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-when-you-log-out
 
+#Wichtig
+ * Die Datenbank ist ein pfusch. Es gibt Pins, PinsStats und Schemas. 
+  * Pinstate soll eine normale Tabelle sein, und nicht die versteckte wie jetzt
+  * Auch im graphql schema so umsetzen
 
 
 ##Nächste Schritte
 * Jetzt gehört ein Frontend gebaut.
-* Initialisieren der gesammten Leds beim starten der Applikation wenns net in der DB sind
 * Gradle task das react vorm bauen der jar ausgeführt wird
 * implementieren des default states
 * unittests schreiben

@@ -4,13 +4,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "schema")
 public class Schema {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     @Column
     private boolean active;
     @Column
@@ -23,8 +24,17 @@ public class Schema {
 
     }
 
-    public List<State> getPins() {
+    public List<State> getStates() {
         return pins;
+    }
+
+
+    public List<Pin> getPins() {
+        return pins.stream().map(e -> e.getPin()).collect(Collectors.toList());
+    }
+
+    public long getPinState(long pinnumber) {
+        return pins.stream().filter(e -> e.getPin().getId() == pinnumber).collect(Collectors.toList()).get(0).getState();
     }
 
     public Schema(String name) {
@@ -36,11 +46,11 @@ public class Schema {
         pins = new ArrayList<>();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,10 +70,12 @@ public class Schema {
         this.name = name;
     }
 
-    public void addPin(Pin s) {
-        State postTag = new State(s, this);
-        pins.add(postTag);
-        s.getSchemas().add(postTag);
+    public void addPin(Pin pin, long statenumber) {
+        State state = new State(pin, this);
+
+        state.setState(statenumber);
+        pins.add(state);
+        pin.getStates().add(state);
     }
 
     public void removePin(Pin tag) {

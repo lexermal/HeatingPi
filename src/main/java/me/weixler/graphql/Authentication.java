@@ -17,6 +17,8 @@ public class Authentication {
     public boolean accessAllowed(String permissionpoint) {
         init();
 
+        System.out.println(permissionpoint);
+
         //hier werden die permissions gecheckt
         if (false){
             try {

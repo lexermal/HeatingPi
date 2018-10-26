@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PinRepository extends JpaRepository<Pin, Long> {
-    @Query("Select u " +
+    @Query("Select p " +
             "from Schema u " +
             "inner join State s on u.id=s.schema " +
             "inner join Pin p on s.pin=p.id " +
