@@ -58,7 +58,7 @@ public class Mutation implements GraphQLMutationResolver {
 
         Schema s = new Schema(name);
 
-        inputs.stream().forEach(e -> s.addPin(pindb.getOne((long)e.getPinid()), e.getState()));
+        inputs.forEach(e -> s.addPin(pindb.getOne((long) e.getPinid()), e.getState()));
 
         schemadb.save(s);
 
@@ -86,6 +86,18 @@ public class Mutation implements GraphQLMutationResolver {
 
         schemadb.deleteById(id);
         return null;
+    }
+
+    public Schema activateSchema(long id) {
+        new Authentication().accessAllowed("schema.activate");
+
+        Schema schema = schemadb.findById(id).get();
+
+        List<Pin> pins = schema.getPins();
+        pins.stream().filter(e -> schema.getPinState(e.getId()) < 2).
+                forEach(e -> e.setActivated(schema.getPinState(e.getId()) == 1));
+
+        return schema;
     }
 
 }

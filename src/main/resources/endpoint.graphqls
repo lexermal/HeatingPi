@@ -11,6 +11,7 @@ type Mutation {
     createSchema(name:String!, pins:[StateInput]!): Schema
     editSchema(id: Int!, name:String!, pins:[StateInput]!): Schema
     deleteSchema(id:Int!): Schema
+    activateSchema(id:Int!): Schema
 }
 
 input StateInput {
