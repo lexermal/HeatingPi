@@ -67,7 +67,6 @@ public class Mutation implements GraphQLMutationResolver {
 
         this.deleteSchema(id);
         Schema s = new Schema(name);
-        s.setId(id);
 
         inputs.forEach(e -> s.addPin(pindb.getOne((long) e.getPinid()), e.getState()));
         schemadb.save(s);
@@ -78,6 +77,8 @@ public class Mutation implements GraphQLMutationResolver {
     public Schema deleteSchema(long id) {
         new Authentication().accessAllowed("schema.delete");
 
+        System.out.println("@Fixme, db delete is not working");
+
         Schema s = schemadb.findById(id).get();
         s.getPins().forEach(s::removePin);
         schemadb.save(s);
@@ -87,7 +88,12 @@ public class Mutation implements GraphQLMutationResolver {
         schemadb.save(s);
 
         System.out.println("state remove worked");
-        schemadb.deleteById(id);
+//        schemadb.delete(s);
+
+        s.setName("---deleted---");
+
+        schemadb.save(s);
+
         return null;
     }
 
