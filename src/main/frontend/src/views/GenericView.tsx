@@ -1,10 +1,8 @@
 import * as React from 'react';
-import {Collapse, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap'
+import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap'
 import Nav from 'reactstrap/lib/Nav'
 import NavLink from 'reactstrap/lib/NavLink'
-import {UncontrolledDropdown} from 'reactstrap/lib/Uncontrolled'
-import DropdownMenu from 'reactstrap/lib/DropdownMenu'
-import DropdownItem from 'reactstrap/lib/DropdownItem'
+import RouteMain from '../RouteMain'
 
 class GenericView extends React.Component<{}, GenericViewStats> {
     public constructor(props: any) {
@@ -21,36 +19,23 @@ class GenericView extends React.Component<{}, GenericViewStats> {
         return (
             <div>
                 <Navbar color="light" light={true} expand="md">
-                    <NavbarBrand href="/">reactstrap</NavbarBrand>
+                    <NavbarBrand href="/">HeizungsPi</NavbarBrand>
                     <NavbarToggler onClick={this.toggle}/>
                     <Collapse isOpen={this.state.isOpen} navbar={true}>
                         <Nav className="ml-auto" navbar={true}>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
+                                <NavLink href="/pins">Pins</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                                <NavLink href="/schema">Schema</NavLink>
                             </NavItem>
-                            <UncontrolledDropdown nav={true} innavbar={true}>
-                                <DropdownToggle nav={true} caret={true}>
-                                    Options
-                                </DropdownToggle>
-                                <DropdownMenu right={true}>
-                                    <DropdownItem>
-                                        Option 1
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        Option 2
-                                    </DropdownItem>
-                                    <DropdownItem divider={true}/>
-                                    <DropdownItem>
-                                        Reset
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
+                            <NavItem>
+                                <NavLink href="/active">Active</NavLink>
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </Navbar>
+                <RouteMain/>
             </div>
         );
     }

@@ -13,6 +13,7 @@
   },
   "rules": {
     "ordered-imports": false,
+    "no-console": false,
     "interface-name": [
       true,
       "never-prefix"
