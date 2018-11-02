@@ -4,6 +4,7 @@ import Row from 'reactstrap/lib/Row'
 import BackendCalls from '../../utils/backendCalls'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
+import LabelSwitch from '../../components/switch/LabelSwitch'
 
 class PinView extends React.Component<PinViewProps, PinViewStats> {
 
@@ -15,7 +16,7 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
 
         const backend = new BackendCalls()
         backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
-        this.save = this.save.bind(this)
+        this.saveName = this.saveName.bind(this)
     }
 
 
@@ -37,8 +38,9 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
                         <td>{e.id}</td>
-                        <td><EditableLabel value={e.name} onSumbit={(g: string) => this.save(e.id, g)}/></td>
-                        <td>{e.default}</td>
+                        <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
+                        <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
+                                          onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                     </tr>)}
                     </tbody>
                 </Table>
@@ -46,9 +48,16 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
         </Container>
     }
 
-    private save(id: number, value: string) {
-        console.log("save " + id + " with value: " + value)
+    private saveName(id: number, value: string) {
+        console.log("SAVE : " + id + " with value: " + value)
         toastr.success("The changes have successfully been saved.")
+        // @todo graphql implementieren
+    }
+
+    private saveDefaultState(id: number, value: string) {
+        console.log("SAVE : " + id + " with value: " + value)
+        toastr.success("The changes have successfully been saved.")
+        // @todo graphql implementieren
     }
 
 }

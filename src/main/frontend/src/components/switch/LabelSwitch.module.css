@@ -1,0 +1,7 @@
+.switch{
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    user-select: none;
+}
