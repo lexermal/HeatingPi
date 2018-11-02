@@ -1,22 +1,24 @@
 import * as React from "react";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import PinView from './views/Pins/PinView'
 
-class RouteMain extends React.Component<{}, {}> {
+class Routing extends React.Component<{}, {}> {
 
 
     constructor(props: {}, context: any) {
         super(props, context)
-        // console.log(234)
     }
 
     public render() {
         return <Router>
             <div>
-                <this.Header/>
+                {/*<this.Header/>*/}
+                {this.props.children}
 
                 <Route exact={true} path="/" component={this.Home}/>
                 <Route path="/about" component={this.About}/>
                 <Route path="/topics" component={this.Topics}/>
+                <Route exact={true} path={"/pins"} component={PinView}/>
             </div>
         </Router>
     };
@@ -29,13 +31,7 @@ class RouteMain extends React.Component<{}, {}> {
         return <h2>About</h2>
     }
 
-    // private Topic(match: any) {
-    //     return <h3>Requested Param: {match.params.id}</h3>
-    // }
-
     private Topics(match: any) {
-        // console.log("matches " , match)
-
 
         const defaultroute = (url: any) => {
             console.log(url)
@@ -67,19 +63,19 @@ class RouteMain extends React.Component<{}, {}> {
     }
 
 
-    private Header() {
-        return <ul>
-            <li>
-                <Link to="/">Home</Link>
-            </li>
-            <li>
-                <Link to="/about">About</Link>
-            </li>
-            <li>
-                <Link to="/topics">Topics</Link>
-            </li>
-        </ul>
-    }
+    // private Header() {
+    //     return <ul>
+    //         <li>
+    //             <Link to="/">Home</Link>
+    //         </li>
+    //         <li>
+    //             <Link to="/about">About</Link>
+    //         </li>
+    //         <li>
+    //             <Link to="/topics">Topics</Link>
+    //         </li>
+    //     </ul>
+    // }
 }
 
-export default RouteMain;
+export default Routing;

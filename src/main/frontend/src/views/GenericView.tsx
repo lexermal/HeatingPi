@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap'
 import Nav from 'reactstrap/lib/Nav'
-import NavLink from 'reactstrap/lib/NavLink'
-import RouteMain from '../utils/RouteMain'
+import {Link} from 'react-router-dom'
+import Routing from '../routing'
 
 class GenericView extends React.Component<{}, GenericViewStats> {
     public constructor(props: any) {
@@ -17,26 +17,28 @@ class GenericView extends React.Component<{}, GenericViewStats> {
 
     public render() {
         return (
-            <div>
-                <Navbar color="light" light={true} expand="md">
-                    <NavbarBrand href="/">HeizungsPi</NavbarBrand>
-                    <NavbarToggler onClick={this.toggle}/>
-                    <Collapse isOpen={this.state.isOpen} navbar={true}>
-                        <Nav className="ml-auto" navbar={true}>
-                            <NavItem>
-                                <NavLink href="/pins">Pins</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="/schema">Schema</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="/active">Active</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
-                <RouteMain/>
-            </div>
+            <Routing>
+                <div>
+                    <Navbar color="primary" light={true} expand="md">
+                        <NavbarBrand href="/">HeizungsPi</NavbarBrand>
+                        <NavbarToggler onClick={this.toggle}/>
+
+                        <Collapse isOpen={this.state.isOpen} navbar={true}>
+                            <Nav className="ml-auto" navbar={true}>
+                                <NavItem>
+                                    <Link className={"nav-link"} to="/pins">Pins</Link>
+                                </NavItem>
+                                <NavItem>
+                                    <Link className={"nav-link"} to="/schema">Schema</Link>
+                                </NavItem>
+                                <NavItem>
+                                    <Link className={"nav-link"} to="/active">Active</Link>
+                                </NavItem>
+                            </Nav>
+                        </Collapse>
+                    </Navbar>
+                </div>
+            </Routing>
         );
     }
 

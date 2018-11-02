@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/react-router-dom": "4.3.1",
     "@types/reactstrap": "6.4.2",
+    "@types/toastr": "^2.1.35",
     "react": "16.6.0",
     "react-dom": "16.6.0",
     "react-redux": "5.1.0",
@@ -12,7 +13,8 @@
     "react-scripts": "2.0.5",
     "react-scripts-ts": "4.0.8",
     "reactstrap": "6.5.0",
-    "redux": "4.0.1"
+    "redux": "4.0.1",
+    "toastr": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts-ts start",
