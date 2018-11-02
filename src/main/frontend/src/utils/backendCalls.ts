@@ -22,7 +22,7 @@ schema{
 	active
 }
 }
-`, (e: any) => then(e.schema.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error);
+`, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error);
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: any) => void) {

@@ -5,6 +5,7 @@ import BackendCalls from '../../utils/backendCalls'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import './SchemaView.css'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
@@ -12,16 +13,16 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     constructor(props: PinViewProps) {
         super(props)
 
-        this.state = {pins: [undefined]}
+        this.state = {schema: [undefined], hoverindex: -1}
 
         const backend = new BackendCalls()
-        backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
+        backend.getSchemas((e: any) => this.setState({schema: e}), (err: any) => console.error(err))
         this.saveName = this.saveName.bind(this)
     }
 
 
     public componentWillUpdate(nextProps: Readonly<PinViewProps>, nextState: Readonly<PinViewStats>, nextContext: any): void {
-        console.log(nextState.pins)
+        console.log(nextState.schema)
     }
 
     public render() {
@@ -31,17 +32,24 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                 <Table>
                     <tbody>
                     <tr>
-                        <th>Pinnumber</th>
+                        <th>Id</th>
                         <th>Name</th>
-                        <th>Defaultvalue</th>
+                        <th>Active</th>
+                        <th/>
+                        <th/>
                     </tr>
 
-                    {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
-                        <td>{e.id}</td>
-                        <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                        <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
-                                          onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
-                    </tr>)}
+                    {this.state.schema!.filter((e: any) => e !== undefined && e !== null).map((e: Schema) =>
+                        <tr key={e.id} className={"schemaview"}>
+                            <td>{e.id}</td>
+                            <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
+                            <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
+                                              onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
+                            <td className={"text-right"}>
+                                <button className={"btn btn-warning"} onClick={() => this.editSchema(e.id)}>Edit</button>
+                                <button className={"btn btn-danger"} onClick={() => this.deleteSchema(e.id)}>Delete</button>
+                            </td>
+                        </tr>)}
                     </tbody>
                 </Table>
             </Row>
@@ -60,21 +68,35 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
         // @todo graphql implementieren
     }
 
+
+    private editSchema(id: number) {
+        console.log("Modal where the schema of the following item can be modified : " + id)
+        toastr.warning("Modal where the schema of the following item can be modified : " + id)
+        // @todo graphql implementieren
+    }
+
+    private deleteSchema(id: number) {
+        console.log("DELETE Schema : " + id)
+        toastr.success("The schema was successfully delete.")
+        // @todo graphql implementieren
+    }
+
 }
 
 interface PinViewProps {
-    pins?: [any]
+    schema?: [any]
 }
 
-interface Pins {
+interface Schema {
     id: number
     name: string
-    default: number
+    active: boolean
 
 }
 
 interface PinViewStats {
-    pins?: [any]
+    schema?: [any]
+    hoverindex: number
 }
 
 export default SchemaView
