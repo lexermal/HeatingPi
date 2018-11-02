@@ -4,7 +4,7 @@ import Row from 'reactstrap/lib/Row'
 import BackendCalls from '../../utils/backendCalls'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
-import LabelSwitch from '../../components/switch/LabelSwitch'
+import LabelSwitch from '../../components/label/switch/LabelSwitch'
 
 class PinView extends React.Component<PinViewProps, PinViewStats> {
 
