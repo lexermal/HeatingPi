@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap'
 import Nav from 'reactstrap/lib/Nav'
 import NavLink from 'reactstrap/lib/NavLink'
-import RouteMain from '../RouteMain'
+import RouteMain from '../utils/RouteMain'
 
 class GenericView extends React.Component<{}, GenericViewStats> {
     public constructor(props: any) {
