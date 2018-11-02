@@ -1,7 +1,7 @@
 class BackendCalls {
 
 
-    public getPins(then: (response: any) => void, error: (err: any) => void) {
+    public getPins(then: (response: any) => void, error: (e: any) => void) {
         this.callGraphql(`
 query{
 	pins{
@@ -13,6 +13,17 @@ query{
         // 		default:default_activated
     }
 
+    public getSchemas(then: (response: any) => void, error: (e: any) => void) {
+        this.callGraphql(`
+query{
+schema{
+	name
+	id
+	active
+}
+}
+`, (e: any) => then(e.schema.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error);
+    }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: any) => void) {
         fetch('http://localhost:9000/graphql', {

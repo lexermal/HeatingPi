@@ -1,6 +1,7 @@
 import * as React from "react";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import PinView from './views/Pins/PinView'
+import SchemaView from './views/Schema/SchemaView'
 
 class Routing extends React.Component<{}, {}> {
 
@@ -19,6 +20,7 @@ class Routing extends React.Component<{}, {}> {
                 <Route path="/about" component={this.About}/>
                 <Route path="/topics" component={this.Topics}/>
                 <Route exact={true} path={"/pins"} component={PinView}/>
+                <Route exact={true} path={"/schema"} component={SchemaView}/>
             </div>
         </Router>
     };

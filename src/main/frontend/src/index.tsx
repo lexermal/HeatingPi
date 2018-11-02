@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './utils/App';
 import registerServiceWorker from './utils/registerServiceWorker';
-import './utils/bootstrap.min.css'
+import './assets/bootstrap.min.css'
+import GenericView from './views/GenericView'
 
 ReactDOM.render(
-    <App/>,
+    <GenericView/>,
     document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
