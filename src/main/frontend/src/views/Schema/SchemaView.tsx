@@ -6,6 +6,7 @@ import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import './SchemaView.css'
+import OverlayModal from '../../components/overlay/modal/OverlayModal'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
@@ -46,8 +47,11 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
                                               onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                             <td className={"text-right"}>
-                                <button className={"btn btn-warning"} onClick={() => this.editSchema(e.id)}>Edit</button>
-                                <button className={"btn btn-danger"} onClick={() => this.deleteSchema(e.id)}>Delete</button>
+                                <OverlayModal  className={"btn btn-warning hoverbutton"} title={"Edit " + e.name} buttonLabel={"Edit"} onSubmit={() => this.editSchema(e.id)}>
+                                    <h1>hello world</h1>
+                                </OverlayModal>
+                                {/*<button className={"btn btn-warning"} onClick={() => this.editSchema(e.id)}>Edit</button>*/}
+                                <button className={"btn btn-danger hoverbutton"} onClick={() => this.deleteSchema(e.id)}>Delete</button>
                             </td>
                         </tr>)}
                     </tbody>

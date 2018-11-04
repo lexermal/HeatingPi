@@ -1,7 +1,7 @@
-.schemaview button {
+.schemaview .hoverbutton {
     visibility: hidden;
 }
 
-.schemaview:hover button {
+.schemaview:hover .hoverbutton {
     visibility: visible;
 }

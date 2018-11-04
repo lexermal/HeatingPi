@@ -19,11 +19,6 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
         this.saveName = this.saveName.bind(this)
     }
 
-
-    public componentWillUpdate(nextProps: Readonly<PinViewProps>, nextState: Readonly<PinViewStats>, nextContext: any): void {
-        console.log(nextState.pins)
-    }
-
     public render() {
         return <Container>
             <h1>Overview of all Pins</h1>
