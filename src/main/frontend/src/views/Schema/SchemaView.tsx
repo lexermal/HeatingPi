@@ -7,6 +7,7 @@ import * as toastr from 'toastr'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import './SchemaView.css'
 import OverlayModal from '../../components/overlay/modal/OverlayModal'
+import PinViewModal from '../Pins/PinViewModal'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
@@ -14,11 +15,12 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     constructor(props: PinViewProps) {
         super(props)
 
-        this.state = {schema: [undefined], hoverindex: -1}
+        this.state = {schema: [undefined], hoverindex: -1, saveNow: false, newPinSchema: [undefined]}
 
         const backend = new BackendCalls()
         backend.getSchemas((e: any) => this.setState({schema: e}), (err: any) => console.error(err))
         this.saveName = this.saveName.bind(this)
+        this.saveNewSchema = this.saveNewSchema.bind(this)
     }
 
 
@@ -29,6 +31,10 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     public render() {
         return <Container>
             <h1>Overview of all Schemas</h1>
+            <OverlayModal className={"btn btn-primary"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={this.saveNewSchema}>
+                <input placeholder={"Name"}/>
+                <PinViewModal schema={-1} saveNow={this.state.saveNow} onSave={(i: number, pins: [any]) => this.setState({newPinSchema: pins})}/>
+            </OverlayModal>
             <Row>
                 <Table>
                     <tbody>
@@ -47,10 +53,11 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
                                               onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                             <td className={"text-right"}>
-                                <OverlayModal className={"btn btn-warning hoverbutton"} title={"Edit " + e.name} buttonLabel={"Edit"} onSubmit={() => this.editSchema(e.id)}>
-                                    <h1>hello world</h1>
-                                </OverlayModal>
 
+                                <OverlayModal className={"btn btn-warning hoverbutton"} title={e.name} buttonLabel={"Edit"}
+                                              onSubmit={() => this.setState({saveNow: true})} submitText={"Save"}>
+                                    <PinViewModal schema={e.id} saveNow={this.state.saveNow} onSave={this.saveEditedPins}/>
+                                </OverlayModal>
 
                                 <OverlayModal className={"btn btn-danger hoverbutton"} submitText={"Yes"} title={"Delete the following element?"} buttonLabel={"Delete"}
                                               onSubmit={() => this.deleteSchema(e.id)}>
@@ -62,6 +69,13 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                 </Table>
             </Row>
         </Container>
+    }
+
+    private saveNewSchema() {
+        this.setState({saveNow: true})
+        console.log("SAVE : " + 2 + " with value: " + 2)
+        toastr.success("The changes have successfully been saved.")
+        // @todo graphql implementieren
     }
 
     private saveName(id: number, value: string) {
@@ -76,17 +90,14 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
         // @todo graphql implementieren
     }
 
-
-    private editSchema(id: number) {
-        console.log("Modal where the schema of the following item can be modified : " + id)
-        toastr.warning("Modal where the schema of the following item can be modified : " + id)
-        // @todo graphql implementieren
-    }
-
     private deleteSchema(id: number) {
         console.log("DELETE Schema : " + id)
         toastr.success("The schema was successfully delete.")
         // @todo graphql implementieren
+    }
+
+    private saveEditedPins(schema: number, pins: [any]) {
+        toastr.warning("Graphqlzeug implementieren und das vollgende schema verändern " + this.props.schema)
     }
 
 }
@@ -105,6 +116,8 @@ interface Schema {
 interface PinViewStats {
     schema?: [any]
     hoverindex: number
+    saveNow: boolean
+    newPinSchema: [any]
 }
 
 export default SchemaView

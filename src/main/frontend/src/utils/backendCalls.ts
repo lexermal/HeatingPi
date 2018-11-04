@@ -1,10 +1,16 @@
 class BackendCalls {
 
+    public getPins(then: (response: any) => void, error: (e: any) => void, schema?: number) {
 
-    public getPins(then: (response: any) => void, error: (e: any) => void) {
+        let schemafilter = schema !== undefined ? "(id:" + schema + ")" : ""
+
+        console.log("Remoe this workaround")
+        // this is here because the backend does not find the pins of the schemas
+        schemafilter = ""
+
         this.callGraphql(`
 query{
-	pins{
+	pins` + schemafilter + `{
 		id
 		name
 	}
