@@ -47,11 +47,15 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
                                               onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                             <td className={"text-right"}>
-                                <OverlayModal  className={"btn btn-warning hoverbutton"} title={"Edit " + e.name} buttonLabel={"Edit"} onSubmit={() => this.editSchema(e.id)}>
+                                <OverlayModal className={"btn btn-warning hoverbutton"} title={"Edit " + e.name} buttonLabel={"Edit"} onSubmit={() => this.editSchema(e.id)}>
                                     <h1>hello world</h1>
                                 </OverlayModal>
-                                {/*<button className={"btn btn-warning"} onClick={() => this.editSchema(e.id)}>Edit</button>*/}
-                                <button className={"btn btn-danger hoverbutton"} onClick={() => this.deleteSchema(e.id)}>Delete</button>
+
+
+                                <OverlayModal className={"btn btn-danger hoverbutton"} submitText={"Yes"} title={"Delete the following element?"} buttonLabel={"Delete"}
+                                              onSubmit={() => this.deleteSchema(e.id)}>
+                                    <h3>{e.name}</h3>
+                                </OverlayModal>
                             </td>
                         </tr>)}
                     </tbody>
