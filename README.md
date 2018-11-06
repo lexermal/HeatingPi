@@ -8,8 +8,25 @@ Mittels build-project.sh
 
 
 ##Frontend todo
-* 
-
+* Schemas
+  * name save graphql
+  * aktiv setzen eines schemas
+  * delete graphql
+  * edit save graphql
+    
+* Pins
+  * name save graphql
+  * default save graphql
+  
+* landing page
+  * tbd
+  * zeigen was aktiv ist vlt letzten login, wie lange es offline war,....
+  * ... temperatur, letzte änderung, .... ka einfach ein paar statistiken und vlt notfalls button alaa alles ausschalten
+  
+* activ
+  * löschen dieses routing points. inhalte sind alle auf landing page
+    
+  
 
 ##Backend todo
 * implementieren des default states
