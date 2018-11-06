@@ -11,30 +11,24 @@ import PinViewModal from '../Pins/PinViewModal'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
-
     constructor(props: PinViewProps) {
         super(props)
 
         this.state = {schema: [undefined], hoverindex: -1, saveNow: false, newPinSchema: [undefined]}
 
-        const backend = new BackendCalls()
-        backend.getSchemas((e: any) => this.setState({schema: e}), (err: any) => console.error(err))
+        new BackendCalls().getSchemas((e: any) => this.setState({schema: e}), (err: any) => console.error(err))
         this.saveName = this.saveName.bind(this)
         this.saveNewSchema = this.saveNewSchema.bind(this)
     }
 
-
-    public componentWillUpdate(nextProps: Readonly<PinViewProps>, nextState: Readonly<PinViewStats>, nextContext: any): void {
-        console.log(nextState.schema)
-    }
-
     public render() {
         return <Container>
-            <h1>Overview of all Schemas</h1>
-            <OverlayModal className={"btn btn-primary"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={this.saveNewSchema}>
+            <h1 className={"h1"}>Overview of all Schemas</h1>
+            <div className={"text-right"}><OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"}
+                                                        onSubmit={this.saveNewSchema}>
                 <input placeholder={"Name"}/>
                 <PinViewModal schema={-1} saveNow={this.state.saveNow} onSave={(i: number, pins: [any]) => this.setState({newPinSchema: pins})}/>
-            </OverlayModal>
+            </OverlayModal></div>
             <Row>
                 <Table>
                     <tbody>
@@ -54,14 +48,13 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                                               onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                             <td className={"text-right"}>
 
-                                <OverlayModal className={"btn btn-warning hoverbutton"} title={e.name} buttonLabel={"Edit"}
-                                              onSubmit={() => this.setState({saveNow: true})} submitText={"Save"}>
-                                    <PinViewModal schema={e.id} saveNow={this.state.saveNow} onSave={this.saveEditedPins}/>
-                                </OverlayModal>
-
-                                <OverlayModal className={"btn btn-danger hoverbutton"} submitText={"Yes"} title={"Delete the following element?"} buttonLabel={"Delete"}
+                                <OverlayModal className={"btn btn-danger hoverbutton float-right"} submitText={"Yes"} title={"Delete the following element?"} buttonLabel={"Delete"}
                                               onSubmit={() => this.deleteSchema(e.id)}>
                                     <h3>{e.name}</h3>
+                                </OverlayModal>
+                                <OverlayModal className={"btn btn-warning hoverbutton float-right"} title={e.name} buttonLabel={"Edit"}
+                                              onSubmit={() => this.setState({saveNow: true})} submitText={"Save"}>
+                                    <PinViewModal schema={e.id} saveNow={this.state.saveNow} onSave={this.saveEditedPins}/>
                                 </OverlayModal>
                             </td>
                         </tr>)}

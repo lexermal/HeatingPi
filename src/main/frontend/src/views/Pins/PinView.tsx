@@ -21,7 +21,9 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
 
     public render() {
         return <Container>
+            <br/>
             <h1>Overview of all Pins</h1>
+            <br/>
             <Row>
                 <Table>
                     <tbody>
