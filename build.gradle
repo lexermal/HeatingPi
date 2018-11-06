@@ -57,8 +57,3 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-
-
-task buildAll(type: Exec) {
-    commandLine './build-react.sh' || true
-}

@@ -1,9 +1,5 @@
-Die Jar wird mit 
-./gradlew build
-gebaut.
-
-
-https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-when-you-log-out
+#Build
+Mittels build-project.sh
 
 #Wichtig
  * Die Datenbank ist ein pfusch. Es gibt Pins, PinsStats und Schemas. 
@@ -11,9 +7,11 @@ https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-
   * Auch im graphql schema so umsetzen
 
 
-##Nächste Schritte
-* Jetzt gehört ein Frontend gebaut.
-* Gradle task das react vorm bauen der jar ausgeführt wird
+##Frontend todo
+* 
+
+
+##Backend todo
 * implementieren des default states
 * unittests schreiben
 * schauen was die pi4j Lib noch alles kann (./resources/java)
@@ -24,3 +22,5 @@ https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-
 
 Graphql error handling  
 https://picodotdev.github.io/blog-bitix/2017/11/devolver-mensajes-de-error-descriptivos-en-graphql/
+
+https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-when-you-log-out

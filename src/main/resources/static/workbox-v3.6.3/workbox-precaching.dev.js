@@ -333,9 +333,9 @@ this.workbox.precaching = (function (DBWrapper_mjs,logger_mjs,cacheNames_mjs,Wor
    */
   var printInstallDetails = ((entriesToPrecache, alreadyPrecachedEntries) => {
     // Goal is to print the message:
-    //    Precaching X static.
+    //    Precaching X files.
     // Or:
-    //    Precaching X static. Y static were cached and up-to-date.
+    //    Precaching X files. Y files were cached and up-to-date.
 
     const precachedCount = entriesToPrecache.length;
     const alreadyPrecachedCount = alreadyPrecachedEntries.length;
@@ -640,7 +640,7 @@ this.workbox.precaching = (function (DBWrapper_mjs,logger_mjs,cacheNames_mjs,Wor
     }
 
     /**
-     * Takes the current set of temporary static and moves them to the final
+     * Takes the current set of temporary files and moves them to the final
      * cache, deleting the temporary cache once copying is complete.
      *
      * @param {Object} options
@@ -982,17 +982,17 @@ this.workbox.precaching = (function (DBWrapper_mjs,logger_mjs,cacheNames_mjs,Wor
 
   /**
    * Add items to the precache list, removing any duplicates and
-   * store the static in the
+   * store the files in the
    * ["precache cache"]{@link module:workbox-core.cacheNames} when the service
    * worker installs.
    *
    * This method can be called multiple times.
    *
-   * Please note: This method **will not** serve any of the cached static for you,
-   * it only precaches static. To respond to a network request you call
+   * Please note: This method **will not** serve any of the cached files for you,
+   * it only precaches files. To respond to a network request you call
    * [addRoute()]{@link module:workbox-precaching.addRoute}.
    *
-   * If you have a single array of static to precache, you can just call
+   * If you have a single array of files to precache, you can just call
    * [precacheAndRoute()]{@link module:workbox-precaching.precacheAndRoute}.
    *
    * @param {Array<Object|string>} entries Array of entries to precache.
