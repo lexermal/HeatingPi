@@ -13,18 +13,20 @@ import java.util.List;
 public class DomainController {
 
 
-    @GetMapping("**")
+//    @GetMapping("**")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         List<Pin> pins=new ArrayList<>();
         model.addAttribute("leds", pins);
-        return "main";
+        return "index";
     }
 
-    @GetMapping("/upload")
+    @GetMapping("/schema")
     public String upload(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
-        return "entry_add";
+        return "redirect";
     }
+
+
 
 }
