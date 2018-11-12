@@ -1,21 +1,22 @@
 import * as React from 'react'
 import {Container, Table} from 'reactstrap'
 import Row from 'reactstrap/lib/Row'
-import BackendCalls from '../../utils/backendCalls'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import BackendCalls from '../../utils/backendCalls'
 
 class PinView extends React.Component<PinViewProps, PinViewStats> {
 
+    private backend: BackendCalls;
 
-    constructor(props: PinViewProps) {
+    public constructor(props: PinViewProps) {
         super(props)
 
         this.state = {pins: [undefined]}
 
-        const backend = new BackendCalls()
-        backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
+        this.backend = new BackendCalls()
+        this.backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
         this.saveName = this.saveName.bind(this)
     }
 
@@ -46,15 +47,15 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private saveName(id: number, value: string) {
-        console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The changes have successfully been saved.")
-        // @todo graphql implementieren
+        this.backend.editPins(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
+    }
+
+    private onError(e: Error) {
+        toastr.error("Change could not be made permanently. " + e.message)
     }
 
     private saveDefaultState(id: number, value: string) {
-        console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The changes have successfully been saved.")
-        // @todo graphql implementieren
+        this.backend.setPinDefaultState(id, value === "true", () => toastr.success("The changes have successfully been saved."), this.onError)
     }
 
 }

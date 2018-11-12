@@ -19,6 +19,24 @@ query{
         // 		default:default_activated
     }
 
+    public editPins(id: number, name: string, then: (response: any) => void, error: (e: any) => void) {
+        this.callGraphql(`mutation{
+  editPin(id:` + id + `, name:"` + name + `"){
+    id
+    name
+  }
+}`, then, error)
+    }
+
+    public setPinDefaultState(id: number, state: boolean, then: (response: any) => void, error: (e: any) => void) {
+        this.callGraphql(`mutation{
+  setPinDefaultState(id:` + id + `, state:"` + state + `"){
+    id
+    name
+  }
+}`, then, error)
+    }
+
     public getSchemas(then: (response: any) => void, error: (e: any) => void) {
         this.callGraphql(`
 query{

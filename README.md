@@ -13,10 +13,6 @@ Mittels build-project.sh
   * aktiv setzen eines schemas
   * delete graphql
   * edit save graphql
-    
-* Pins
-  * name save graphql
-  * default save graphql
   
 * landing page
   * tbd
