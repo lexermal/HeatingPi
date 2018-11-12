@@ -1,11 +1,5 @@
-#Build
+##Build
 Mittels build-project.sh
-
-#Wichtig
- * Die Datenbank ist ein pfusch. Es gibt Pins, PinsStats und Schemas. 
-  * Pinstate soll eine normale Tabelle sein, und nicht die versteckte wie jetzt
-  * Auch im graphql schema so umsetzen
-
 
 ##Frontend todo
 * Schemas
@@ -13,15 +7,14 @@ Mittels build-project.sh
   * aktiv setzen eines schemas
   * delete graphql
   * edit save graphql
+  * aktiv setzen eines schemas
   
-* landing page
-  * tbd
+* landing page - Dashboard
+  * anzeigen des aktiven schemas
+  * Navbar element in link element umbauen
   * zeigen was aktiv ist vlt letzten login, wie lange es offline war,....
-  * ... temperatur, letzte änderung, .... ka einfach ein paar statistiken und vlt notfalls button alaa alles ausschalten
+  * ... temperatur, letzte änderung, .... ka einfach ein paar statistiken und vlt notfalls button als alles ausschalten
   
-* activ
-  * löschen dieses routing points. inhalte sind alle auf landing page
-    
   
 
 ##Backend todo
@@ -32,7 +25,12 @@ Mittels build-project.sh
 * Graphql login
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * Spring security dep installieren?
+* Umbau für simulation der Lib, also trotzdem alle features, nur soll der zugriff auf die lib simulierbar sein
 
+###Umbau des States
+ * Die Datenbank ist ein pfusch. Es gibt Pins, PinsStats und Schemas. 
+  * Pinstate soll eine normale Tabelle sein, und nicht die versteckte wie jetzt
+  * Auch im graphql schema so umsetzen
 Graphql error handling  
 https://picodotdev.github.io/blog-bitix/2017/11/devolver-mensajes-de-error-descriptivos-en-graphql/
 

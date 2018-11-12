@@ -2,6 +2,7 @@ import * as React from "react";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import PinView from './views/Pins/PinView'
 import SchemaView from './views/Schema/SchemaView'
+import DashboardView from './views/Dashboard/DashboardView'
 
 class Routing extends React.Component<{}, {}> {
 
@@ -16,7 +17,7 @@ class Routing extends React.Component<{}, {}> {
                 {/*<this.Header/>*/}
                 {this.props.children}
 
-                <Route exact={true} path="/" component={this.Home}/>
+                <Route exact={true} path="/" component={DashboardView}/>
                 <Route path="/about" component={this.About}/>
                 <Route path="/topics" component={this.Topics}/>
                 <Route exact={true} path={"/pins"} component={PinView}/>
@@ -24,10 +25,6 @@ class Routing extends React.Component<{}, {}> {
             </div>
         </Router>
     };
-
-    private Home() {
-        return <div><h2>Home</h2>Home page, have fun </div>
-    }
 
     private About() {
         return <h2>About</h2>

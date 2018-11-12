@@ -31,9 +31,6 @@ class GenericView extends React.Component<{}, GenericViewStats> {
                                 <NavItem>
                                     <Link className={"nav-link"} to="/schema">Schema</Link>
                                 </NavItem>
-                                <NavItem>
-                                    <Link className={"nav-link"} to="/active">Active</Link>
-                                </NavItem>
                             </Nav>
                         </Collapse>
                     </Navbar>
