@@ -1,8 +1,9 @@
 package me.weixler.controller;
 
-import me.weixler.Utils;
 import me.weixler.beans.Pin;
 import me.weixler.beans.PinRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -17,33 +18,25 @@ public class InitController {
     PinRepository pindb;
 
     private List<Pin> pins;
-
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     public InitController() {
-
-
     }
 
     @Bean
     public InitController createInitController() {
-
         return new InitController();
     }
 
-
     public InitController loadAll() {
-        Utils.getInstance().l().info("Init creation check");
-
-//        System.out.println(pindb.toString());
-
+        log.info("Init creation check");
         pins = pindb.findAll();
-        Utils.getInstance().l().info("Loaded all pins");
+        log.info("Loaded all pins");
 
         return this;
     }
 
     public void createMissing() {
-
         List<Long> ids = new ArrayList<>();
 
         pins.stream().forEach(pin -> {
@@ -58,12 +51,12 @@ public class InitController {
                 p.setId(i);
                 pindb.save(p);
 
-                Utils.getInstance().l().info("Creating pin " + i);
+                log.info("Creating pin " + i);
 
                 counter++;
             }
         }
-        Utils.getInstance().l().info("Created " + counter + " missing pins");
+        log.info("Created " + counter + " missing pins");
     }
 
 

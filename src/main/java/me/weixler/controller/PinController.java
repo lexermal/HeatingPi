@@ -22,7 +22,6 @@ public class PinController {
         return ourInstance;
     }
 
-
     private void createPin(long pinnumber) {
 
         Pin pin = getPin(pinnumber);
@@ -33,22 +32,24 @@ public class PinController {
 
     }
 
-
     public void setState(boolean state) {
         leds.get(activePin).setState(state);
     }
-
 
     public boolean getState() {
         return leds.get(activePin).getState().isHigh();
     }
 
     public boolean getDefaultState() {
-        return false; //TODO
+        return leds.get(activePin).getShutdownOptions().getState().isHigh();
     }
 
     public void setDefaultState(boolean state) {
-        //TODO
+        if (state) {
+            leds.get(activePin).setShutdownOptions(true, PinState.HIGH, PinPullResistance.PULL_UP);
+        } else {
+            leds.get(activePin).setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+        }
     }
 
     private Pin getPin(long pinnumber) {
@@ -60,7 +61,6 @@ public class PinController {
                 return pins[i];
             }
         }
-
         return null;
     }
 

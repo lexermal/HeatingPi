@@ -18,7 +18,7 @@ Mittels build-project.sh
   
 
 ##Backend todo
-* implementieren des default states
+* testen des default states
 * unittests schreiben
 * Graphql login
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
