@@ -20,8 +20,6 @@ Mittels build-project.sh
 ##Backend todo
 * implementieren des default states
 * unittests schreiben
-* schauen was die pi4j Lib noch alles kann (./resources/java)
-* Löschen von unnätiger Dateien (auch im resource Ordner)
 * Graphql login
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * Spring security dep installieren?
