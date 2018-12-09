@@ -30,7 +30,7 @@ public class InitController {
 
     public void loadAll() {
         pins = pindb.findAll();
-        log.info("Loaded all pins...");
+        log.info("Loaded all pins");
     }
 
     public void createMissingPins() {

@@ -98,7 +98,7 @@ public class Mutation implements GraphQLMutationResolver {
 
 
     public DBPinMode setMode(long pinid, long schemaid, long mode) {
-        Authentication.checkAccess("pin.setmode");
+        Authentication.checkAccess("pin.mode");
 
         DBPinMode dbPinMode = pinstatedb.getState(schemaid, pinid);
         dbPinMode.setMode(mode);
@@ -111,6 +111,8 @@ public class Mutation implements GraphQLMutationResolver {
         DBPinMode mode = pinstatedb.getState(s.getId(), p.getId());
         s.removeDBSchemaState(mode);
         p.removeDBPinState(mode);
+        pindb.save(p);
+        schemadb.save(s);
     }
 
 }

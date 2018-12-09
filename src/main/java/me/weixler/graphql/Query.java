@@ -29,7 +29,7 @@ class Query implements GraphQLQueryResolver {
     }
 
     List<DBPin> getPins(Long id) {
-        Authentication.checkAccess("pins.get");
+        Authentication.checkAccess("pin.get");
 
         if (id != null && id > 0) {
             return Collections.singletonList(pindb.findById(id).get());

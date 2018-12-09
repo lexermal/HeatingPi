@@ -41,10 +41,10 @@ public class Application extends SpringBootServletInitializer {
     public void initPins() {
         Logger l = LoggerFactory.getLogger(this.getClass().getName());
         
-        l.info("Initializing pins...");
+        l.info("Initializing pins");
         initController.loadAll();
         initController.createMissingPins();
-        l.info("The Server is now ready to use");
+        l.info("The server ready to use");
     }
 
 }
