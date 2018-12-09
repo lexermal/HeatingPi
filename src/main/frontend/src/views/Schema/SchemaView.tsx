@@ -14,9 +14,9 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     constructor(props: PinViewProps) {
         super(props)
 
-        this.state = {schema: [undefined], hoverindex: -1, saveNow: false, newPinSchema: [undefined]}
+        this.state = {schema: [undefined], hoverindex: -1, saveNow: false, schemaname: ""}
 
-        new BackendCalls().getSchemas((e: any) => this.setState({schema: e}), (err: any) => console.error(err))
+        this.getSchemas()
         this.saveName = this.saveName.bind(this)
         this.saveNewSchema = this.saveNewSchema.bind(this)
     }
@@ -24,11 +24,11 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     public render() {
         return <Container>
             <h1 className={"h1"}>Overview of all Schemas</h1>
-            <div className={"text-right"}><OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"}
-                                                        onSubmit={this.saveNewSchema}>
-                <input placeholder={"Name"}/>
-                <PinViewModal schema={-1} saveNow={this.state.saveNow} onSave={(i: number, pins: [any]) => this.setState({newPinSchema: pins})}/>
-            </OverlayModal></div>
+            <div className={"text-right"}>
+                <OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={() => this.setState({saveNow: true})}>
+                    <input placeholder={"Name"} className={"form-control"} onChange={(e: any) => this.setState({schemaname: e.target.value})}/>
+                    <PinViewModal saveNow={this.state.saveNow} onSave={this.saveNewSchema}/>
+                </OverlayModal></div>
             <Row>
                 <Table>
                     <tbody>
@@ -64,11 +64,16 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
         </Container>
     }
 
-    private saveNewSchema() {
-        this.setState({saveNow: true})
-        console.log("SAVE : " + 2 + " with value: " + 2)
-        toastr.success("The changes have successfully been saved.")
-        // @todo graphql implementieren
+    private getSchemas() {
+        new BackendCalls().getSchemas((e: any) => this.setState({schema: e}), this.onError)
+    }
+
+    private saveNewSchema(schema: number, pins: [any]) {
+        this.setState({saveNow: false})
+        new BackendCalls().createSchema(this.state.schemaname, pins, () => {
+            toastr.success("The changes have successfully been saved.")
+            this.getSchemas()
+        }, this.onError)
     }
 
     private saveName(id: number, value: string) {
@@ -90,7 +95,12 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private saveEditedPins(schema: number, pins: [any]) {
+        console.log("new schemas", pins)
         toastr.warning("Graphqlzeug implementieren und das vollgende schema verändern " + this.props.schema)
+    }
+
+    private onError(e: string) {
+        toastr.error("Change could not be made permanently. " + e)
     }
 
 }
@@ -108,9 +118,9 @@ interface Schema {
 
 interface PinViewStats {
     schema?: [any]
-    hoverindex: number
     saveNow: boolean
-    newPinSchema: [any]
+    schemaname: string
+    hoverindex: number
 }
 
 export default SchemaView

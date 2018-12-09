@@ -1,16 +1,9 @@
 class BackendCalls {
 
     public getPins(then: (response: any) => void, error: (e: string) => void, schema?: number) {
-
-        let schemafilter = schema !== undefined ? "(id:" + schema + ")" : ""
-
-        console.log("Remve this workaround")
-        // this is here because the backend does not find the pins of the schemas
-        schemafilter = ""
-
         this.callGraphql(`
 query{
-	pins` + schemafilter + `{
+	pins` + (schema === undefined ? "" : "(id:" + schema + ")") + `{
 		id
 		name
 	}
@@ -49,25 +42,32 @@ schema{
 `, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error);
     }
 
+    public createSchema(name: string, pins: [any], then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+  schema:createSchema(
+    name:"` + name + `"
+    mode:[` + (pins.map(e => "{pinid:" + e.id + ",mode:" + (e.state || 2) + "}, ")) + `]
+  ){
+    name
+  }
+}
+`, then, error)
+    }
+
+
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
         fetch('http://localhost:9000/graphql', {
             method: 'post',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-            body: JSON.stringify({"query": body})
-        }).then((response) => {
-            return response.json();
-        }).then((response) => {
+            body: JSON.stringify({"query": body}),
+            headers: new Headers({'Content-Type': 'application/json'})
+        }).then((response) => response.json()).then((response) => {
             if (response.errors !== undefined) {
                 error(response.errors[0].message)
             } else {
                 then(response.data)
             }
-
-        }).catch((err: Error) => {
-            error(err.message)
-        })
+        }).catch((err: Error) => error(err.message))
     }
 
 }
