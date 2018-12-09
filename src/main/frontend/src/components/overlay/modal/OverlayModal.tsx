@@ -1,14 +1,12 @@
 import * as React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup} from 'reactstrap';
 
 class OverlayModal extends React.Component<ModalProps, ModalStats> {
     public constructor(props: ModalProps) {
-        super(props);
-        this.state = {
-            modal: false
-        };
+        super(props)
+        this.state = {modal: false}
 
-        this.toggle = this.toggle.bind(this);
+        this.toggle = this.toggle.bind(this)
     }
 
     public render() {
@@ -22,21 +20,21 @@ class OverlayModal extends React.Component<ModalProps, ModalStats> {
                         {this.props.children}
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={() => {
-                            this.toggle()
-                            this.props.onSubmit()
-                        }}>{this.props.submitText || "Ok"}</Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>{this.props.cancelText || "Cancel"}</Button>
+                        <ButtonGroup>
+                            <Button color="primary" onClick={() => {
+                                this.toggle()
+                                this.props.onSubmit()
+                            }}>{this.props.submitText || "Ok"}</Button>
+                            <Button color="secondary" onClick={this.toggle}>{this.props.cancelText || "Cancel"}</Button>
+                        </ButtonGroup>
                     </ModalFooter>
                 </Modal>
             </div>
-        );
+        )
     }
 
     private toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
+        this.setState({modal: !this.state.modal})
     }
 
 }
@@ -54,4 +52,4 @@ interface ModalStats {
     modal: boolean
 }
 
-export default OverlayModal;
+export default OverlayModal

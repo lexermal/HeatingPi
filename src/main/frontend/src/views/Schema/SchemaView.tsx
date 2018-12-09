@@ -23,7 +23,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
     public render() {
         return <Container>
-            <h1 className={"h1"}>Overview of all Schemas</h1>
+            <h1 className={"h1"}>Schemas</h1>
             <div className={"text-right"}>
                 <OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={() => this.setState({saveNow: true})}>
                     <input placeholder={"Name"} className={"form-control"} onChange={(e: any) => this.setState({schemaname: e.target.value})}/>
@@ -48,11 +48,12 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                                               onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
                             <td className={"text-right"}>
 
-                                <OverlayModal className={"btn btn-danger hoverbutton float-right"} submitText={"Yes"} title={"Delete the following element?"} buttonLabel={"Delete"}
+                                <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} submitText={"Yes"} title={"Delete the following element?"}
+                                              buttonLabel={"Delete"}
                                               onSubmit={() => this.deleteSchema(e.id)}>
                                     <h3>{e.name}</h3>
                                 </OverlayModal>
-                                <OverlayModal className={"btn btn-warning hoverbutton float-right"} title={e.name} buttonLabel={"Edit"}
+                                <OverlayModal className={"btn btn-warning hoverbutton float-right radius-left"} title={e.name} buttonLabel={"Edit"}
                                               onSubmit={() => this.setState({saveNow: true})} submitText={"Save"}>
                                     <PinViewModal schema={e.id} saveNow={this.state.saveNow} onSave={this.saveEditedPins}/>
                                 </OverlayModal>
@@ -69,6 +70,11 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private saveNewSchema(schema: number, pins: [any]) {
+        if (this.state.schemaname.trim().length === 0) {
+            toastr.error("The schema name needs to be set.")
+            return
+        }
+
         this.setState({saveNow: false})
         new BackendCalls().createSchema(this.state.schemaname, pins, () => {
             toastr.success("The changes have successfully been saved.")

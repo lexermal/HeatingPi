@@ -14,3 +14,16 @@
 .schemaview > td {
     vertical-align: middle;
 }
+
+
+.radius-left {
+    border-radius: 0!important;
+    border-top-left-radius: 4px!important;
+    border-bottom-left-radius: 4px!important;
+}
+
+.radius-right {
+    border-radius: 0!important;
+    border-top-right-radius: 4px!important;
+    border-bottom-right-radius: 4px!important;
+}
