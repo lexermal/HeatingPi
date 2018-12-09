@@ -1,10 +1,10 @@
 class BackendCalls {
 
-    public getPins(then: (response: any) => void, error: (e: any) => void, schema?: number) {
+    public getPins(then: (response: any) => void, error: (e: string) => void, schema?: number) {
 
         let schemafilter = schema !== undefined ? "(id:" + schema + ")" : ""
 
-        console.log("Remoe this workaround")
+        console.log("Remve this workaround")
         // this is here because the backend does not find the pins of the schemas
         schemafilter = ""
 
@@ -19,7 +19,7 @@ query{
         // 		default:default_activated
     }
 
-    public editPins(id: number, name: string, then: (response: any) => void, error: (e: any) => void) {
+    public editPins(id: number, name: string, then: (response: any) => void, error: (e: string) => void) {
         this.callGraphql(`mutation{
   editPin(id:` + id + `, name:"` + name + `"){
     id
@@ -28,16 +28,16 @@ query{
 }`, then, error)
     }
 
-    public setPinDefaultState(id: number, state: boolean, then: (response: any) => void, error: (e: any) => void) {
+    public setPinDefaultState(id: number, state: boolean, then: (response: any) => void, error: (e: string) => void) {
         this.callGraphql(`mutation{
-  setPinDefaultState(id:` + id + `, state:"` + state + `"){
+  setPinDefaultState(id:` + id + `, mode:` + state + `){
     id
     name
   }
 }`, then, error)
     }
 
-    public getSchemas(then: (response: any) => void, error: (e: any) => void) {
+    public getSchemas(then: (response: any) => void, error: (e: string) => void) {
         this.callGraphql(`
 query{
 schema{
@@ -49,7 +49,7 @@ schema{
 `, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error);
     }
 
-    private callGraphql(body: string, then: (response: any) => void, error: (err: any) => void) {
+    private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
         fetch('http://localhost:9000/graphql', {
             method: 'post',
             headers: new Headers({
@@ -59,10 +59,15 @@ schema{
         }).then((response) => {
             return response.json();
         }).then((response) => {
-            then((response.data))
-        }).catch((err) => {
-            error(err)
-        });
+            if (response.errors !== undefined) {
+                error(response.errors[0].message)
+            } else {
+                then(response.data)
+            }
+
+        }).catch((err: Error) => {
+            error(err.message)
+        })
     }
 
 }

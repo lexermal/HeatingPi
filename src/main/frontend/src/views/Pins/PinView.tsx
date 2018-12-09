@@ -50,8 +50,8 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
         this.backend.editPins(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
     }
 
-    private onError(e: Error) {
-        toastr.error("Change could not be made permanently. " + e.message)
+    private onError(e: string) {
+        toastr.error("Change could not be made permanently. " + e)
     }
 
     private saveDefaultState(id: number, value: string) {

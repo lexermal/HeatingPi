@@ -16,7 +16,7 @@ class DashboardView extends React.Component<PinViewProps, PinViewStats> {
         this.state = {pins: [undefined]}
 
         this.backend = new BackendCalls()
-        this.backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
+        this.backend.getPins((e: any) => this.setState({pins: e}), (err: string) => console.error(err))
         this.saveName = this.saveName.bind(this)
     }
 
@@ -39,7 +39,7 @@ class DashboardView extends React.Component<PinViewProps, PinViewStats> {
                         <td>{e.id}</td>
                         <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
                         <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
-                                          onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
+                                          onChange={(g: string) => this.saveDefaultState(e.id, g === "true")}/>}</td>
                     </tr>)}
                     </tbody>
                 </Table>
@@ -51,12 +51,12 @@ class DashboardView extends React.Component<PinViewProps, PinViewStats> {
         this.backend.editPins(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
     }
 
-    private onError(e: Error) {
-        toastr.error("Change could not be made permanently. " + e.message)
+    private onError(e: string) {
+        toastr.error("Change could not be made permanently. " + e)
     }
 
-    private saveDefaultState(id: number, value: string) {
-        this.backend.setPinDefaultState(id, value === "true", () => toastr.success("The changes have successfully been saved."), this.onError)
+    private saveDefaultState(id: number, value: boolean) {
+        this.backend.setPinDefaultState(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
     }
 
 }
