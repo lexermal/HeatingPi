@@ -18,6 +18,10 @@ Mittels build-project.sh
   
 
 ##Backend todo
+* Entfernen von auskommentiertem code
+* System testen
+* Controller ausimplementieren
+* PinController überarbeiten und unnützen code entfernen
 * testen des default states
 * unittests schreiben
 * Graphql login
@@ -25,11 +29,8 @@ Mittels build-project.sh
 * Spring security dep installieren?
 * Umbau für simulation der Lib, also trotzdem alle features, nur soll der zugriff auf die lib simulierbar sein
 
-###Umbau des States
- * Die Datenbank ist ein pfusch. Es gibt Pins, PinsStats und Schemas. 
-  * Pinstate soll eine normale Tabelle sein, und nicht die versteckte wie jetzt
-  * Auch im graphql schema so umsetzen
-Graphql error handling  
+##Graphql error handling  
 https://picodotdev.github.io/blog-bitix/2017/11/devolver-mensajes-de-error-descriptivos-en-graphql/
 
+##Setup
 https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-when-you-log-out
