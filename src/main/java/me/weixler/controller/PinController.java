@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
+//todo klasse überarbeiten
 public class PinController {
 
     private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();

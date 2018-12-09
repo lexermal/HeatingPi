@@ -1,0 +1,18 @@
+//        System.out.println("\n\n");
+//        pindb.save(new Pin(2, "Pin 2"));
+//        System.out.println("entrys:" + pindb.count());
+//        System.out.println(pindb.findAll());
+//
+//        Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
+//        logger.info("Student id 10001 -> {}", repository.findById(10001L));
+
+//        logger.info("Inserting -> {}", repository.save(new Student("John", "A1234657")));
+
+//        logger.info("Update 10003 -> {}", repository.save(new Student(10001L, "Name-Updated", "New-Passport")));
+//        logger.info("InserCting my things -> {}", repository.save(new Student(7747L, "Schuster", "def")));
+
+//        repository.deleteById(10002L);
+
+//        logger.info("All users -> {}", repository.findAll());

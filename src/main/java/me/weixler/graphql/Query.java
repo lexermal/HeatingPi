@@ -1,21 +1,16 @@
 package me.weixler.graphql;
 
-import com.google.common.collect.Lists;
-import me.weixler.beans.Pin;
-import me.weixler.beans.PinRepository;
-import me.weixler.beans.Schema;
+import me.weixler.beans.db2.DBPin;
+import me.weixler.beans.db2.DBSchema;
+import me.weixler.beans.repos.PinRepository;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import me.weixler.beans.SchemaRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.weixler.beans.repos.SchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Contains all Querys
@@ -29,49 +24,25 @@ class Query implements GraphQLQueryResolver {
     SchemaRepository schemadb;
 
 
-    String example() {
-        return "It's working.";
+    String ping() {
+        return "pong";
     }
 
-    List<Pin> getPins(Long id) {
-        new Authentication().accessAllowed("pins.get");
+    List<DBPin> getPins(Long id) {
+        Authentication.checkAccess("pins.get");
 
         if (id != null && id > 0) {
-            return Arrays.asList(pindb.findById(id).get());
+            return Collections.singletonList(pindb.findById(id).get());
         }
 
-        return pindb.findAll().stream().collect(Collectors.toList());
-
-//        return (List<Pin>) (id > 0 ? pindb.findById(id) : pindb.findAll());
-
-
-//        System.out.println("\n\n");
-//        pindb.save(new Pin(2, "Pin 2"));
-//        System.out.println("entrys:" + pindb.count());
-//        System.out.println(pindb.findAll());
-//
-//        Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
-//        logger.info("Student id 10001 -> {}", repository.findById(10001L));
-
-//        logger.info("Inserting -> {}", repository.save(new Student("John", "A1234657")));
-
-//        logger.info("Update 10003 -> {}", repository.save(new Student(10001L, "Name-Updated", "New-Passport")));
-//        logger.info("InserCting my things -> {}", repository.save(new Student(7747L, "Schuster", "def")));
-
-//        repository.deleteById(10002L);
-
-//        logger.info("All users -> {}", repository.findAll());
-
-
+        return new ArrayList<>(pindb.findAll());
     }
 
-    List<Schema> getSchema(long id) {
-        new Authentication().accessAllowed("schema.get");
+    List<DBSchema> getSchema(long id) {
+        Authentication.checkAccess("schema.get");
 
         if (id > 0) {
-            List<Schema> s = new ArrayList<>();
+            List<DBSchema> s = new ArrayList<>();
             s.add(schemadb.findById(id).get());
             return s;
         } else return schemadb.findAll();

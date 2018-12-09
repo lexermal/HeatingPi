@@ -1,33 +1,42 @@
 type Query {
-    # A simple example string
-    example: String
+    # A simple example comment
+    """Check if the api is accessible"""
+    ping: String
     pins(id: Int): [Pin]
     schema(id: Int): [Schema]
 }
 type Mutation {
+    # Pins
     editPin(id: Int!, name: String!): Pin
-    setPinState(id:Int!, state: Boolean!): Pin
-    setPinDefaultState(id:Int!, state: Boolean!): Pin
-    createSchema(name:String!, pins:[StateInput]!): Schema
-    editSchema(id: Int!, name:String!, pins:[StateInput]!): Schema
+    setPinDefaultState(id:Int!, mode: Boolean!): Pin
+    # Schema
+    createSchema(name:String!, mode:[InputPinMode]!): Schema
+    editSchema(id: Int!, name:String!, mode:[InputPinMode]!): Schema
     deleteSchema(id:Int!): Schema
     activateSchema(id:Int!): Schema
+    # PinMode
+    setMode(pinid:Int!, schemaid:Int!, mode: Int!): PinMode
 }
 
-input StateInput {
+input InputPinMode {
     pinid: Int!
-    state: Int!
+    mode: Int!
 }
 
 type Pin {
     id: Int!
     name: String
-    activated: Boolean
-    default_activated: Boolean
+    active: Boolean
+    defaultActive: Boolean
+}
+
+type PinMode {
+    pin: Pin
+    mode: Int
 }
 
 type Schema {
-    pins: [Pin]!
+    pins: [PinMode]!
     name: String
     id: Int
     active: Boolean

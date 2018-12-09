@@ -13,22 +13,21 @@ public class DBPin {
     @GeneratedValue
     private Long id;
     private String name;
-    private int defaultmode;
 
-    @OneToMany(mappedBy = "pin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DBPinState> dbPinStates = new ArrayList<>();
+    @OneToMany(mappedBy = "dbPin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     public DBPin() {
     }
 
-    public void addDBPinState(DBPinState dbPinState) {
-        dbPinStates.add(dbPinState);
-        dbPinState.setDbPin(this);
+    public void addDBPinState(DBPinMode dbPinMode) {
+        dbPinModes.add(dbPinMode);
+        dbPinMode.setDbPin(this);
     }
 
-    public void removeDBPinState(DBPinState dbPinState) {
-        dbPinStates.remove(dbPinState);
-        dbPinState.setDbPin(null);
+    public void removeDBPinState(DBPinMode dbPinMode) {
+        dbPinModes.remove(dbPinMode);
+        dbPinMode.setDbPin(null);
     }
 
     public Long getId() {
@@ -47,11 +46,38 @@ public class DBPin {
         this.name = name;
     }
 
-    public int getDefaultmode() {
-        return defaultmode;
+    public boolean getDefaultmode() {
+        return Controller_isActivatedByDefault();
     }
 
-    public void setDefaultmode(int defaultmode) {
-        this.defaultmode = defaultmode;
+    public void setDefaultmode(boolean defaultmode) {
+        this.Controller_setDefaultState(defaultmode);
+    }
+
+    public boolean getActive() {
+        return this.Controller_isActivated();
+    }
+
+    public boolean getDefaultActive() {
+        return this.Controller_isActivatedByDefault();
+    }
+
+    private boolean Controller_isActivatedByDefault() {
+        //@Todo implementation
+        return false;
+    }
+
+
+    private boolean Controller_isActivated() {
+        //@Todo implementation
+        return false;
+    }
+
+    public void Controller_setMode(long mode) {
+        //@Todo implementation
+    }
+
+    public void Controller_setDefaultState(boolean state) {
+        //@todo implementation
     }
 }

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity(name = "Pin")
-@Table(name = "pin")
+@Entity(name = "Schema")
+@Table(name = "schema")
 public class DBSchema {
 
     @Id
@@ -15,8 +15,8 @@ public class DBSchema {
     private String name;
     private boolean active;
 
-    @OneToMany(mappedBy = "pin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DBPinState> dbPinStates = new ArrayList<>();
+    @OneToMany(mappedBy = "dbSchema", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     public DBSchema() {
     }
@@ -25,14 +25,14 @@ public class DBSchema {
         this.name = name;
     }
 
-    public void addDBSchemaState(DBPinState dbPinState) {
-        dbPinStates.add(dbPinState);
-        dbPinState.setDbSchema(this);
+    public void addDBSchemaState(DBPinMode dbPinMode) {
+        dbPinModes.add(dbPinMode);
+        dbPinMode.setDbSchema(this);
     }
 
-    public void removeDBSchemaState(DBPinState dbPinState) {
-        dbPinStates.remove(dbPinState);
-        dbPinState.setDbSchema(null);
+    public void removeDBSchemaState(DBPinMode dbPinMode) {
+        dbPinModes.remove(dbPinMode);
+        dbPinMode.setDbSchema(null);
     }
 
     public Long getId() {
@@ -59,7 +59,7 @@ public class DBSchema {
         this.active = active;
     }
 
-    public List<DBPinState> getDbPinStates() {
-        return dbPinStates;
+    public List<DBPinMode> getDbPinModes() {
+        return dbPinModes;
     }
 }

@@ -1,7 +1,7 @@
 package me.weixler.controller;
 
-import me.weixler.beans.Pin;
-import me.weixler.beans.PinRepository;
+import me.weixler.beans.db2.DBPin;
+import me.weixler.beans.repos.PinRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class InitController {
     @Autowired
     PinRepository pindb;
 
-    private List<Pin> pins;
+    private List<DBPin> pins;
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     public InitController() {
@@ -28,35 +28,26 @@ public class InitController {
         return new InitController();
     }
 
-    public InitController loadAll() {
-        log.info("Init creation check");
+    public void loadAll() {
         pins = pindb.findAll();
-        log.info("Loaded all pins");
-
-        return this;
+        log.info("Loaded all pins...");
     }
 
-    public void createMissing() {
+    public void createMissingPins() {
         List<Long> ids = new ArrayList<>();
 
-        pins.stream().forEach(pin -> {
-            ids.add(pin.getId());
-        });
+        pins.forEach(pin -> ids.add(pin.getId()));
 
-        int counter = 0;
         for (long i = 1; i <= 8; i++) {
             if (!ids.contains(i)) {
-                Pin p = new Pin();
+                DBPin p = new DBPin();
                 p.setName("Pin " + i);
                 p.setId(i);
                 pindb.save(p);
 
-                log.info("Creating pin " + i);
-
-                counter++;
+                log.info("Created missing pin " + i);
             }
         }
-        log.info("Created " + counter + " missing pins");
     }
 
 

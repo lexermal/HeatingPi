@@ -4,12 +4,12 @@ import javax.persistence.*;
 
 @Entity(name = "pinState")
 @Table(name = "pin_state")
-public class DBPinState {
+public class DBPinMode {
 
     @Id
     @GeneratedValue
     private Long id;
-    private int mode;// 0...off, 1...on, 2....unchanged
+    private Long mode;// 0...off, 1...on, 2....unchanged
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pin_id")
@@ -20,17 +20,15 @@ public class DBPinState {
     private DBSchema dbSchema;
 
 
-    public DBPinState(int mode, DBPin dbPin, DBSchema dbSchema) {
+    public DBPinMode(long mode) {
         this.mode = mode;
-        this.dbPin = dbPin;
-        this.dbSchema = dbSchema;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof DBPinState)) return false;
-        return id != null && id.equals(((DBPinState) o).id);
+        if (!(o instanceof DBPinMode)) return false;
+        return id != null && id.equals(((DBPinMode) o).id);
     }
 
     @Override
@@ -46,11 +44,11 @@ public class DBPinState {
         this.id = id;
     }
 
-    public int getMode() {
+    public long getMode() {
         return mode;
     }
 
-    public void setMode(int mode) {
+    public void setMode(long mode) {
         this.mode = mode;
     }
 
@@ -63,6 +61,10 @@ public class DBPinState {
     }
 
     public DBPin getDbPin() {
+        return dbPin;
+    }
+
+    public DBPin getPin() {
         return dbPin;
     }
 

@@ -1,4 +1,4 @@
-package me.weixler.beans;
+package JavaExamples;
 
 import me.weixler.controller.PinController;
 

@@ -2,8 +2,8 @@ package me.weixler.beans;
 
 public class InputState {
 
+    private long mode;
     private long pinid;
-    private long state;
 
     public InputState() {
     }
@@ -16,11 +16,11 @@ public class InputState {
         this.pinid = pinid;
     }
 
-    public long getState() {
-        return state;
+    public long getMode() {
+        return mode;
     }
 
-    public void setState(long state) {
-        this.state = state;
+    public void setMode(long mode) {
+        this.mode = mode;
     }
 }

@@ -1,12 +1,12 @@
 package me.weixler.graphql;
 
+import com.coxautodev.graphql.tools.GraphQLResolver;
+import com.pi4j.io.gpio.PinMode;
 import me.weixler.beans.db2.DBPin;
 import me.weixler.beans.db2.DBPinMode;
 import me.weixler.beans.db2.DBSchema;
 import me.weixler.beans.repos.PinRepository;
-import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
-import sun.security.pkcs11.Secmod;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,18 +16,17 @@ import java.util.List;
  */
 
 @Component
-class SchemaResolver implements GraphQLResolver<DBSchema> {
+class PinModeResolver implements GraphQLResolver<DBSchema> {
 
 //    @Resource
 //    private PinRepository pinRepository;
 
-
-    public SchemaResolver() {
+    public PinModeResolver() {
 
     }
 
-    public List<DBPinMode> getPins(DBSchema schema) {
-        return schema.getDbPinModes();
-    }
+//    public DBPin getPin(DBPinMode mode) {
+//        return mode.getDbPin();
+//    }
 
 }
