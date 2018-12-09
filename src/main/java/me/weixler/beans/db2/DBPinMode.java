@@ -11,14 +11,16 @@ public class DBPinMode {
     private Long id;
     private Long mode;// 0...off, 1...on, 2....unchanged
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "pin_id")
     private DBPin dbPin;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "schema_id")
     private DBSchema dbSchema;
 
+    public DBPinMode() {
+    }
 
     public DBPinMode(long mode) {
         this.mode = mode;

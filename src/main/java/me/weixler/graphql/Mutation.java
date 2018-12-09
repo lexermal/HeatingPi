@@ -58,9 +58,9 @@ public class Mutation implements GraphQLMutationResolver {
 
             DBPin pin = pindb.getOne(e.getPinid());
             pin.addDBPinState(mode);
-
-            pindb.save(pin);
         });
+
+        schemadb.save(s);
 
         return s;
     }
