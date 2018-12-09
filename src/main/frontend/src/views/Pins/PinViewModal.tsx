@@ -19,7 +19,6 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
     public componentWillReceiveProps(nextProps: Readonly<PinViewProps>, nextContext: any): void {
         if (nextProps.saveNow && this.state.modified) {
             this.setState({modified: false})
-            console.log(this.state.pins)
             this.props.onSave(this.props.schema!, this.state.pins!)
         }
     }

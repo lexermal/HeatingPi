@@ -61,7 +61,7 @@ mutation{
             method: 'post',
             body: JSON.stringify({"query": body}),
             headers: new Headers({'Content-Type': 'application/json'})
-        }).then((response) => response.json()).then((response) => {
+        }).then((r) => r.json()).then((response) => {
             if (response.errors !== undefined) {
                 error(response.errors[0].message)
             } else {
