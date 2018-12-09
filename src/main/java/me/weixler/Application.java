@@ -3,6 +3,8 @@ package me.weixler;
 import com.coxautodev.graphql.tools.ObjectMapperConfigurer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import me.weixler.controller.InitController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +31,7 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 
+    //@Fixme check if unnecessary
     @Bean
     public ObjectMapperConfigurer objectMapperConfigurer() {
         return ((mapper, mapper2) -> mapper.registerModule(new JavaTimeModule()));
@@ -36,10 +39,12 @@ public class Application extends SpringBootServletInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initPins() {
-        Utils.getInstance().l().info("Initialisation of all pins started");
-        initController.loadAll().createMissing();
-        Utils.getInstance().l().info("The pin Initialisation finished");
-        Utils.getInstance().l().info("The Server is now ready to use");
+        Logger l = LoggerFactory.getLogger(this.getClass().getName());
+        
+        l.info("Initializing pins...");
+        initController.loadAll();
+        initController.createMissingPins();
+        l.info("The Server is now ready to use");
     }
 
 }

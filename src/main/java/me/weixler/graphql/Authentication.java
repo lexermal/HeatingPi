@@ -14,10 +14,10 @@ public class Authentication {
 
     private static Authentication ourInstance = new Authentication();
 
-    public static Authentication getAccess(String permission) {
+    public static Authentication checkAccess(String permission) {
         System.out.println(permission);
 
-        //hier werden die permissions gecheckt
+        //@Todo permission check
         if (false) {
             try {
                 throw new Exception("Permission not granted");
