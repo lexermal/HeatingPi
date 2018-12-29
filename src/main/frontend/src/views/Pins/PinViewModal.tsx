@@ -7,12 +7,21 @@ import * as toastr from "toastr"
 
 class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
 
+    private backend: BackendCalls
+
     constructor(props: PinViewProps) {
         super(props)
 
+        this.backend = new BackendCalls()
+
         this.state = {pins: [undefined], modified: false}
 
-        new BackendCalls().getPins((e: any) => this.setState({pins: e}), this.onError, props.schema)
+        if (props.schema) {
+            this.backend.getPinModes((e: any) => this.setState({pins: e}), this.onError, props.schema)
+        } else {
+            // @ts-ignore
+            this.backend.getPins((e: Pin[]) => this.setState({pins: this.convertToDefaultMode(e)}), this.onError)
+        }
     }
 
 
@@ -35,13 +44,12 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
                         <th>State</th>
                     </tr>
 
-                    {this.state.pins!.filter((e: any) => e !== undefined && e !== null).sort((a: Pin, b: Pin) => a.id > b.id ? 1 : -1).map((e: Pin) =>
-                        <tr key={e.id}>
-                            <td>{e.id}</td>
-                            <td>{e.name}</td>
-                            {/*todo hier noch den richtigen default index einfügen*/}
-                            <td>{<LabelSwitch defaultindex={e.state} tooltip={"Click to change"} switchlist={[["unmodified", "2"], ["active", "1"], ["deactivated", "0"]]}
-                                              onChange={(text: string) => this.saveState(e.id, text)}/>}</td>
+                    {this.state.pins!.filter((e: any) => e !== undefined && e !== null).sort((a: Mode, b: Mode) => a.pin.id > b.pin.id ? 1 : -1).map((e: Mode) =>
+                        <tr key={e.pin.id}>
+                            <td>{e.pin.id}</td>
+                            <td>{e.pin.name}</td>
+                            <td>{<LabelSwitch defaultindex={e.mode} tooltip={"Click to change"} switchlist={[["deactivated", "0"], ["active", "1"], ["unmodified", "2"]]}
+                                              onChange={(text: string) => this.saveState(e.pin.id, text)}/>}</td>
                         </tr>)}
                     </tbody>
                 </Table>
@@ -49,17 +57,28 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
         </Container>
     }
 
+    private convertToDefaultMode(pins: [Pin]): Mode[] {
+        const list = []
+
+        for (let x = 0; x < pins.length; x++) {
+            list[x] = {mode: 2, pin: pins[x]}
+        }
+
+        console.log(list)
+
+        return list
+    }
+
     private saveState(id: number, value: string) {
-        const pins: [Pin] = this.state.pins!
-        const pin: Pin = pins!.splice(pins!.findIndex((e: Pin) => e.id === id), 1)[0]
+        const pins: [Mode] = this.state.pins!
+        const pin: Pin = pins!.splice(pins!.findIndex((e: Mode) => e.pin.id === id), 1)[0].pin
 
-        pin!.state = +value
-        pins!.push(pin)
-
+        pins!.push({mode: +value, pin})
         this.setState({pins, modified: true})
     }
 
     private onError(e: string) {
+        console.error(e)
         toastr.error("Change could not be made permanently. " + e)
     }
 
@@ -70,6 +89,11 @@ interface PinViewProps {
     schema?: number
     saveNow: boolean
     onSave: (schema: number, pins: [any]) => void
+}
+
+export interface Mode {
+    mode: number
+    pin: Pin
 }
 
 interface Pin {

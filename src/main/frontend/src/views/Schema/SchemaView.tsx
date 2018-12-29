@@ -7,12 +7,14 @@ import * as toastr from 'toastr'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import './SchemaView.css'
 import OverlayModal from '../../components/overlay/modal/OverlayModal'
-import PinViewModal from '../Pins/PinViewModal'
+import PinViewModal, {Mode} from '../Pins/PinViewModal'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
+    private backend: BackendCalls
 
     constructor(props: PinViewProps) {
         super(props)
+        this.backend = new BackendCalls()
 
         this.state = {schema: [undefined], hoverindex: -1, saveNow: false, schemaname: ""}
 
@@ -44,8 +46,8 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                         <tr key={e.id} className={"schemaview"}>
                             <td>{e.id}</td>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                            <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
-                                              onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
+                            <td><LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
+                                             onChange={(g: string) => this.saveDefaultState(e.id, g)}/></td>
                             <td className={"text-right"}>
 
                                 <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} submitText={"Yes"} title={"Delete the following element?"}
@@ -66,17 +68,17 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private getSchemas() {
-        new BackendCalls().getSchemas((e: any) => this.setState({schema: e}), this.onError)
+        this.backend.getSchemas((e: any) => this.setState({schema: e}), this.onError)
     }
 
-    private saveNewSchema(schema: number, pins: [any]) {
+    private saveNewSchema(schema: number, pins: [Mode]) {
         if (this.state.schemaname.trim().length === 0) {
             toastr.error("The schema name needs to be set.")
             return
         }
 
         this.setState({saveNow: false})
-        new BackendCalls().createSchema(this.state.schemaname, pins, () => {
+        this.backend.createSchema(this.state.schemaname, pins, () => {
             toastr.success("The changes have successfully been saved.")
             this.getSchemas()
         }, this.onError)
@@ -102,7 +104,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
     private saveEditedPins(schema: number, pins: [any]) {
         console.log("new schemas", pins)
-        toastr.warning("Graphqlzeug implementieren und das vollgende schema verändern " + this.props.schema)
+        toastr.warning("Graphqlzeug implementieren und das vollgende schema verändern " + schema)
     }
 
     private onError(e: string) {

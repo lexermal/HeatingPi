@@ -12,7 +12,7 @@ class LabelSwitch extends React.Component<EditableLabelProps, EditableLabelStats
     }
 
     public render() {
-        return <div title={this.props.tooltip} onClick={this.onClick} className={styles.switch} onMouseOut={this.onSave}>{this.props.switchlist[this.state.index][0]}</div>
+        return <div title={this.props.tooltip || ""} onClick={this.onClick} className={styles.switch} onMouseOut={this.onSave}>{this.props.switchlist[this.state.index][0]}</div>
     }
 
     private onClick(e: any) {

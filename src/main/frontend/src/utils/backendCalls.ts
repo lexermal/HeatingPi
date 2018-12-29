@@ -1,15 +1,34 @@
+import {Mode} from "../views/Pins/PinViewModal";
+
 class BackendCalls {
 
     public getPins(then: (response: any) => void, error: (e: string) => void, schema?: number) {
         this.callGraphql(`
 query{
-	pins` + (schema === undefined ? "" : "(id:" + schema + ")") + `{
+	pins` + (schema === undefined ? "" : "(schema:" + schema + ")") + `{
 		id
 		name
+		default:defaultActive
 	}
 }
-`, (e: any) => then(e.pins.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error);
-        // 		default:default_activated
+`, (e: any) => then(e.pins.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error)
+    }
+
+    public getPinModes(then: (response: any) => void, error: (e: string) => void, schema: number) {
+        this.callGraphql(`
+query{
+  schema(id:` + schema + `){
+    id
+    pinmodes:pins{
+      mode
+      pin{
+        id
+        name
+      }
+    }
+  }
+}
+`, (e: any) => then(e.schema[0].pinmodes.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error)
     }
 
     public editPins(id: number, name: string, then: (response: any) => void, error: (e: string) => void) {
@@ -39,15 +58,15 @@ schema{
 	active
 }
 }
-`, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error);
+`, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error)
     }
 
-    public createSchema(name: string, pins: [any], then: () => void, error: (e: string) => void) {
+    public createSchema(name: string, pins: [Mode], then: () => void, error: (e: string) => void) {
         this.callGraphql(`
 mutation{
   schema:createSchema(
     name:"` + name + `"
-    mode:[` + (pins.map(e => "{pinid:" + e.id + ",mode:" + (e.state || 2) + "}, ")) + `]
+    mode:[` + (pins.map(e => "{pinid:" + e.pin.id + ",mode:" + e.mode + "}, ")) + `]
   ){
     name
   }
@@ -55,12 +74,9 @@ mutation{
 `, then, error)
     }
 
-
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
         fetch('http://localhost:9000/graphql', {
-            method: 'post',
-            body: JSON.stringify({"query": body}),
-            headers: new Headers({'Content-Type': 'application/json'})
+            method: 'post', body: JSON.stringify({"query": body}), headers: new Headers({'Content-Type': 'application/json'})
         }).then((r) => r.json()).then((response) => {
             if (response.errors !== undefined) {
                 error(response.errors[0].message)
