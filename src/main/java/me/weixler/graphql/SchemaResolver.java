@@ -6,9 +6,7 @@ import me.weixler.beans.db2.DBSchema;
 import me.weixler.beans.repos.PinRepository;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
-import sun.security.pkcs11.Secmod;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

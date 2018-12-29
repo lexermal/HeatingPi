@@ -108,6 +108,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     private void removePinFromSchema(DBSchema s, DBPin p) {
+        System.out.println("remove pin "+p.getId() +"from schema "+s.getId());
         DBPinMode mode = pinstatedb.getState(s.getId(), p.getId());
         s.removeDBSchemaState(mode);
         p.removeDBPinState(mode);

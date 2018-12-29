@@ -32,6 +32,7 @@ class Query implements GraphQLQueryResolver {
         Authentication.checkAccess("pin.get");
 
         if (id != null && id > 0) {
+            System.out.println(id);
             return Collections.singletonList(pindb.findById(id).get());
         }
 

@@ -44,7 +44,7 @@ public class Application extends SpringBootServletInitializer {
         l.info("Initializing pins");
         initController.loadAll();
         initController.createMissingPins();
-        l.info("The server ready to use");
+        l.info("The server is ready to use");
     }
 
 }

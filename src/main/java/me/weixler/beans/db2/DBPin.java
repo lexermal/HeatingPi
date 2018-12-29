@@ -1,5 +1,7 @@
 package me.weixler.beans.db2;
 
+import me.weixler.Utils;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,10 @@ public class DBPin {
     @GeneratedValue
     private Long id;
     private String name;
+    @Transient
+    private long simulatedMode = 0;
+    @Transient
+    private boolean simulatedDefaultState = false;
 
     @OneToMany(mappedBy = "dbPin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DBPinMode> dbPinModes = new ArrayList<>();
@@ -63,21 +69,41 @@ public class DBPin {
     }
 
     private boolean Controller_isActivatedByDefault() {
-        //@Todo implementation
-        return false;
+        if (Utils.simulation) {
+            return simulatedDefaultState;
+        } else {
+            //@Todo implementation
+            return false;
+        }
+
     }
 
 
     private boolean Controller_isActivated() {
-        //@Todo implementation
-        return false;
+        if (Utils.simulation) {
+            return simulatedMode == 1;
+        } else {
+            //@Todo implementation
+            return false;
+        }
+
     }
 
     public void Controller_setMode(long mode) {
-        //@Todo implementation
+        if (mode != 2) {
+            if (Utils.simulation) {
+                simulatedMode = mode;
+            } else {
+                //@Todo implementation
+            }
+        }
     }
 
     public void Controller_setDefaultState(boolean state) {
-        //@todo implementation
+        if (Utils.simulation) {
+            simulatedDefaultState = state;
+        } else {
+            //@Todo implementation
+        }
     }
 }
