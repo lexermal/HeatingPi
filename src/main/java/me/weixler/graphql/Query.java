@@ -42,8 +42,12 @@ class Query implements GraphQLQueryResolver {
         return new ArrayList<>(pindb.findAll());
     }
 
-    List<DBSchema> getSchema(long id) {
+    List<DBSchema> getSchema(long id, boolean active) {
         Authentication.checkAccess("schema.get");
+
+        if (active) {
+            return schemadb.getAllActive();
+        }
 
         if (id > 0) {
             List<DBSchema> s = new ArrayList<>();

@@ -11,6 +11,6 @@ import java.util.List;
 public interface SchemaRepository extends JpaRepository<DBSchema, Long> {
     @Query("Select u " +
             "from Schema u " +
-            "where u.active=true")
+            "where u.active=TRUE")
     List<DBSchema> getAllActive();
 }

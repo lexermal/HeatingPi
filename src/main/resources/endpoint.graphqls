@@ -3,7 +3,7 @@ type Query {
     """Check if the api is accessible"""
     ping: String
     pins(id: Int, schema:Int): [Pin]
-    schema(id: Int): [Schema]
+    schema(id: Int, active: Boolean): [Schema]
 }
 type Mutation {
     # Pins
