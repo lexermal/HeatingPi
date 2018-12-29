@@ -47,7 +47,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             <td>{e.id}</td>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
                             <td><LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
-                                             onChange={(g: string) => this.saveDefaultState(e.id, g)}/></td>
+                                             onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 
                                 <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} submitText={"Yes"} title={"Delete the following element?"}
@@ -86,19 +86,19 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
 
     private saveName(id: number, value: string) {
         console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The changes have successfully been saved.")
+        toastr.success("The changes have been successfully saved.")
         // @todo graphql implementieren
     }
 
-    private saveDefaultState(id: number, value: string) {
+    private setSchemaActive(id: number, value: string) {
         console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The changes have successfully been saved.")
+        toastr.success("The schema has been successfully activated.")
         // @todo graphql implementieren
     }
 
     private deleteSchema(id: number) {
         console.log("DELETE Schema : " + id)
-        toastr.success("The schema was successfully delete.")
+        toastr.success("The schema was successfully deleted.")
         // @todo graphql implementieren
     }
 
