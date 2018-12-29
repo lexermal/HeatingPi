@@ -39,8 +39,8 @@ public class Application extends SpringBootServletInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initPins() {
-        Logger l = LoggerFactory.getLogger(this.getClass().getName());
-        
+        Logger l = LoggerFactory.getLogger(Application.class);
+
         l.info("Initializing pins");
         initController.loadAll();
         initController.createMissingPins();

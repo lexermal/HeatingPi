@@ -10,10 +10,10 @@ import java.util.List;
 
 @Repository
 public interface PinRepository extends JpaRepository<DBPin, Long> {
-//    @Query("Select p " +
-//            "from Schema u " +
-//            "inner join pin_state s on u.id=s.schema_id " +
-//            "inner join Pin p on s.pin_id=p.id " +
-//            "where u.id=:schemaid")
-//    List<DBPin> getAllBy(@Param("schemaid") long schemaid);
+    @Query("Select p " +
+            "from Schema u " +
+            "inner join pinState s on u.id=s.dbSchema " +
+            "inner join Pin p on s.dbPin=p.id " +
+            "where u.id=:schemaid")
+    List<DBPin> getAllBy(@Param("schemaid") long schemaid);
 }

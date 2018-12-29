@@ -88,7 +88,12 @@ public class Mutation implements GraphQLMutationResolver {
     public DBSchema activateSchema(long id) {
         Authentication.checkAccess("schema.activate");
 
+        schemadb.getAllActive().forEach(e -> {
+            e.setActive(false);
+            schemadb.save(e);
+        });
         DBSchema s = schemadb.findById(id).get();
+        s.setActive(true);
 
         s.getDbPinModes().stream().filter(e -> e.getMode() != 2).
                 forEach(e -> e.getDbPin().Controller_setMode(e.getMode()));
@@ -108,7 +113,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     private void removePinFromSchema(DBSchema s, DBPin p) {
-        System.out.println("remove pin "+p.getId() +"from schema "+s.getId());
+        System.out.println("remove pin " + p.getId() + "from schema " + s.getId());
         DBPinMode mode = pinstatedb.getState(s.getId(), p.getId());
         s.removeDBSchemaState(mode);
         p.removeDBPinState(mode);

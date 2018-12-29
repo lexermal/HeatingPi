@@ -28,11 +28,14 @@ class Query implements GraphQLQueryResolver {
         return "pong";
     }
 
-    List<DBPin> getPins(Long id) {
+    List<DBPin> getPins(Long id, Long schemaid) {
         Authentication.checkAccess("pin.get");
 
+        if (schemaid != null && schemaid > 0) {
+            return pindb.getAllBy(schemaid);
+        }
+
         if (id != null && id > 0) {
-            System.out.println(id);
             return Collections.singletonList(pindb.findById(id).get());
         }
 
