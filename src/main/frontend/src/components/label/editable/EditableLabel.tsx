@@ -11,6 +11,9 @@ class EditableLabel extends React.Component<EditableLabelProps, EditableLabelSta
     }
 
     public render() {
+        if (this.props.disabled) {
+            return <div className={styles.input}>{this.state.value} </div>
+        }
         return <input className={styles.input} value={this.state.value} onChange={(e: any) => this.setState({value: e.target.value})
         } onKeyPress={this.onChange} onBlur={e => {
             if (this.state.defaultvalue !== e.target.value) {
@@ -30,6 +33,7 @@ class EditableLabel extends React.Component<EditableLabelProps, EditableLabelSta
 
 interface EditableLabelProps {
     value?: string
+    disabled?: boolean
     onSumbit: (value: string) => void
 }
 

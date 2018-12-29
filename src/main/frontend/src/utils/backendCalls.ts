@@ -1,4 +1,4 @@
-import {Mode} from "../views/Pins/PinViewModal";
+import {Mode} from "../views/Pins/PinViewModal"
 
 class BackendCalls {
 
@@ -49,13 +49,20 @@ query{
 }`, then, error)
     }
 
-    public getSchemas(then: (response: any) => void, error: (e: string) => void) {
+    public getSchemas(then: (response: any) => void, error: (e: string) => void, active?: boolean) {
         this.callGraphql(`
 query{
-schema{
+schema` + (active ? "(active:true)" : "") + `{
 	name
 	id
 	active
+	` + (active ? `pins{
+      mode
+      pin{
+        id
+        name
+      }
+    }` : '') + `
 }
 }
 `, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error)
