@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Contains all Querys
@@ -29,10 +28,10 @@ class Query implements GraphQLQueryResolver {
         return "pong";
     }
 
-    List<DBPin> getPins(Long id, Long schemaid) {
+    List<DBPin> getPins(long id, long schemaid) {
         Authentication.checkAccess("pin.get");
 
-        if (schemaid != null && schemaid > 0) {
+        if (schemaid > 0) {
             return pindb.getAllBy(schemaid);
         }
 

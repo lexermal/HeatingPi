@@ -69,15 +69,25 @@ public class Mutation implements GraphQLMutationResolver {
     public DBSchema editSchema(long id, String name, List<InputState> inputs) {
         Authentication.checkAccess("schema.edit");
 
-        this.deleteSchema(id);
-        return this.createSchema(name, inputs);
+        Optional<DBSchema> result = schemadb.findById(id);
+
+        if (result.isPresent()) {
+            DBSchema dbSchema = result.get();
+            dbSchema.setName(name);
+
+            dbSchema.getDbPinModes().forEach(m -> inputs.stream().filter(i -> m.getPin().getId() == i.getPinid()).forEach(i -> m.setMode(i.getMode())));
+            schemadb.save(dbSchema);
+
+            return dbSchema;
+        }
+        return null;
     }
 
     public DBSchema deleteSchema(long id) {
         Authentication.checkAccess("schema.delete");
 
-        //remove all pinstates
         schemadb.findById(id).ifPresent(s -> {
+            //remove all pinstates
             s.getDbPinModes().forEach(e -> removePinFromSchema(s, e.getDbPin()));
             schemadb.delete(s);
         });
