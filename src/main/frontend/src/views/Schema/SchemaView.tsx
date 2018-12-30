@@ -4,23 +4,25 @@ import * as toastr from 'toastr'
 import Row from 'reactstrap/lib/Row'
 import {Container, Table} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
+import styles from "../Dashboard/Dashboard.module.css"
 import PinViewModal, {Mode} from '../Pins/PinViewModal'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import OverlayModal from '../../components/overlay/modal/OverlayModal'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 
-class SchemaView extends React.Component<PinViewProps, PinViewStats> {
+class SchemaView extends React.Component<{}, PinViewStats> {
     private backend: BackendCalls
 
-    constructor(props: PinViewProps) {
+    constructor(props: {}) {
         super(props)
         this.backend = new BackendCalls()
 
-        this.state = {schema: [undefined], hoverindex: -1, saveNow: false, schemaname: ""}
+        this.state = {schema: undefined, hoverindex: -1, saveNow: false, schemaname: ""}
 
         this.getSchemas()
         this.saveName = this.saveName.bind(this)
         this.saveNewSchema = this.saveNewSchema.bind(this)
+        this.saveEditedPins = this.saveEditedPins.bind(this)
     }
 
     public render() {
@@ -32,7 +34,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                     <input placeholder={"Name"} className={"form-control"} onChange={(e: any) => this.setState({schemaname: e.target.value})}/>
                     <PinViewModal saveNow={this.state.saveNow} onSave={this.saveNewSchema}/>
                 </OverlayModal></div>
-            <Row>
+            <Row>{(this.state.schema === undefined || this.state.schema.length < 1) ? <div className={styles.notFound}>No schemas found</div> : <div className={"w-100"}>
                 <Table>
                     <tbody>
                     <tr>
@@ -43,7 +45,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                         <th/>
                     </tr>
 
-                    {this.state.schema!.filter((e: any) => e !== undefined && e !== null).map((e: Schema) =>
+                    {this.state.schema.map((e: Schema) =>
                         <tr key={e.id} className={"schemaview"}>
                             <td>{e.id}</td>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
@@ -62,7 +64,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             </td>
                         </tr>)}
                     </tbody>
-                </Table>
+                </Table></div>}
             </Row>
         </Container>
     }
@@ -85,9 +87,10 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private saveName(id: number, value: string) {
-        console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The changes have been successfully saved.")
-        // @todo graphql implementieren
+        this.backend.editSchemaName(id, value, () => {
+            toastr.success("The schema was successfully updated")
+            this.getSchemas()
+        }, this.onError)
     }
 
     private setSchemaActive(id: number, value: string) {
@@ -97,24 +100,23 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private deleteSchema(id: number) {
-        console.log("DELETE Schema : " + id)
-        toastr.success("The schema was successfully deleted.")
-        // @todo graphql implementieren
+        this.backend.deleteSchema(id, () => {
+            toastr.success("The schema was successfully deleted.")
+            this.getSchemas()
+        }, this.onError)
     }
 
-    private saveEditedPins(schema: number, pins: [any]) {
-        console.log("new schemas", pins)
-        toastr.warning("Graphqlzeug implementieren und das vollgende schema verändern " + schema)
+    private saveEditedPins(schema: number, pins: [Mode]) {
+        this.backend.editSchema(schema, this.state.schema![0].name, pins, () => {
+            toastr.success("The schema was successfully updated")
+            this.getSchemas()
+        }, this.onError)
     }
 
     private onError(e: string) {
         toastr.error("Change could not be made permanently. " + e)
     }
 
-}
-
-interface PinViewProps {
-    schema?: [any]
 }
 
 interface Schema {
@@ -125,7 +127,7 @@ interface Schema {
 }
 
 interface PinViewStats {
-    schema?: [any]
+    schema: [Schema] | undefined
     saveNow: boolean
     schemaname: string
     hoverindex: number

@@ -81,6 +81,44 @@ mutation{
 `, then, error)
     }
 
+    public editSchema(id: number, name: string, pins: [Mode], then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+  schema:editSchema(
+    id:` + id + `
+    name:"` + name + `"
+    mode:[` + (pins.map(e => "{pinid:" + e.pin.id + ",mode:" + e.mode + "}, ")) + `]
+  ){
+    name
+  }
+}
+`, then, error)
+    }
+
+    public editSchemaName(id: number, name: string, then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+  schema:editSchemaName(
+    id:` + id + `
+    name:"` + name + `"
+  ){
+    name
+  }
+}
+`, then, error)
+    }
+
+    public deleteSchema(id: number, then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+  deleteSchema(id:` + id + `){
+    name
+    id
+  }
+}
+`, then, error)
+    }
+
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
         fetch('http://localhost:9000/graphql', {
             method: 'post', body: JSON.stringify({"query": body}), headers: new Headers({'Content-Type': 'application/json'})

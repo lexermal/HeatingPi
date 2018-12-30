@@ -63,8 +63,6 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
             list[x] = {mode: 2, pin: pins[x]}
         }
 
-        console.log(list)
-
         return list
     }
 

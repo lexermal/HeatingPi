@@ -3,11 +3,7 @@ Mittels build-project.sh
 
 ##Frontend todo
 * Schemas
-  * name edit graphql
   * aktiv setzen eines schemas und deaktivieren der anderen
-  * delete graphql
-  * edit save graphql
-  * anzeigen wenn keine schemen existieren(siehe landingpage)
   * designen der buttons auf der mobilen seite
   
 * Pins
@@ -16,7 +12,6 @@ Mittels build-project.sh
   
 ##Backend todo
 * Authentifizierung 
-* Schema löschen testen
 * Application check ob die eine methode noch wichtig ist
 * test simulationmode
 * testen des default states
@@ -33,7 +28,7 @@ Mittels build-project.sh
 
 
 ###Frontend
-  * Dashboard:Temperaturkurve, Diagramm: wie lange es offline war, select mit schema auswählen und aktiv setzen
+* Dashboard:Temperaturkurve, Diagramm: wie lange es offline war, select mit schema auswählen und aktiv setzen
 
 
 ##Simulationsmodus
@@ -46,3 +41,5 @@ https://picodotdev.github.io/blog-bitix/2017/11/devolver-mensajes-de-error-descr
 
 ##Setup
 https://askubuntu.com/questions/99232/how-to-make-a-jar-file-run-on-startup-and-when-you-log-out
+
+Und mittels build-env.sh script
