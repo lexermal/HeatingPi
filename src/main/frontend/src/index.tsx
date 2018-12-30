@@ -1,12 +1,9 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './utils/registerServiceWorker';
-import './assets/bootstrap.min.css'
 import './assets/toastr.min.css'
-import GenericView from './views/GenericView'
+import './assets/bootstrap.min.css'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import GenericView from './views/GenericView/GenericView'
+import registerServiceWorker from './utils/registerServiceWorker'
 
-ReactDOM.render(
-    <GenericView/>,
-    document.getElementById('root') as HTMLElement
-);
-registerServiceWorker();
+ReactDOM.render(<GenericView/>, document.getElementById('root') as HTMLElement)
+registerServiceWorker()

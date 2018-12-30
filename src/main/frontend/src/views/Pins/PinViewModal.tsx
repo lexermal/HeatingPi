@@ -1,9 +1,8 @@
 import * as React from 'react'
-import {Container, Table} from 'reactstrap'
-import Row from 'reactstrap/lib/Row'
+import * as toastr from "toastr"
+import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
-import * as toastr from "toastr"
 
 class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
 

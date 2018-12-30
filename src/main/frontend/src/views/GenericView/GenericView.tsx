@@ -1,8 +1,9 @@
+import './MainStyle.css'
 import * as React from 'react'
-import {Collapse, Navbar, NavbarToggler, NavItem} from 'reactstrap'
-import Nav from 'reactstrap/lib/Nav'
 import {Link} from 'react-router-dom'
-import Routing from '../routing'
+import Routing from '../../routing'
+import Nav from 'reactstrap/lib/Nav'
+import {Collapse, Navbar, NavbarToggler, NavItem} from 'reactstrap'
 
 class GenericView extends React.Component<{}, GenericViewStats> {
     public constructor(props: any) {

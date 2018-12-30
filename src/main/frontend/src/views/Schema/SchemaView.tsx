@@ -1,13 +1,13 @@
-import * as React from 'react'
-import {Container, Table} from 'reactstrap'
-import Row from 'reactstrap/lib/Row'
-import BackendCalls from '../../utils/backendCalls'
-import EditableLabel from '../../components/label/editable/EditableLabel'
-import * as toastr from 'toastr'
-import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import './SchemaView.css'
-import OverlayModal from '../../components/overlay/modal/OverlayModal'
+import * as React from 'react'
+import * as toastr from 'toastr'
+import Row from 'reactstrap/lib/Row'
+import {Container, Table} from 'reactstrap'
+import BackendCalls from '../../utils/backendCalls'
 import PinViewModal, {Mode} from '../Pins/PinViewModal'
+import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import OverlayModal from '../../components/overlay/modal/OverlayModal'
+import EditableLabel from '../../components/label/editable/EditableLabel'
 
 class SchemaView extends React.Component<PinViewProps, PinViewStats> {
     private backend: BackendCalls
@@ -28,6 +28,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
             <h1 className={"h1"}>Schemas</h1>
             <div className={"text-right"}>
                 <OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={() => this.setState({saveNow: true})}>
+
                     <input placeholder={"Name"} className={"form-control"} onChange={(e: any) => this.setState({schemaname: e.target.value})}/>
                     <PinViewModal saveNow={this.state.saveNow} onSave={this.saveNewSchema}/>
                 </OverlayModal></div>
@@ -51,8 +52,7 @@ class SchemaView extends React.Component<PinViewProps, PinViewStats> {
                             <td className={"text-right"}>
 
                                 <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} submitText={"Yes"} title={"Delete the following element?"}
-                                              buttonLabel={"Delete"}
-                                              onSubmit={() => this.deleteSchema(e.id)}>
+                                              buttonLabel={"Delete"} onSubmit={() => this.deleteSchema(e.id)}>
                                     <h3>{e.name}</h3>
                                 </OverlayModal>
                                 <OverlayModal className={"btn btn-warning hoverbutton float-right radius-left"} title={e.name} buttonLabel={"Edit"}

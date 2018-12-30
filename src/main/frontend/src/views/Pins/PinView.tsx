@@ -1,10 +1,9 @@
 import * as React from 'react'
-import {Container, Table} from 'reactstrap'
-import Row from 'reactstrap/lib/Row'
-import EditableLabel from '../../components/label/editable/EditableLabel'
 import * as toastr from 'toastr'
-import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
+import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import EditableLabel from '../../components/label/editable/EditableLabel'
 
 class PinView extends React.Component<PinViewProps, PinViewStats> {
 
