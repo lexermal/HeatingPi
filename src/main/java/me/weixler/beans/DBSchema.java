@@ -1,4 +1,4 @@
-package me.weixler.beans.db2;
+package me.weixler.beans;
 
 import javax.persistence.*;
 import java.util.ArrayList;

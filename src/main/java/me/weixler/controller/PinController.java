@@ -1,52 +1,38 @@
 package me.weixler.controller;
 
 import com.pi4j.io.gpio.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
-//todo klasse überarbeiten
 public class PinController {
-
-    private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();
     private long activePin;
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-    final GpioController gpio = GpioFactory.getInstance();
+    private final GpioController gpio = GpioFactory.getInstance();
+    private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();
 
-
-    private static PinController ourInstance = new PinController();
+    private static PinController i = new PinController();
 
     public static PinController getInstance(long pin) {
-        ourInstance.activePin = pin;
-        ourInstance.createPin(pin);
-        return ourInstance;
+        i.activePin = pin;
+
+        i.leds.put(i.activePin, i.gpio.provisionDigitalOutputPin(i.getPin(pin)));
+
+        return i;
     }
 
-    private void createPin(long pinnumber) {
-
-        Pin pin = getPin(pinnumber);
-
-        leds.put(activePin, gpio.provisionDigitalOutputPin(pin));
-
-        log.info("the Led GPIO " + pinnumber + " is selected");
-
-    }
-
-    public void setState(boolean state) {
+    public void setMode(boolean state) {
         leds.get(activePin).setState(state);
     }
 
-    public boolean getState() {
+    public boolean getMode() {
         return leds.get(activePin).getState().isHigh();
     }
 
-    public boolean getDefaultState() {
+    public boolean getDefaultMode() {
         return leds.get(activePin).getShutdownOptions().getState().isHigh();
     }
 
-    public void setDefaultState(boolean state) {
-        if (state) {
+    public void setDefaultMode(boolean mode) {
+        if (mode) {
             leds.get(activePin).setShutdownOptions(true, PinState.HIGH, PinPullResistance.PULL_UP);
         } else {
             leds.get(activePin).setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);

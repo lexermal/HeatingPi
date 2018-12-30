@@ -1,6 +1,6 @@
 package me.weixler.beans.repos;
 
-import me.weixler.beans.db2.DBSchema;
+import me.weixler.beans.DBSchema;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

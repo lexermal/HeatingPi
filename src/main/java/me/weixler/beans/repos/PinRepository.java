@@ -1,6 +1,6 @@
 package me.weixler.beans.repos;
 
-import me.weixler.beans.db2.DBPin;
+import me.weixler.beans.DBPin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

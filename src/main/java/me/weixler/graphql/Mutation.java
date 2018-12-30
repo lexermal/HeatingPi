@@ -2,9 +2,9 @@ package me.weixler.graphql;
 
 import me.weixler.beans.*;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import me.weixler.beans.db2.DBPin;
-import me.weixler.beans.db2.DBPinMode;
-import me.weixler.beans.db2.DBSchema;
+import me.weixler.beans.DBPin;
+import me.weixler.beans.DBPinMode;
+import me.weixler.beans.DBSchema;
 import me.weixler.beans.repos.PinRepository;
 import me.weixler.beans.repos.PinStateRepository;
 import me.weixler.beans.repos.SchemaRepository;

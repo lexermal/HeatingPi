@@ -1,7 +1,7 @@
 package me.weixler.graphql;
 
-import me.weixler.beans.db2.DBPinMode;
-import me.weixler.beans.db2.DBSchema;
+import me.weixler.beans.DBPinMode;
+import me.weixler.beans.DBSchema;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
 

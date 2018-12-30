@@ -1,6 +1,6 @@
 package me.weixler.controller;
 
-import me.weixler.beans.db2.DBPin;
+import me.weixler.beans.DBPin;
 import me.weixler.beans.repos.PinRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,9 @@ public class InitController {
 
     public void loadAll() {
         pins = pindb.findAll();
-        log.info("Loaded all pins");
+        if (pins.size() > 0) {
+            log.info("Loaded all pins");
+        }
     }
 
     public void createMissingPins() {

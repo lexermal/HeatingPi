@@ -1,6 +1,7 @@
-package me.weixler.beans.db2;
+package me.weixler.beans;
 
 import me.weixler.Utils;
+import me.weixler.controller.PinController;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class DBPin {
     private long simulatedMode = 0;
     @Transient
     private boolean simulatedDefaultState = false;
+    @Transient
+    private PinController pinController;
 
     @OneToMany(mappedBy = "dbPin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DBPinMode> dbPinModes = new ArrayList<>();
@@ -41,6 +44,7 @@ public class DBPin {
     }
 
     public void setId(Long id) {
+        pinController = PinController.getInstance(id);
         this.id = id;
     }
 
@@ -56,8 +60,7 @@ public class DBPin {
         if (Utils.simulation) {
             return simulatedDefaultState;
         } else {
-            //@Todo implementation
-            return false;
+            return pinController.getDefaultMode();
         }
     }
 
@@ -65,7 +68,7 @@ public class DBPin {
         if (Utils.simulation) {
             simulatedDefaultState = defaultmode;
         } else {
-            //@Todo implementation
+            pinController.setDefaultMode(defaultmode);
         }
     }
 
@@ -73,8 +76,7 @@ public class DBPin {
         if (Utils.simulation) {
             return simulatedMode == 1;
         } else {
-            //@Todo implementation
-            return false;
+            return pinController.getMode();
         }
     }
 
@@ -82,8 +84,7 @@ public class DBPin {
         if (Utils.simulation) {
             return simulatedDefaultState;
         } else {
-            //@Todo implementation
-            return false;
+            return pinController.getDefaultMode();
         }
     }
 
@@ -92,7 +93,7 @@ public class DBPin {
             if (Utils.simulation) {
                 simulatedMode = mode;
             } else {
-                //@Todo implementation
+                pinController.setMode(mode == 1);
             }
         }
     }

@@ -19,7 +19,6 @@ Mittels build-project.sh
 * Schema löschen testen
 * Application check ob die eine methode noch wichtig ist
 * test simulationmode
-* PinController überarbeiten und unnützen code entfernen
 * testen des default states
 * unittests schreiben
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
