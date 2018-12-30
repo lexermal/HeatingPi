@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Contains all Querys
@@ -35,8 +36,8 @@ class Query implements GraphQLQueryResolver {
             return pindb.getAllBy(schemaid);
         }
 
-        if (id != null && id > 0) {
-            return Collections.singletonList(pindb.findById(id).get());
+        if (id > 0) {
+            return Collections.singletonList(pindb.findById(id).orElse(null));
         }
 
         return new ArrayList<>(pindb.findAll());
@@ -49,11 +50,10 @@ class Query implements GraphQLQueryResolver {
             return schemadb.getAllActive();
         }
 
-        if (id > 0) {
-            List<DBSchema> s = new ArrayList<>();
-            s.add(schemadb.findById(id).get());
-            return s;
-        } else return schemadb.findAll();
+        if (id != 0) {
+            return Collections.singletonList(schemadb.findById(id).orElse(null));
+        }
+        return schemadb.findAll();
     }
 
 

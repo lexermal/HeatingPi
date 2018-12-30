@@ -73,4 +73,9 @@ public class DBPinMode {
     public void setDbPin(DBPin dbPin) {
         this.dbPin = dbPin;
     }
+
+    @Override
+    public String toString() {
+        return "DBPinMode{id=" + id + ", mode=" + mode + '}';
+    }
 }

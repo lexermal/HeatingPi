@@ -6,12 +6,13 @@ import me.weixler.beans.DBPin;
 import me.weixler.beans.DBPinMode;
 import me.weixler.beans.DBSchema;
 import me.weixler.beans.repos.PinRepository;
-import me.weixler.beans.repos.PinStateRepository;
+import me.weixler.beans.repos.PinModeRepository;
 import me.weixler.beans.repos.SchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Contains all Mutations
@@ -25,7 +26,7 @@ public class Mutation implements GraphQLMutationResolver {
     SchemaRepository schemadb;
 
     @Autowired
-    PinStateRepository pinstatedb;
+    PinModeRepository pinstatedb;
 
     public DBPin editPin(long id, String name) {
         Authentication.checkAccess("pin.edit");
@@ -76,11 +77,10 @@ public class Mutation implements GraphQLMutationResolver {
         Authentication.checkAccess("schema.delete");
 
         //remove all pinstates
-        DBSchema s = schemadb.findById(id).get();
-        s.getDbPinModes().forEach(e -> removePinFromSchema(s, e.getDbPin()));
-
-        schemadb.save(s);
-        schemadb.deleteById(id);
+        schemadb.findById(id).ifPresent(s -> {
+            s.getDbPinModes().forEach(e -> removePinFromSchema(s, e.getDbPin()));
+            schemadb.delete(s);
+        });
 
         return null;
     }
@@ -92,13 +92,18 @@ public class Mutation implements GraphQLMutationResolver {
             e.setActive(false);
             schemadb.save(e);
         });
-        DBSchema s = schemadb.findById(id).get();
-        s.setActive(true);
 
-        s.getDbPinModes().stream().filter(e -> e.getMode() != 2).
-                forEach(e -> e.getDbPin().setMode(e.getMode()));
+        Optional<DBSchema> result = schemadb.findById(id);
 
-        return s;
+        if (result.isPresent()) {
+            DBSchema s = result.get();
+            s.setActive(true);
+
+            s.getDbPinModes().stream().filter(e -> e.getMode() != 2).forEach(e -> e.getDbPin().setMode(e.getMode()));
+
+            return s;
+        }
+        return null;
     }
 
 
@@ -113,12 +118,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     private void removePinFromSchema(DBSchema s, DBPin p) {
-        System.out.println("remove pin " + p.getId() + "from schema " + s.getId());
-        DBPinMode mode = pinstatedb.getState(s.getId(), p.getId());
-        s.removeDBSchemaState(mode);
-        p.removeDBPinState(mode);
-        pindb.save(p);
-        schemadb.save(s);
+        pinstatedb.delete(pinstatedb.getState(s.getId(), p.getId()));
     }
 
 }

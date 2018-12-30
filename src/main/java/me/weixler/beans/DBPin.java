@@ -44,7 +44,9 @@ public class DBPin {
     }
 
     public void setId(Long id) {
-        pinController = PinController.getInstance(id);
+        if (!Utils.simulation) {
+            pinController = PinController.getInstance(id);
+        }
         this.id = id;
     }
 

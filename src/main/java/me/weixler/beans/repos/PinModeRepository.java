@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface PinStateRepository extends JpaRepository<DBPinMode, Long> {
+public interface PinModeRepository extends JpaRepository<DBPinMode, Long> {
     @Query("Select s " +
             "from Schema u " +
             "inner join pinState s on u.id=s.dbSchema " +
