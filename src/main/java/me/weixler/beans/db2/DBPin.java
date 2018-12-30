@@ -53,43 +53,41 @@ public class DBPin {
     }
 
     public boolean getDefaultmode() {
-        return Controller_isActivatedByDefault();
-    }
-
-    public void setDefaultmode(boolean defaultmode) {
-        this.Controller_setDefaultState(defaultmode);
-    }
-
-    public boolean getActive() {
-        return this.Controller_isActivated();
-    }
-
-    public boolean getDefaultActive() {
-        return this.Controller_isActivatedByDefault();
-    }
-
-    private boolean Controller_isActivatedByDefault() {
         if (Utils.simulation) {
             return simulatedDefaultState;
         } else {
             //@Todo implementation
             return false;
         }
-
     }
 
+    public void setDefaultmode(boolean defaultmode) {
+        if (Utils.simulation) {
+            simulatedDefaultState = defaultmode;
+        } else {
+            //@Todo implementation
+        }
+    }
 
-    private boolean Controller_isActivated() {
+    public boolean getActive() {
         if (Utils.simulation) {
             return simulatedMode == 1;
         } else {
             //@Todo implementation
             return false;
         }
-
     }
 
-    public void Controller_setMode(long mode) {
+    public boolean getDefaultActive() {
+        if (Utils.simulation) {
+            return simulatedDefaultState;
+        } else {
+            //@Todo implementation
+            return false;
+        }
+    }
+
+    public void setMode(long mode) {
         if (mode != 2) {
             if (Utils.simulation) {
                 simulatedMode = mode;
@@ -99,11 +97,4 @@ public class DBPin {
         }
     }
 
-    public void Controller_setDefaultState(boolean state) {
-        if (Utils.simulation) {
-            simulatedDefaultState = state;
-        } else {
-            //@Todo implementation
-        }
-    }
 }

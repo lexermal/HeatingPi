@@ -15,13 +15,13 @@ Mittels build-project.sh
   
 
 ##Backend todo
-* Entfernen von auskommentiertem code
-* System testen
-* Controller ausimplementieren
+* Authentifizierung 
+* Schema löschen testen
+* Application check ob die eine methode noch wichtig ist
+* test simulationmode
 * PinController überarbeiten und unnützen code entfernen
 * testen des default states
 * unittests schreiben
-* Graphql login
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * Spring security dep installieren?
 

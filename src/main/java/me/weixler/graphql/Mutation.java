@@ -96,7 +96,7 @@ public class Mutation implements GraphQLMutationResolver {
         s.setActive(true);
 
         s.getDbPinModes().stream().filter(e -> e.getMode() != 2).
-                forEach(e -> e.getDbPin().Controller_setMode(e.getMode()));
+                forEach(e -> e.getDbPin().setMode(e.getMode()));
 
         return s;
     }
