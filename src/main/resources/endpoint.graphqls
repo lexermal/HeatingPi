@@ -12,6 +12,7 @@ type Mutation {
     # Schema
     createSchema(name:String!, mode:[InputPinMode]!): Schema
     editSchema(id: Int!, name:String!, mode:[InputPinMode]!): Schema
+    editSchemaName(id: Int!, name:String!): Schema
     deleteSchema(id:Int!): Schema
     activateSchema(id:Int!): Schema
     # PinMode

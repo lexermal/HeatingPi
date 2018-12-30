@@ -83,6 +83,21 @@ public class Mutation implements GraphQLMutationResolver {
         return null;
     }
 
+    public DBSchema editSchemaName(long id, String name) {
+        Authentication.checkAccess("schema.edit");
+
+        Optional<DBSchema> result = schemadb.findById(id);
+
+        if (result.isPresent()) {
+            DBSchema dbSchema = result.get();
+            dbSchema.setName(name);
+            schemadb.save(dbSchema);
+
+            return dbSchema;
+        }
+        return null;
+    }
+
     public DBSchema deleteSchema(long id) {
         Authentication.checkAccess("schema.delete");
 
