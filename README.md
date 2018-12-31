@@ -1,19 +1,10 @@
 ##Build
 Mittels build-project.sh
 
-##Frontend todo
-* Schemas
-  * aktiv setzen eines schemas und deaktivieren der anderen
-  * designen der buttons auf der mobilen seite
-  
-* Pins
-  * Defaultvalue wird nicht gespeichert
-  
-  
+##Frontend
+* Login implementieren
+
 ##Backend todo
-* Authentifizierung 
-* Application check ob die eine methode noch wichtig ist
-* test simulationmode
 * testen des default states
 * unittests schreiben
 * Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
@@ -34,7 +25,7 @@ Mittels build-project.sh
 ##Simulationsmodus
 Dieser ermöglicht es diese Software auch ohne RaspberryPi eingeschränkt zu benutzen. 
 Es funktioniert vollgendes in diesem Modus nicht:
-* 
+* Default values bei den Pins
 
 ##Graphql error handling  
 https://picodotdev.github.io/blog-bitix/2017/11/devolver-mensajes-de-error-descriptivos-en-graphql/

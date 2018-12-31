@@ -1,4 +1,4 @@
-package me.weixler.graphql;
+package me.weixler.graphql.resolvers;
 
 import me.weixler.beans.DBPinMode;
 import me.weixler.beans.DBSchema;

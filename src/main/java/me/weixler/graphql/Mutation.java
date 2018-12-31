@@ -1,5 +1,6 @@
 package me.weixler.graphql;
 
+import me.weixler.Utils;
 import me.weixler.beans.*;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import me.weixler.beans.DBPin;
@@ -8,6 +9,7 @@ import me.weixler.beans.DBSchema;
 import me.weixler.beans.repos.PinRepository;
 import me.weixler.beans.repos.PinModeRepository;
 import me.weixler.beans.repos.SchemaRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +30,21 @@ public class Mutation implements GraphQLMutationResolver {
     @Autowired
     PinModeRepository pinstatedb;
 
+    @Autowired
+    Authentication authentication;
+
+
+    public String login(String user, String password) {
+        return authentication.login(user,password);
+    }
+
+    public boolean logout() {
+        return authentication.logout();
+    }
+
+
     public DBPin editPin(long id, String name) {
-        Authentication.checkAccess("pin.edit");
+        authentication.checkAccess("pin.edit");
 
         DBPin p = pindb.getOne(id);
         p.setName(name);
@@ -39,7 +54,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBPin setPinDefaultState(long id, boolean mode) {
-        Authentication.checkAccess("pin.default");
+        authentication.checkAccess("pin.default");
 
         DBPin p = pindb.getOne(id);
         p.setDefaultmode(mode);
@@ -49,7 +64,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBSchema createSchema(String name, List<InputState> inputs) {
-        Authentication.checkAccess("schema.create");
+        authentication.checkAccess("schema.create");
 
         DBSchema s = new DBSchema(name);
 
@@ -67,7 +82,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBSchema editSchema(long id, String name, List<InputState> inputs) {
-        Authentication.checkAccess("schema.edit");
+        authentication.checkAccess("schema.edit");
 
         Optional<DBSchema> result = schemadb.findById(id);
 
@@ -84,7 +99,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBSchema editSchemaName(long id, String name) {
-        Authentication.checkAccess("schema.edit");
+        authentication.checkAccess("schema.edit");
 
         Optional<DBSchema> result = schemadb.findById(id);
 
@@ -99,7 +114,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBSchema deleteSchema(long id) {
-        Authentication.checkAccess("schema.delete");
+        authentication.checkAccess("schema.delete");
 
         schemadb.findById(id).ifPresent(s -> {
             //remove all pinstates
@@ -111,7 +126,7 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     public DBSchema activateSchema(long id) {
-        Authentication.checkAccess("schema.activate");
+        authentication.checkAccess("schema.activate");
 
         schemadb.getAllActive().forEach(e -> {
             e.setActive(false);
@@ -126,6 +141,8 @@ public class Mutation implements GraphQLMutationResolver {
 
             s.getDbPinModes().stream().filter(e -> e.getMode() != 2).forEach(e -> e.getDbPin().setMode(e.getMode()));
 
+            schemadb.save(s);
+
             return s;
         }
         return null;
@@ -133,7 +150,7 @@ public class Mutation implements GraphQLMutationResolver {
 
 
     public DBPinMode setMode(long pinid, long schemaid, long mode) {
-        Authentication.checkAccess("pin.mode");
+        authentication.checkAccess("pin.mode");
 
         DBPinMode dbPinMode = pinstatedb.getState(schemaid, pinid);
         dbPinMode.setMode(mode);

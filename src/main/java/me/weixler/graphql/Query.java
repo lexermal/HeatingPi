@@ -23,13 +23,15 @@ class Query implements GraphQLQueryResolver {
     @Autowired
     SchemaRepository schemadb;
 
+    @Autowired
+    Authentication authentication;
 
     String ping() {
         return "pong";
     }
 
     List<DBPin> getPins(long id, long schemaid) {
-        Authentication.checkAccess("pin.get");
+        authentication.checkAccess("pin.get");
 
         if (schemaid > 0) {
             return pindb.getAllBy(schemaid);
@@ -43,7 +45,7 @@ class Query implements GraphQLQueryResolver {
     }
 
     List<DBSchema> getSchema(long id, boolean active) {
-        Authentication.checkAccess("schema.get");
+        authentication.checkAccess("schema.get");
 
         if (active) {
             return schemadb.getAllActive();

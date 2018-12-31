@@ -1,4 +1,4 @@
-package me.weixler.graphql;
+package me.weixler.graphql.resolvers;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import me.weixler.beans.DBSchema;

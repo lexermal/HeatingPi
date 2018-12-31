@@ -17,6 +17,9 @@ type Mutation {
     activateSchema(id:Int!): Schema
     # PinMode
     setMode(pinid:Int!, schemaid:Int!, mode: Int!): PinMode
+    # Login
+    login(user: String!, password: String!): String
+    logout: Boolean
 }
 
 input InputPinMode {
