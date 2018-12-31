@@ -16,7 +16,7 @@ class GenericView extends React.Component<{}, GenericViewStats> {
     public render() {
         return (
             <Routing>
-                <div>
+                <div id={"navbar"}>
                     <Navbar color="primary" light={true} expand="md">
                         <Link className={"navbar-brand"} to="/">HeizungsPi</Link>
                         <NavbarToggler onClick={this.toggle}/>

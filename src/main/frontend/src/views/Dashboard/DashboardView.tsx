@@ -14,31 +14,31 @@ class DashboardView extends React.Component<{}, PinViewStats> {
     public constructor(props: {}) {
         super(props)
 
-        this.state = {schema: undefined}
+        this.state = {modepins: undefined, name: ""}
 
         this.backend = new BackendCalls()
-        this.backend.getSchemas((e: any) => this.setState({schema: e[0]}), this.onError, true)
+        this.backend.getSchemas((e: [Schema]) => this.setState({name: e.length < 1 ? "" : e[0].name, modepins: e.length < 1 ? undefined : e[0].pins}), this.onError, true)
         this.saveName = this.saveName.bind(this)
     }
 
     public render() {
         return <Container>
-            <h1>Dashboard</h1>
             <Row>
-                {!this.state.schema ? <div className={styles.notFound}>No active schema found</div> : <div>
-                    <div>Active schema</div>
+                {!this.state.modepins ? <div className={styles.notFound}>No active schema found</div> : <div className={"w-100"}>
+                    <div className={styles.schemaHeading}>Active schema {this.state.name}</div>
                     <Table>
                         <tbody>
                         <tr>
                             <th>Pinnumber</th>
                             <th>Name</th>
-                            <th>Defaultvalue</th>
+                            <th>Setting</th>
                         </tr>
 
-                        {this.state.schema.pins.map((e: Mode) => <tr key={e.pin.id}>
+                        {this.state.modepins.sort((e: Mode, x: Mode) => e.pin.id > x.pin.id ? 1 : -1).map((e: Mode) => <tr key={e.pin.id}>
                             <td>{e.pin.id}</td>
                             <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
-                            <td><LabelSwitch disabled={true} switchlist={[["Active", "true"], ["Deactivated", "false"]]} onChange={() => null}/></td>
+                            <td><LabelSwitch defaultindex={e.mode === 0 ? 1 : 0} disabled={true} switchlist={[["Active", "true"], ["Deactivated", "false"]]} onChange={() => null}/>
+                            </td>
                         </tr>)}
                         </tbody>
                     </Table></div>}
@@ -64,7 +64,8 @@ interface Schema {
 }
 
 interface PinViewStats {
-    schema: Schema | undefined
+    modepins: [Mode] | undefined
+    name: string
 }
 
 export default DashboardView

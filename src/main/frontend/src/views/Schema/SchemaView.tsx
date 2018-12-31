@@ -20,6 +20,7 @@ class SchemaView extends React.Component<{}, PinViewStats> {
         this.state = {schema: undefined, hoverindex: -1, saveNow: false, schemaname: ""}
 
         this.getSchemas()
+        this.getSchemas = this.getSchemas.bind(this)
         this.saveName = this.saveName.bind(this)
         this.saveNewSchema = this.saveNewSchema.bind(this)
         this.saveEditedPins = this.saveEditedPins.bind(this)
@@ -40,7 +41,7 @@ class SchemaView extends React.Component<{}, PinViewStats> {
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Active</th>
+                        <th>Setting</th>
                         <th/>
                         <th/>
                     </tr>
@@ -49,7 +50,7 @@ class SchemaView extends React.Component<{}, PinViewStats> {
                         <tr key={e.id} className={"schemaview"}>
                             <td>{e.id}</td>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                            <td><LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
+                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Click to change"} switchlist={[["Active", true], ["Deactivated", false]]}
                                              onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 
@@ -88,15 +89,19 @@ class SchemaView extends React.Component<{}, PinViewStats> {
 
     private saveName(id: number, value: string) {
         this.backend.editSchemaName(id, value, () => {
-            toastr.success("The schema was successfully updated")
+            toastr.success("The schema was successfully updated.")
             this.getSchemas()
         }, this.onError)
     }
 
     private setSchemaActive(id: number, value: string) {
-        console.log("SAVE : " + id + " with value: " + value)
-        toastr.success("The schema has been successfully activated.")
-        // @todo graphql implementieren
+        if (value) {
+            this.backend.activateSchema(id, () => {
+                toastr.success("The schema was successfully activated.")
+                this.getSchemas()
+            }, this.onError)
+        }
+
     }
 
     private deleteSchema(id: number) {
@@ -108,13 +113,13 @@ class SchemaView extends React.Component<{}, PinViewStats> {
 
     private saveEditedPins(schema: number, pins: [Mode]) {
         this.backend.editSchema(schema, this.state.schema![0].name, pins, () => {
-            toastr.success("The schema was successfully updated")
+            toastr.success("The schema was successfully updated.")
             this.getSchemas()
         }, this.onError)
     }
 
     private onError(e: string) {
-        toastr.error("Change could not be made permanently. " + e)
+        toastr.error("Couldn't save changes. " + e)
     }
 
 }
@@ -123,7 +128,6 @@ interface Schema {
     id: number
     name: string
     active: boolean
-
 }
 
 interface PinViewStats {

@@ -33,4 +33,7 @@
         visibility: visible;
     }
 
+    .radius-left, .radius-right {
+        border-radius: .25em !important;
+    }
 }

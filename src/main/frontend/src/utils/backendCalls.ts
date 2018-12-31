@@ -65,7 +65,7 @@ schema` + (active ? "(active:true)" : "") + `{
     }` : '') + `
 }
 }
-`, (e: any) => then(e.schema.sort((f: any, g: any) => f.name > g.name ? 1 : -1)), error)
+`, (e: any) => then(e.schema.sort((f: any, g: any) => f.name.toLowerCase() > g.name.toLowerCase() ? 1 : -1)), error)
     }
 
     public createSchema(name: string, pins: [Mode], then: () => void, error: (e: string) => void) {
@@ -77,6 +77,18 @@ mutation{
   ){
     name
   }
+}
+`, then, error)
+    }
+
+    public activateSchema(id: number, then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+ activateSchema(id:` + id + `){
+  name
+  id
+  active
+}
 }
 `, then, error)
     }
@@ -119,12 +131,49 @@ mutation{
 `, then, error)
     }
 
+    public login(user: string, password: string, then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+mutation{
+ login(user:"` + user + `", password:"` + password + `")
+}
+`, (e: { login: string }) => {
+            document.cookie = "session=" + e.login + "; expires=0; path=/"
+            then()
+        }, error)
+    }
+
+    public isLoggedIn(): boolean {
+        return this.getCookieValue("session") !== null
+    }
+
+    private getCookieValue(a: string): string | null {
+        const b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)')
+        if (b) {
+            const value = b.pop()
+            return value === "null" ? null : value!
+        }
+        return null
+    }
+
+    private deleteCookie(name: string) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    }
+
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
         fetch('http://localhost:9000/graphql', {
-            method: 'post', body: JSON.stringify({"query": body}), headers: new Headers({'Content-Type': 'application/json'})
+            method: 'post',
+            body: JSON.stringify({"query": body}),
+            headers: new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.getCookieValue("session")})
         }).then((r) => r.json()).then((response) => {
+            // console.log(response)
             if (response.errors !== undefined) {
-                error(response.errors[0].message)
+
+                if (response.errors[0].message === "Permission not granted") {
+                    this.deleteCookie("session")
+                    window.history.pushState({}, '', '/login')
+                } else {
+                    error(response.errors[0].message)
+                }
             } else {
                 then(response.data)
             }

@@ -1,7 +1,13 @@
-.notFound{
+.notFound {
     color: gray;
     width: 100%;
     font-size: 25px;
     text-align: center;
     font-family: initial;
+}
+
+.schemaHeading {
+    font-size: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

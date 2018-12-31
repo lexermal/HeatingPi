@@ -22,15 +22,15 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
     public render() {
         return <Container>
             <br/>
-            <h1>Overview of all Pins</h1>
+            <h1>Pins</h1>
             <br/>
             <Row>
                 <Table>
                     <tbody>
                     <tr>
-                        <th>Pinnumber</th>
+                        <th>Id</th>
                         <th>Name</th>
-                        <th>Defaultvalue</th>
+                        <th>Default Setting</th>
                     </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>

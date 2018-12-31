@@ -1,7 +1,14 @@
-.switch{
+.switch {
     width: 100%;
     border: none;
     background: transparent;
     cursor: pointer;
+    user-select: none;
+}
+
+.disabledSwitch {
+    width: 100%;
+    border: none;
+    background: transparent;
     user-select: none;
 }

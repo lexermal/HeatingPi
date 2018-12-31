@@ -40,7 +40,7 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
                     <tr>
                         <th>Pinnumber</th>
                         <th>Name</th>
-                        <th>State</th>
+                        <th>Setting</th>
                     </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).sort((a: Mode, b: Mode) => a.pin.id > b.pin.id ? 1 : -1).map((e: Mode) =>

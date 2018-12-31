@@ -1,13 +1,10 @@
 ##Build
 Mittels build-project.sh
 
-##Frontend
-* Login implementieren
-
-##Backend todo
+##Todo - Backend
+* Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * testen des default states
 * unittests schreiben
-* Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * Spring security dep installieren?
 
 ##Zukunftsmusik
@@ -17,10 +14,9 @@ Mittels build-project.sh
 * Infoseite wo logs angezeigt werden
 * Log wie lange gerät online ist: eingeschaltet und ob internet down ist
 
-
 ###Frontend
 * Dashboard:Temperaturkurve, Diagramm: wie lange es offline war, select mit schema auswählen und aktiv setzen
-
+* Login: Fehlermeldung bei falschem user und password
 
 ##Simulationsmodus
 Dieser ermöglicht es diese Software auch ohne RaspberryPi eingeschränkt zu benutzen. 
