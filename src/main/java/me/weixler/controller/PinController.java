@@ -1,11 +1,15 @@
 package me.weixler.controller;
 
 import com.pi4j.io.gpio.*;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
 public class PinController {
     private long activePin = 1;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final GpioController gpio = GpioFactory.getInstance();
     private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();
 
@@ -14,12 +18,15 @@ public class PinController {
     public static PinController getInstance(long pin) {
         i.activePin = pin;
 
-        i.leds.put(i.activePin, i.gpio.provisionDigitalOutputPin(i.getPin(pin)));
+        if (!i.leds.containsKey(pin)) {
+            i.leds.put(i.activePin, i.gpio.provisionDigitalOutputPin(i.getPin(pin)));
+        }
 
         return i;
     }
 
     public void setMode(boolean state) {
+        logger.info("Set mode of pin " + activePin + " to " + (state ? "on" : "off"));
         leds.get(activePin).setState(state);
     }
 
@@ -27,11 +34,8 @@ public class PinController {
         return leds.get(activePin).getState().isHigh();
     }
 
-    public boolean getDefaultMode() {
-        return leds.get(activePin).getShutdownOptions().getState().isHigh();
-    }
-
-    public void setDefaultMode(boolean mode) {
+    public void setShutdownMode(boolean mode) {
+        logger.info("Set shutdown mode of pin " + activePin + " to " + (mode ? "on" : "off"));
         if (mode) {
             leds.get(activePin).setShutdownOptions(true, PinState.HIGH, PinPullResistance.PULL_UP);
         } else {
@@ -39,6 +43,7 @@ public class PinController {
         }
     }
 
+    @Nullable
     private Pin getPin(long pinnumber) {
         pinnumber = pinConversion(pinnumber);
         Pin[] pins = RaspiPin.allPins();

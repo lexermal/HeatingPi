@@ -1,6 +1,5 @@
 package me.weixler.graphql;
 
-import me.weixler.Utils;
 import me.weixler.beans.*;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import me.weixler.beans.DBPin;
@@ -9,7 +8,6 @@ import me.weixler.beans.DBSchema;
 import me.weixler.beans.repos.PinRepository;
 import me.weixler.beans.repos.PinModeRepository;
 import me.weixler.beans.repos.SchemaRepository;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +55,7 @@ public class Mutation implements GraphQLMutationResolver {
         authentication.checkAccess("pin.default");
 
         DBPin p = pindb.getOne(id);
-        p.setDefaultmode(mode);
+        p.setDefaultMode(mode);
         pindb.save(p);
 
         return p;

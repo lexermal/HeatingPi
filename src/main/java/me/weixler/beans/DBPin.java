@@ -16,10 +16,9 @@ public class DBPin {
     @GeneratedValue
     private Long id;
     private String name;
+    private boolean shutdownMode = false;
     @Transient
     private long simulatedMode = 0;
-    @Transient
-    private boolean simulatedDefaultState = false;
     @Transient
     private PinController pinController;
 
@@ -27,7 +26,9 @@ public class DBPin {
     private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     public DBPin() {
-        pinController = PinController.getInstance(1);
+        if (!Utils.simulation) {
+            pinController = PinController.getInstance(1);
+        }
     }
 
     public void addDBPinState(DBPinMode dbPinMode) {
@@ -59,19 +60,25 @@ public class DBPin {
         this.name = name;
     }
 
-    public boolean getDefaultmode() {
-        if (Utils.simulation) {
-            return simulatedDefaultState;
-        } else {
-            return pinController.getDefaultMode();
+    public boolean isShutdownMode() {
+        return shutdownMode;
+    }
+
+    public void setShutdownMode(boolean shutdownMode) {
+        this.shutdownMode = shutdownMode;
+        if (!Utils.simulation) {
+            pinController.setShutdownMode(shutdownMode);
         }
     }
 
-    public void setDefaultmode(boolean defaultmode) {
-        if (Utils.simulation) {
-            simulatedDefaultState = defaultmode;
-        } else {
-            pinController.setDefaultMode(defaultmode);
+    public boolean getDefaultMode() {
+        return shutdownMode;
+    }
+
+    public void setDefaultMode(boolean defaultmode) {
+        shutdownMode = defaultmode;
+        if (!Utils.simulation) {
+            pinController.setShutdownMode(defaultmode);
         }
     }
 
@@ -84,11 +91,7 @@ public class DBPin {
     }
 
     public boolean getDefaultActive() {
-        if (Utils.simulation) {
-            return simulatedDefaultState;
-        } else {
-            return pinController.getDefaultMode();
-        }
+        return shutdownMode;
     }
 
     public void setMode(long mode) {

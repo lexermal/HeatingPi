@@ -38,7 +38,7 @@ public class Authentication {
     }
 
     public String login(String user, String password) {
-        boolean valid = Utils.users.containsKey(user) && Utils.users.get(user).equals(password);
+        boolean valid = Utils.users.containsKey(user.toLowerCase()) && Utils.users.get(user.toLowerCase()).equals(password);
         logger.info("Someone tried to login from " + request.getRemoteAddr() + ". Login successful:  " + valid);
         return valid ? getSessionToken().toString() : null;
     }
