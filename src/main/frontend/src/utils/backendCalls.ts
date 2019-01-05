@@ -160,8 +160,8 @@ mutation{
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        const url = this.getEnv("BACKEND", document.location.origin + '/graphql')   //production
-        // const url = this.getEnv("BACKEND", "http://localhost:9000/graphql")      //local
+        const url = this.getEnv("BACKEND", document.location.origin + '/graphql')   // production
+        // const url = this.getEnv("BACKEND", "http://localhost:9000/graphql")      // local
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
@@ -183,9 +183,7 @@ mutation{
     }
 
     private getEnv(key: string, defaultvalue: string): string {
-        // @todo read env variables
-        // https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
-        return defaultvalue
+        return process.env[key] ? process.env[key]! : defaultvalue
     }
 
 }
