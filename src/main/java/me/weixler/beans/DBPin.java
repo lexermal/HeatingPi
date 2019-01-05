@@ -27,6 +27,7 @@ public class DBPin {
     private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     public DBPin() {
+        pinController = PinController.getInstance(1);
     }
 
     public void addDBPinState(DBPinMode dbPinMode) {

@@ -16,7 +16,7 @@ public class DomainController {
         return "redirect";
     }
 
-    @GetMapping("/active")
+    @GetMapping("/login")
     public String active() {
         return "redirect";
     }

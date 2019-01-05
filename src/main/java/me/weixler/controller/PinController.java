@@ -5,7 +5,7 @@ import com.pi4j.io.gpio.*;
 import java.util.HashMap;
 
 public class PinController {
-    private long activePin;
+    private long activePin = 1;
     private final GpioController gpio = GpioFactory.getInstance();
     private HashMap<Long, GpioPinDigitalOutput> leds = new HashMap<>();
 
@@ -43,15 +43,15 @@ public class PinController {
         pinnumber = pinConversion(pinnumber);
         Pin[] pins = RaspiPin.allPins();
 
-        for (int i = 0; i < pins.length; i++) {
-            if (pins[i].getAddress() == pinnumber) {
-                return pins[i];
+        for (Pin pin : pins) {
+            if (pin.getAddress() == pinnumber) {
+                return pin;
             }
         }
         return null;
     }
 
-    public int pinConversion(long number) {
+    private int pinConversion(long number) {
         return new int[]{13, 12, 3, 2, 0, 7, 9, 8}[(int) (number - 1)];
     }
 
