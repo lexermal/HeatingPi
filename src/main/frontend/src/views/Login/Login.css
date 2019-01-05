@@ -83,3 +83,15 @@
     font-size: 13px;
     text-decoration: none;
 }
+
+@media (max-width: 780px) {
+    .main-div {
+        max-width: none;
+    }
+}
+
+@media (max-width: 300px) {
+    .main-div {
+        padding: 10px;
+    }
+}
