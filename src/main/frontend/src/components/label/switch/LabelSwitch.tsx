@@ -38,7 +38,7 @@ interface EditableLabelProps {
     disabled?: boolean
     defaultindex?: number
     switchlist: Array<[string, any]>
-    onChange: (value: string) => void
+    onChange: (value: any) => void
 }
 
 

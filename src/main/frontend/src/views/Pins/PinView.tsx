@@ -34,8 +34,8 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
                         <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                        <td>{<LabelSwitch tooltip={"Click to change"} switchlist={[["Active", "true"], ["Deactivated", "false"]]}
-                                          instantSave={true} onChange={(g: string) => this.saveDefaultState(e.id, g)}/>}</td>
+                        <td>{<LabelSwitch defaultindex={e.default ? 0 : 1} tooltip={"Click to change"} switchlist={[["Active", true], ["Deactivated", false]]}
+                                          instantSave={true} onChange={(g: boolean) => this.saveDefaultState(e.id, g)}/>}</td>
                     </tr>)}
                     </tbody>
                 </Table>
@@ -51,8 +51,8 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
         toastr.error("Change could not be made permanently. " + e)
     }
 
-    private saveDefaultState(id: number, value: string) {
-        this.backend.setPinDefaultState(id, value === "true", () => toastr.success("The changes have successfully been saved."), this.onError)
+    private saveDefaultState(id: number, value: boolean) {
+        this.backend.setPinDefaultState(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
     }
 
 }

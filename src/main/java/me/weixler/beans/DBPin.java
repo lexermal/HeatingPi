@@ -2,6 +2,7 @@ package me.weixler.beans;
 
 import me.weixler.Utils;
 import me.weixler.controller.PinController;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class DBPin {
     @GeneratedValue
     private Long id;
     private String name;
-    private boolean shutdownMode = false;
+    private boolean shutdownMode;
     @Transient
     private long simulatedMode = 0;
     @Transient
@@ -26,6 +27,7 @@ public class DBPin {
     private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     public DBPin() {
+        shutdownMode = false;
         if (!Utils.simulation) {
             pinController = PinController.getInstance(1);
         }
@@ -48,6 +50,7 @@ public class DBPin {
     public void setId(Long id) {
         if (!Utils.simulation) {
             pinController = PinController.getInstance(id);
+            LoggerFactory.getLogger(this.getClass()).info("Instantiate pin " + id);
         }
         this.id = id;
     }
