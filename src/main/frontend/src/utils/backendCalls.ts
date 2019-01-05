@@ -163,7 +163,7 @@ mutation{
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        const url = this.getEnv("BACKEND", "http://localhost:9000/graphql")      // local
+        const url = this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql")      // local
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
