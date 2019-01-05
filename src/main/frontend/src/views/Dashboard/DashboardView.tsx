@@ -37,7 +37,8 @@ class DashboardView extends React.Component<{}, PinViewStats> {
                         {this.state.modepins.sort((e: Mode, x: Mode) => e.pin.id > x.pin.id ? 1 : -1).map((e: Mode) => <tr key={e.pin.id}>
                             <td>{e.pin.id}</td>
                             <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
-                            <td><LabelSwitch defaultindex={e.mode === 0 ? 1 : 0} disabled={true} switchlist={[["Active", "true"], ["Deactivated", "false"]]} onChange={() => null}/>
+                            <td><LabelSwitch instantSave={true} defaultindex={e.mode === 0 ? 1 : 0} disabled={true}
+                                             switchlist={[["Active", "true"], ["Deactivated", "false"]]} onChange={() => null}/>
                             </td>
                         </tr>)}
                         </tbody>

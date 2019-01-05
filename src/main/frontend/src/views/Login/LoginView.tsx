@@ -6,13 +6,11 @@ import BackendCalls from "../../utils/backendCalls"
 import * as toastr from "toastr"
 
 class LoginView extends React.Component<{}, LoginState> {
-    private backend: BackendCalls
 
     constructor(props: Readonly<{}>) {
         super(props)
-        this.backend = new BackendCalls()
         this.login = this.login.bind(this)
-        this.state = {isLoggedIn: this.backend.isLoggedIn()}
+        this.state = {isLoggedIn: BackendCalls.isLoggedIn()}
     }
 
     public render() {
@@ -48,7 +46,7 @@ class LoginView extends React.Component<{}, LoginState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<LoginState>, snapshot?: any): void {
-        this.setState({isLoggedIn: this.backend.isLoggedIn()})
+        this.setState({isLoggedIn: BackendCalls.isLoggedIn()})
         this.handleNavbar(this.state.isLoggedIn)
     }
 
@@ -62,7 +60,7 @@ class LoginView extends React.Component<{}, LoginState> {
         e.stopPropagation()
         e.currentTarget.checkValidity()
 
-        this.backend.login((e.currentTarget[0] as HTMLInputElement).value, (e.currentTarget[1] as HTMLInputElement).value,
+        new BackendCalls().login((e.currentTarget[0] as HTMLInputElement).value, (e.currentTarget[1] as HTMLInputElement).value,
             () => this.setState({isLoggedIn: true}), this.onError)
     }
 

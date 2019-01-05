@@ -1,6 +1,26 @@
 import {Mode} from "../views/Pins/PinViewModal"
 
 class BackendCalls {
+    public static setSessionCookie(key: string, value: string): void {
+        document.cookie = key + "=" + value + "; expires=0; path=/"
+    }
+
+    public static isLoggedIn(): boolean {
+        return this.getCookieValue("session") !== null
+    }
+
+    private static getCookieValue(a: string): string | null {
+        const b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)')
+        if (b) {
+            const value = b.pop()
+            return value === "null" ? null : value!
+        }
+        return null
+    }
+
+    private static deleteCookie(name: string) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    }
 
     public getPins(then: (response: any) => void, error: (e: string) => void, schema?: number) {
         this.callGraphql(`
@@ -137,26 +157,9 @@ mutation{
  login(user:"` + user + `", password:"` + password + `")
 }
 `, (e: { login: string }) => {
-            document.cookie = "session=" + e.login + "; expires=0; path=/"
+            BackendCalls.setSessionCookie("session", e.login)
             then()
         }, error)
-    }
-
-    public isLoggedIn(): boolean {
-        return this.getCookieValue("session") !== null
-    }
-
-    private getCookieValue(a: string): string | null {
-        const b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)')
-        if (b) {
-            const value = b.pop()
-            return value === "null" ? null : value!
-        }
-        return null
-    }
-
-    private deleteCookie(name: string) {
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
@@ -165,13 +168,13 @@ mutation{
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
-            headers: new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.getCookieValue("session")})
+            headers: new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + BackendCalls.getCookieValue("session")})
         }).then((r) => r.json()).then((response) => {
             // console.log(response)
             if (response.errors !== undefined) {
 
                 if (response.errors[0].message === "Permission not granted") {
-                    this.deleteCookie("session")
+                    BackendCalls.deleteCookie("session")
                     window.history.pushState({}, '', '/login')
                 } else {
                     error(response.errors[0].message)

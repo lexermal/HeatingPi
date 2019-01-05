@@ -38,17 +38,15 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
                 <Table>
                     <tbody>
                     <tr>
-                        <th>Pinnumber</th>
                         <th>Name</th>
                         <th>Setting</th>
                     </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).sort((a: Mode, b: Mode) => a.pin.id > b.pin.id ? 1 : -1).map((e: Mode) =>
                         <tr key={e.pin.id}>
-                            <td>{e.pin.id}</td>
                             <td>{e.pin.name}</td>
                             <td>{<LabelSwitch defaultindex={e.mode} tooltip={"Click to change"} switchlist={[["deactivated", "0"], ["active", "1"], ["unmodified", "2"]]}
-                                              onChange={(text: string) => this.saveState(e.pin.id, text)}/>}</td>
+                                              instantSave={true} onChange={(text: string) => this.saveState(e.pin.id, text)}/>}</td>
                         </tr>)}
                     </tbody>
                 </Table>

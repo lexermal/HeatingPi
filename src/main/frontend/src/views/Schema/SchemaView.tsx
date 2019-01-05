@@ -39,7 +39,6 @@ class SchemaView extends React.Component<{}, PinViewStats> {
                 <Table>
                     <tbody>
                     <tr>
-                        <th>Id</th>
                         <th>Name</th>
                         <th>Setting</th>
                         <th/>
@@ -48,9 +47,9 @@ class SchemaView extends React.Component<{}, PinViewStats> {
 
                     {this.state.schema.map((e: Schema) =>
                         <tr key={e.id} className={"schemaview"}>
-                            <td>{e.id}</td>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Click to change"} switchlist={[["Active", true], ["Deactivated", false]]}
+                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Click to change"}
+                                             switchlist={[["Active", true], ["Deactivated", false]]} instantSave={true}
                                              onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 

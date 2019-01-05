@@ -10,7 +10,7 @@ export const PrivateRoute: React.StatelessComponent<RouteProps> = ({component, .
             return null
         }
 
-        if (new BackendCalls().isLoggedIn()) {
+        if (BackendCalls.isLoggedIn()) {
             // @ts-ignore
             return <Component  {...props} />
         }
