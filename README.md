@@ -17,6 +17,7 @@ Mittels build-project.sh
 ###Frontend
 * Dashboard:Temperaturkurve, Diagramm: wie lange es offline war, select mit schema auswählen und aktiv setzen
 * Login: Fehlermeldung bei falschem user und password
+* Tests: Hier kann man die Pins durchtesten, Tests erstellen, autotests durchführen
 
 ##Simulationsmodus
 Dieser ermöglicht es diese Software auch ohne RaspberryPi eingeschränkt zu benutzen. 

@@ -160,7 +160,9 @@ mutation{
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        fetch('http://localhost:9000/graphql', {
+        const url = this.getEnv("BACKEND", document.location.origin + '/graphql')   //production
+        // const url = this.getEnv("BACKEND", "http://localhost:9000/graphql")      //local
+        fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
             headers: new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.getCookieValue("session")})
@@ -178,6 +180,12 @@ mutation{
                 then(response.data)
             }
         }).catch((err: Error) => error(err.message))
+    }
+
+    private getEnv(key: string, defaultvalue: string): string {
+        // @todo read env variables
+        // https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d
+        return defaultvalue
     }
 
 }
