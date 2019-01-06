@@ -33,7 +33,7 @@ public class Mutation implements GraphQLMutationResolver {
 
 
     public String login(String user, String password) {
-        return authentication.login(user,password);
+        return authentication.login(user, password);
     }
 
     public boolean logout() {
@@ -105,6 +105,10 @@ public class Mutation implements GraphQLMutationResolver {
             DBSchema dbSchema = result.get();
             dbSchema.setName(name);
             schemadb.save(dbSchema);
+
+            if (schemadb.getAllActive().stream().anyMatch(e -> e.getId() == id)) {
+                activateSchema(id);
+            }
 
             return dbSchema;
         }
