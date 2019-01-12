@@ -2,6 +2,7 @@ package me.weixler.beans;
 
 import me.weixler.Utils;
 import me.weixler.controller.PinController;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
@@ -22,13 +23,20 @@ public class DBPin {
     private long simulatedMode = 0;
     @Transient
     private PinController pinController;
+    @Transient
+    private boolean isSimulation;
 
     @OneToMany(mappedBy = "dbPin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DBPinMode> dbPinModes = new ArrayList<>();
 
+    @Transient
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public DBPin() {
         shutdownMode = false;
-        if (!Utils.simulation) {
+        isSimulation = Utils.simulation;
+
+        if (!this.isSimulation) {
             pinController = PinController.getInstance(1);
         }
     }
@@ -48,9 +56,9 @@ public class DBPin {
     }
 
     public void setId(Long id) {
-        if (!Utils.simulation) {
+        if (!this.isSimulation) {
             pinController = PinController.getInstance(id);
-            LoggerFactory.getLogger(this.getClass()).info("Instantiate pin " + id);
+            logger.info("Instantiate pin " + id);
         }
         this.id = id;
     }
@@ -69,7 +77,7 @@ public class DBPin {
 
     public void setShutdownMode(boolean shutdownMode) {
         this.shutdownMode = shutdownMode;
-        if (!Utils.simulation) {
+        if (!this.isSimulation) {
             pinController.setShutdownMode(shutdownMode);
         }
     }
@@ -80,13 +88,13 @@ public class DBPin {
 
     public void setDefaultMode(boolean defaultmode) {
         shutdownMode = defaultmode;
-        if (!Utils.simulation) {
+        if (!this.isSimulation) {
             pinController.setShutdownMode(defaultmode);
         }
     }
 
     public boolean getActive() {
-        if (Utils.simulation) {
+        if (this.isSimulation) {
             return simulatedMode == 1;
         } else {
             return pinController.getMode();
@@ -99,7 +107,8 @@ public class DBPin {
 
     public void setMode(long mode) {
         if (mode != 2) {
-            if (Utils.simulation) {
+            logger.info("Set mode of " + id + " to " + (mode == 0 ? "off" : "on"));
+            if (this.isSimulation) {
                 simulatedMode = mode;
             } else {
                 pinController.setMode(mode == 1);

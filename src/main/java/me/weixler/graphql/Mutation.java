@@ -130,6 +130,7 @@ public class Mutation implements GraphQLMutationResolver {
     public DBSchema activateSchema(long id) {
         authentication.checkAccess("schema.activate");
 
+        //disable all active
         schemadb.getAllActive().forEach(e -> {
             e.setActive(false);
             schemadb.save(e);
