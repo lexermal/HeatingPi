@@ -181,7 +181,7 @@ query{
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        const url = this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql")
+        const url = this.replacePlaceHolder("REACT_APP_BACKEND", this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql"))
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
@@ -209,6 +209,13 @@ query{
         return process.env[key] ? process.env[key]! : defaultvalue
     }
 
+    private replacePlaceHolder(key: string, value: string): string {
+        if (key === "REACT_APP_BACKEND" && value.includes("__SERVER__")) {
+            return value.replace("__SERVER__", window.location.protocol + "//" + window.location.hostname)
+        }
+
+        return value
+    }
 }
 
 
