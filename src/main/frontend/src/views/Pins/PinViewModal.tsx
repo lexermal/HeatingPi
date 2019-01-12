@@ -2,7 +2,9 @@ import * as React from 'react'
 import * as toastr from "toastr"
 import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
+import {faFrown, faGrin, faMeh} from "@fortawesome/free-regular-svg-icons"
 
 class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
 
@@ -37,15 +39,14 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
             <Row>
                 <Table>
                     <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Setting</th>
-                    </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).sort((a: Mode, b: Mode) => a.pin.id > b.pin.id ? 1 : -1).map((e: Mode) =>
                         <tr key={e.pin.id}>
                             <td>{e.pin.name}</td>
-                            <td>{<LabelSwitch defaultindex={e.mode} tooltip={"Click to change"} switchlist={[["deactivated", "0"], ["active", "1"], ["unmodified", "2"]]}
+                            <td>{<LabelSwitch defaultindex={e.mode} tooltip={"Check pin reaction"} switchlist={[
+                                [<FontAwesomeIcon icon={faFrown} key={1} size={"lg"} color={"red"}/>, "0"],
+                                [<FontAwesomeIcon icon={faGrin} key={2} size={"lg"} color={"green"}/>, "1"],
+                                [<FontAwesomeIcon icon={faMeh} key={3} size={"lg"} color={"orange"}/>, "2"]]}
                                               instantSave={true} onChange={(text: string) => this.saveState(e.pin.id, text)}/>}</td>
                         </tr>)}
                     </tbody>
@@ -73,7 +74,6 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private onError(e: string) {
-        console.error(e)
         toastr.error("Change could not be made permanently. " + e)
     }
 

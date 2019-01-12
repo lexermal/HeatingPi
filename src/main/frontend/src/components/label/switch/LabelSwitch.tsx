@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styles from './LabelSwitch.module.css'
+import {ReactNode} from "react";
 
 class LabelSwitch extends React.Component<EditableLabelProps, EditableLabelStats> {
 
@@ -33,12 +34,12 @@ class LabelSwitch extends React.Component<EditableLabelProps, EditableLabelStats
 }
 
 interface EditableLabelProps {
-    instantSave?: boolean
     tooltip?: string
     disabled?: boolean
+    instantSave?: boolean
     defaultindex?: number
-    switchlist: Array<[string, any]>
-    onChange: (value: any) => void
+    onChange: (value: string | number | object | void | boolean) => void
+    switchlist: Array<[string | ReactNode, string | number | object | void | boolean]>
 }
 
 

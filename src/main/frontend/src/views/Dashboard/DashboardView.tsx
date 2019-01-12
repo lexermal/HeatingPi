@@ -6,6 +6,8 @@ import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import EditableLabel from '../../components/label/editable/EditableLabel'
+import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class DashboardView extends React.Component<{}, PinViewStats> {
 
@@ -25,24 +27,23 @@ class DashboardView extends React.Component<{}, PinViewStats> {
         return <Container>
             <Row>
                 {!this.state.modepins ? <div className={styles.notFound}>No active schema found</div> : <div className={"w-100"}>
-                    <div className={styles.schemaHeading}>Active schema {this.state.name}</div>
+                    <div className={styles.schemaHeading}>Pin status</div>
                     <Table>
                         <tbody>
-                        <tr>
-                            <th>Pinnumber</th>
-                            <th>Name</th>
-                            <th>Setting</th>
-                        </tr>
 
                         {this.state.modepins.sort((e: Mode, x: Mode) => e.pin.id > x.pin.id ? 1 : -1).map((e: Mode) => <tr key={e.pin.id}>
-                            <td>{e.pin.id}</td>
                             <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
                             <td><LabelSwitch instantSave={true} defaultindex={e.mode === 0 ? 1 : 0} disabled={true}
-                                             switchlist={[["Active", "true"], ["Deactivated", "false"]]} onChange={() => null}/>
+                                             switchlist={[
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, "true"],
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, "false"]]} onChange={() => null}/>
                             </td>
                         </tr>)}
                         </tbody>
                     </Table></div>}
+            </Row>
+            <Row>
+                <h2>Active scheme: {this.state.name}</h2>
             </Row>
         </Container>
     }

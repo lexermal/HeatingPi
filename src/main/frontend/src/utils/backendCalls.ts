@@ -157,13 +157,31 @@ mutation{
  login(user:"` + user + `", password:"` + password + `")
 }
 `, (e: { login: string }) => {
-            BackendCalls.setSessionCookie("session", e.login)
-            then()
+            if (e.login !== null) {
+                BackendCalls.setSessionCookie("session", e.login)
+                then()
+            } else {
+                error("User or password is wrong")
+            }
+        }, error)
+    }
+
+    public networkCheck(then: () => void, error: (e: string) => void) {
+        this.callGraphql(`
+query{
+  ping
+}
+`, (e: { ping: string }) => {
+            if (e.ping !== null) {
+                then()
+            } else {
+                error("The server is not reachable")
+            }
         }, error)
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        const url = this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql")      // local
+        const url = this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql")
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),
@@ -174,14 +192,17 @@ mutation{
 
                 if (response.errors[0].message === "Permission not granted") {
                     BackendCalls.deleteCookie("session")
-                    window.history.pushState({}, '', '/login')
+                    window.location.href = "/"
                 } else {
                     error(response.errors[0].message)
                 }
             } else {
                 then(response.data)
             }
-        }).catch((err: Error) => error(err.message))
+        }).catch((err: Error) => {
+            console.error(err.message)
+            error(err.message.includes("NetworkError") ? "The server is not reachable" : err.message)
+        })
     }
 
     private getEnv(key: string, defaultvalue: string): string {

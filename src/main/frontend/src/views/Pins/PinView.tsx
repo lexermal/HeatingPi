@@ -2,8 +2,10 @@ import * as React from 'react'
 import * as toastr from 'toastr'
 import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import EditableLabel from '../../components/label/editable/EditableLabel'
+import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons"
 
 class PinView extends React.Component<PinViewProps, PinViewStats> {
 
@@ -15,7 +17,7 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
         this.state = {pins: [undefined]}
 
         this.backend = new BackendCalls()
-        this.backend.getPins((e: any) => this.setState({pins: e}), (err: any) => console.error(err))
+        this.backend.getPins((e: any) => this.setState({pins: e}), (err: string) => toastr.error("Could not load the pins because " + err))
         this.saveName = this.saveName.bind(this)
     }
 
@@ -27,14 +29,12 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
             <Row>
                 <Table>
                     <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Default Setting</th>
-                    </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
                         <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                        <td>{<LabelSwitch defaultindex={e.default ? 0 : 1} tooltip={"Click to change"} switchlist={[["Active", true], ["Deactivated", false]]}
+                        <td>{<LabelSwitch defaultindex={e.default ? 0 : 1} tooltip={"Change default setting"} switchlist={[
+                            [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true],
+                            [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, false]]}
                                           instantSave={true} onChange={(g: boolean) => this.saveDefaultState(e.id, g)}/>}</td>
                     </tr>)}
                     </tbody>
@@ -44,15 +44,15 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
     }
 
     private saveName(id: number, value: string) {
-        this.backend.editPins(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
+        this.backend.editPins(id, value, () => toastr.success("The changes have been successfully saved."), this.onError)
     }
 
     private onError(e: string) {
-        toastr.error("Change could not be made permanently. " + e)
+        toastr.error("Change could not be saved. " + e)
     }
 
     private saveDefaultState(id: number, value: boolean) {
-        this.backend.setPinDefaultState(id, value, () => toastr.success("The changes have successfully been saved."), this.onError)
+        this.backend.setPinDefaultState(id, value, () => toastr.success("The changes have been successfully saved."), this.onError)
     }
 
 }

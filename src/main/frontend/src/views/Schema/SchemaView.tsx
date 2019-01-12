@@ -6,9 +6,11 @@ import {Container, Table} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
 import styles from "../Dashboard/Dashboard.module.css"
 import PinViewModal, {Mode} from '../Pins/PinViewModal'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import OverlayModal from '../../components/overlay/modal/OverlayModal'
 import EditableLabel from '../../components/label/editable/EditableLabel'
+import {faCheck, faPencilAlt, faPlus, faTimes, faToggleOff, faToggleOn, faTrash} from "@fortawesome/free-solid-svg-icons"
 
 class SchemaView extends React.Component<{}, PinViewStats> {
     private backend: BackendCalls
@@ -28,9 +30,10 @@ class SchemaView extends React.Component<{}, PinViewStats> {
 
     public render() {
         return <Container>
-            <h1 className={"h1"}>Schemas</h1>
+            <h1 className={"h1"}>Schemes</h1>
             <div className={"text-right"}>
-                <OverlayModal className={"btn btn-primary add-button"} title={"Add a new schema"} buttonLabel={"Add schema"} onSubmit={() => this.setState({saveNow: true})}>
+                <OverlayModal className={"btn btn-primary add-button"} icon={faPlus} title={"New schema"} buttonLabel={"Add"} iconSubmit={faCheck} iconCancel={faTimes}
+                              onSubmit={() => this.setState({saveNow: true})}>
 
                     <input placeholder={"Name"} className={"form-control"} onChange={(e: any) => this.setState({schemaname: e.target.value})}/>
                     <PinViewModal saveNow={this.state.saveNow} onSave={this.saveNewSchema}/>
@@ -38,27 +41,23 @@ class SchemaView extends React.Component<{}, PinViewStats> {
             <Row>{(this.state.schema === undefined || this.state.schema.length < 1) ? <div className={styles.notFound}>No schemas found</div> : <div className={"w-100"}>
                 <Table>
                     <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Setting</th>
-                        <th/>
-                        <th/>
-                    </tr>
 
                     {this.state.schema.map((e: Schema) =>
                         <tr key={e.id} className={"schemaview"}>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Click to change"}
-                                             switchlist={[["Active", true], ["Deactivated", false]]} instantSave={true}
+                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Activate scheme"}
+                                             switchlist={[
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true],
+                                                 [<FontAwesomeIcon key={2} icon={faToggleOff} size={"lg"}/>, false]]} instantSave={true}
                                              onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 
-                                <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} submitText={"Yes"} title={"Delete the following element?"}
-                                              buttonLabel={"Delete"} onSubmit={() => this.deleteSchema(e.id)}>
+                                <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} icon={faTrash} submitText={"Yes"} iconSubmit={faCheck}
+                                              iconCancel={faTimes} title={"Should the following element be deleted?"} buttonLabel={"Delete"} onSubmit={() => this.deleteSchema(e.id)}>
                                     <h3>{e.name}</h3>
                                 </OverlayModal>
-                                <OverlayModal className={"btn btn-warning hoverbutton float-right radius-left"} title={e.name} buttonLabel={"Edit"}
-                                              onSubmit={() => this.setState({saveNow: true})} submitText={"Save"}>
+                                <OverlayModal className={"btn btn-warning hoverbutton float-right radius-left"} title={e.name} icon={faPencilAlt} buttonLabel={"Edit"}
+                                              onSubmit={() => this.setState({saveNow: true})} submitText={"Save"} iconSubmit={faCheck} iconCancel={faTimes}>
                                     <PinViewModal schema={e.id} saveNow={this.state.saveNow} onSave={this.saveEditedPins}/>
                                 </OverlayModal>
                             </td>

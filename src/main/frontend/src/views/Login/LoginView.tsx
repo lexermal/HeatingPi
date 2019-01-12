@@ -1,16 +1,17 @@
 import * as React from "react"
-import {Redirect} from "react-router"
-import './Login.css'
-import {FormEvent} from "react"
-import BackendCalls from "../../utils/backendCalls"
 import * as toastr from "toastr"
+import {Redirect} from "react-router"
+import {ChangeEvent, FormEvent} from "react"
+import BackendCalls from "../../utils/backendCalls"
+import './Login.css'
 
 class LoginView extends React.Component<{}, LoginState> {
 
     constructor(props: Readonly<{}>) {
         super(props)
         this.login = this.login.bind(this)
-        this.state = {isLoggedIn: BackendCalls.isLoggedIn()}
+        this.onError = this.onError.bind(this)
+        this.state = {isLoggedIn: BackendCalls.isLoggedIn(), user: "", password: ""}
     }
 
     public render() {
@@ -27,10 +28,12 @@ class LoginView extends React.Component<{}, LoginState> {
                         <div className="main-div">
                             <form id="Login" onSubmit={this.login}>
                                 <div className="form-group">
-                                    <input required={true} className="form-control" id="inputEmail" placeholder="User"/>
+                                    <input required={true} className="form-control" id="inputEmail" placeholder="User"
+                                           onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({user: e.target.value})}/>
                                 </div>
                                 <div className="form-group">
-                                    <input required={true} type="password" className="form-control" id="inputPassword" placeholder="Password"/>
+                                    <input required={true} type="password" value={this.state.password} className="form-control" id="inputPassword" placeholder="Password"
+                                           onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({password: e.target.value})}/>
                                 </div>
                                 <button type="submit" className="btn btn-primary">Login</button>
                             </form>
@@ -46,13 +49,11 @@ class LoginView extends React.Component<{}, LoginState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<LoginState>, snapshot?: any): void {
-        this.setState({isLoggedIn: BackendCalls.isLoggedIn()})
         this.handleNavbar(this.state.isLoggedIn)
     }
 
     private handleNavbar(show: boolean) {
         document.getElementById('navbar')!.setAttribute("style", "display:" + (show ? "visible" : "none"))
-
     }
 
     private login(e: FormEvent<HTMLFormElement>) {
@@ -60,16 +61,18 @@ class LoginView extends React.Component<{}, LoginState> {
         e.stopPropagation()
         e.currentTarget.checkValidity()
 
-        new BackendCalls().login((e.currentTarget[0] as HTMLInputElement).value, (e.currentTarget[1] as HTMLInputElement).value,
-            () => this.setState({isLoggedIn: true}), this.onError)
+        new BackendCalls().login(this.state.user, this.state.password, () => this.setState({isLoggedIn: true}), this.onError)
     }
 
     private onError(e: string) {
-        toastr.error("Couldn't save changes. " + e)
+        toastr.error("Could not login because " + e)
+        this.setState({password: ""})
     }
 }
 
 interface LoginState {
+    user: string
+    password: string
     isLoggedIn: boolean
 }
 
