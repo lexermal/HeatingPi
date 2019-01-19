@@ -44,9 +44,9 @@ class PinViewModal extends React.Component<PinViewProps, PinViewStats> {
                         <tr key={e.pin.id}>
                             <td>{e.pin.name}</td>
                             <td>{<LabelSwitch defaultindex={e.mode} tooltip={"Check pin reaction"} switchlist={[
-                                [<FontAwesomeIcon icon={faFrown} key={1} size={"lg"} color={"red"}/>, "0"],
-                                [<FontAwesomeIcon icon={faGrin} key={2} size={"lg"} color={"green"}/>, "1"],
-                                [<FontAwesomeIcon icon={faMeh} key={3} size={"lg"} color={"orange"}/>, "2"]]}
+                                [<FontAwesomeIcon icon={faFrown} key={1} size={"lg"} color={"red"}/>, "0", "Change to disable pin"],
+                                [<FontAwesomeIcon icon={faGrin} key={2} size={"lg"} color={"green"}/>, "1", "Change to enable pin"],
+                                [<FontAwesomeIcon icon={faMeh} key={3} size={"lg"} color={"orange"}/>, "2", "Change to leave pin unchanged"]]}
                                               instantSave={true} onChange={(text: string) => this.saveState(e.pin.id, text)}/>}</td>
                         </tr>)}
                     </tbody>

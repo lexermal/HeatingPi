@@ -45,15 +45,16 @@ class SchemaView extends React.Component<{}, PinViewStats> {
                     {this.state.schema.map((e: Schema) =>
                         <tr key={e.id} className={"schemaview"}>
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
-                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1} tooltip={"Activate scheme"}
+                            <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1}
                                              switchlist={[
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true],
-                                                 [<FontAwesomeIcon key={2} icon={faToggleOff} size={"lg"}/>, false]]} instantSave={true}
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true, "Change to activate scheme"],
+                                                 [<FontAwesomeIcon key={2} icon={faToggleOff} size={"lg"}/>, false, ""]]} instantSave={true}
                                              onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 
                                 <OverlayModal className={"btn btn-danger hoverbutton float-right radius-right"} icon={faTrash} submitText={"Yes"} iconSubmit={faCheck}
-                                              iconCancel={faTimes} title={"Should the following element be deleted?"} buttonLabel={"Delete"} onSubmit={() => this.deleteSchema(e.id)}>
+                                              iconCancel={faTimes} title={"Should the following element be deleted?"} buttonLabel={"Delete"}
+                                              onSubmit={() => this.deleteSchema(e.id)}>
                                     <h3>{e.name}</h3>
                                 </OverlayModal>
                                 <OverlayModal className={"btn btn-warning hoverbutton float-right radius-left"} title={e.name} icon={faPencilAlt} buttonLabel={"Edit"}

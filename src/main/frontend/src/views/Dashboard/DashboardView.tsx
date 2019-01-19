@@ -35,8 +35,8 @@ class DashboardView extends React.Component<{}, PinViewStats> {
                             <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
                             <td><LabelSwitch instantSave={true} defaultindex={e.mode === 0 ? 1 : 0} disabled={true}
                                              switchlist={[
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, "true"],
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, "false"]]} onChange={() => null}/>
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, "true", "Change to enable"],
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, "false", "Change to disable"]]} onChange={() => null}/>
                             </td>
                         </tr>)}
                         </tbody>

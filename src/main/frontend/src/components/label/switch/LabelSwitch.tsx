@@ -13,14 +13,14 @@ class LabelSwitch extends React.Component<EditableLabelProps, EditableLabelStats
     }
 
     public render() {
-        return <div title={this.state.disabled ? "" : (this.props.tooltip || "")} onClick={this.onClick}
+        return <div title={this.getTooltip()} onClick={this.onClick}
                     className={this.state.disabled ? styles.disabledSwitch : styles.switch}
                     onMouseOut={this.onSave}>{this.props.switchlist[this.state.index][0]}</div>
     }
 
     private onClick() {
         if (!this.state.disabled) {
-            this.setState({index: this.state.index + 1 < this.props.switchlist.length ? this.state.index + 1 : 0},
+            this.setState({index: this.getNextListIndex()},
                 () => this.props.instantSave ? this.onSave() : null)
         }
     }
@@ -31,6 +31,23 @@ class LabelSwitch extends React.Component<EditableLabelProps, EditableLabelStats
             this.props.onChange(this.props.switchlist[this.state.index][1])
         }
     }
+
+    private getNextListIndex(): number {
+        return this.state.index + 1 < this.props.switchlist.length ? this.state.index + 1 : 0
+    }
+
+    private getTooltip(): string {
+        if (this.state.disabled) {
+            return ""
+        }
+
+        if (this.props.switchlist[this.getNextListIndex()][2]) {
+            return this.props.switchlist[this.getNextListIndex()][2]!.toString();
+        }
+
+        return this.props.tooltip || ""
+    }
+
 }
 
 interface EditableLabelProps {
@@ -39,7 +56,7 @@ interface EditableLabelProps {
     instantSave?: boolean
     defaultindex?: number
     onChange: (value: string | number | object | void | boolean) => void
-    switchlist: Array<[string | ReactNode, string | number | object | void | boolean]>
+    switchlist: Array<[string | ReactNode, string | number | object | void | boolean, null | undefined | string | ReactNode]>
 }
 
 
