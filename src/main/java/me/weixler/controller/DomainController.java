@@ -2,23 +2,20 @@ package me.weixler.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
+@RestController
 public class DomainController {
 
-    @GetMapping("/schema")
-    public String schema() {
-        return "redirect";
-    }
-
-    @GetMapping("/pins")
-    public String pins() {
-        return "redirect";
-    }
-
-    @GetMapping("/login")
-    public String active() {
-        return "redirect";
+    @GetMapping(value = {"/login", "/pins", "/schema"})
+    public String redirect() {
+        return "<html" +
+                "<head>\n" +
+                "    <title>HeizungsPi</title>\n" +
+                "    <meta http-equiv=\"refresh\" content=\"0; url=/\"/>\n" +
+                "</head>\n" +
+                "</html>";
     }
 
 }

@@ -32,7 +32,6 @@ dependencies {
     compile "com.graphql-java:graphql-spring-boot-starter:5.0.2"
     compile "org.springframework.boot:spring-boot-starter-web:2.0.4.RELEASE"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:2.0.4.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf:2.0.4.RELEASE"
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:2.0.4.RELEASE"
     testCompile "com.graphql-java:graphql-spring-boot-starter-test:5.0.2"

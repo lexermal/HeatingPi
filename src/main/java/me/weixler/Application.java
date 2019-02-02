@@ -48,7 +48,6 @@ public class Application extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        System.setProperty("server.port", "9000");
         System.setProperty("pi4j.linking", "dynamic");
         SpringApplication.run(Application.class, args);
     }

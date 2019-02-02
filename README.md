@@ -1,9 +1,12 @@
 ##Build
 Mittels build-project.sh
 
+##Access
+https://localhost:9000
+
+(https https://drissamri.be/blog/java/enable-https-in-spring-boot/)
 
 ##Todo
-* Spring https https://drissamri.be/blog/java/enable-https-in-spring-boot/
 * testen des shutdown states
 * junit tests schreiben
 * Spring security dep installieren?
