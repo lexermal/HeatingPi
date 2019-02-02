@@ -26,7 +26,7 @@ public class PinController {
     }
 
     public void setMode(boolean state) {
-        logger.info("Set mode of pin " + activePin + " to " + (state ? "on" : "off"));
+        logger.info("Set mode of pin " + activePin + " to " + (state? "off" : "on"));
         leds.get(activePin).setState(state);
     }
 

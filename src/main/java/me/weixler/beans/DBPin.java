@@ -30,15 +30,11 @@ public class DBPin {
     private List<DBPinMode> dbPinModes = new ArrayList<>();
 
     @Transient
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public DBPin() {
         shutdownMode = false;
         isSimulation = Utils.simulation;
-
-        if (!this.isSimulation) {
-            pinController = PinController.getInstance(1);
-        }
     }
 
     public void addDBPinState(DBPinMode dbPinMode) {
@@ -78,7 +74,7 @@ public class DBPin {
     public void setShutdownMode(boolean shutdownMode) {
         this.shutdownMode = shutdownMode;
         if (!this.isSimulation) {
-            pinController.setShutdownMode(shutdownMode);
+            getPinController().setShutdownMode(shutdownMode);
         }
     }
 
@@ -89,7 +85,7 @@ public class DBPin {
     public void setDefaultMode(boolean defaultmode) {
         shutdownMode = defaultmode;
         if (!this.isSimulation) {
-            pinController.setShutdownMode(defaultmode);
+            getPinController().setShutdownMode(defaultmode);
         }
     }
 
@@ -97,7 +93,7 @@ public class DBPin {
         if (this.isSimulation) {
             return simulatedMode == 1;
         } else {
-            return pinController.getMode();
+            return getPinController().getMode();
         }
     }
 
@@ -107,13 +103,21 @@ public class DBPin {
 
     public void setMode(long mode) {
         if (mode != 2) {
-            logger.info("Set mode of " + id + " to " + (mode == 0 ? "off" : "on"));
             if (this.isSimulation) {
+                logger.info("Set mode of pin " + id + " to " + (mode == 0 ? "off" : "on"));
                 simulatedMode = mode;
             } else {
-                pinController.setMode(mode == 1);
+                getPinController().setMode(mode == 1);
             }
         }
+    }
+
+    private PinController getPinController() {
+        if (pinController == null) {
+            pinController = PinController.getInstance(this.id);
+        }
+
+        return pinController;
     }
 
 }

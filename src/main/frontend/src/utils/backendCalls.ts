@@ -53,7 +53,7 @@ query{
 
     public editPins(id: number, name: string, then: (response: any) => void, error: (e: string) => void) {
         this.callGraphql(`mutation{
-  editPin(id:` + id + `, name:"` + name + `"){
+  editPin(id:` + id + `, name:"` + name.replace(/(\r\n|\n|\r)/gm, "") + `"){
     id
     name
   }
@@ -132,7 +132,7 @@ mutation{
 mutation{
   schema:editSchemaName(
     id:` + id + `
-    name:"` + name + `"
+    name:"` + name.replace(/(\r\n|\n|\r)/gm, "") + `"
   ){
     name
   }

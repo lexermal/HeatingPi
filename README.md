@@ -9,6 +9,7 @@ Mittels build-project.sh
 * Spring security dep installieren?
 * Die jar muss noch mit sudo Rechten ausgeführt werden, weil pin 8 es nicht anders erlaubt.
 * Jest unit tests schreiben
+* status page bei teilweise definierten schemen spinnt noch
 
 
 ##Zukunftsmusik
@@ -27,7 +28,7 @@ Mittels build-project.sh
 
 
 ##Simulationsmodus
-Dieser ermöglicht es die Software ohne RaspberryPi zu benutzen. Hierbei werden die Pins simuliert. 
+Dieser ermöglicht es die Software ohne RaspberryPi zu benutzen. Hierbei werden die Pins simuliert und nicht wirklich angesteuert. 
 
 
 ##Setup

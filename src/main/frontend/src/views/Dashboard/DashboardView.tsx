@@ -4,7 +4,6 @@ import {Mode} from "../Pins/PinViewModal"
 import styles from "./Dashboard.module.css"
 import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
-import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -33,10 +32,11 @@ class DashboardView extends React.Component<{}, PinViewStats> {
 
                         {this.state.modepins.sort((e: Mode, x: Mode) => e.pin.id > x.pin.id ? 1 : -1).map((e: Mode) => <tr key={e.pin.id}>
                             <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
-                            <td><LabelSwitch instantSave={true} defaultindex={e.mode === 0 ? 1 : 0} disabled={true}
-                                             switchlist={[
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, "true", "Change to enable"],
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, "false", "Change to disable"]]} onChange={() => null}/>
+                            <td>
+                                {
+                                    e.mode === 0 ? <FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"} title={"disabled"} className={"text-danger"}/> :
+                                        <FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"} title={"activ"} className={"text-success"}/>
+                                }
                             </td>
                         </tr>)}
                         </tbody>

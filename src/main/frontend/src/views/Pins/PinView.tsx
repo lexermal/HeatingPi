@@ -33,8 +33,8 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
                         <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
                         <td>{<LabelSwitch defaultindex={e.default ? 0 : 1} switchlist={[
-                            [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true, "Change to enable default setting"],
-                            [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"}/>, false, "Chanto do disable default setting"]]}
+                            [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"} className={"text-success"}/>, true, "Change to enable default setting"],
+                            [<FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"} className={"text-danger"}/>, false, "Chanto do disable default setting"]]}
                                           instantSave={true} onChange={(g: boolean) => this.saveDefaultState(e.id, g)}/>}</td>
                     </tr>)}
                     </tbody>

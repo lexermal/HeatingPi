@@ -65,7 +65,7 @@ class LoginView extends React.Component<{}, LoginState> {
     }
 
     private onError(e: string) {
-        toastr.error("Could not login because " + e)
+        toastr.error("Could not login. " + e)
         this.setState({password: ""})
     }
 }

@@ -68,7 +68,6 @@ public class Utils {
                             isPiUnix = true;
                             LoggerFactory.getLogger(Utils.class).info("Running on Raspbian");
                             return true;
-//                            break;
                         }
                     }
                 }

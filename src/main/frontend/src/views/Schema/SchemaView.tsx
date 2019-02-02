@@ -47,8 +47,8 @@ class SchemaView extends React.Component<{}, PinViewStats> {
                             <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
                             <td><LabelSwitch disabled={e.active} key={e.active + ""} defaultindex={e.active ? 0 : 1}
                                              switchlist={[
-                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"}/>, true, "Change to activate scheme"],
-                                                 [<FontAwesomeIcon key={2} icon={faToggleOff} size={"lg"}/>, false, ""]]} instantSave={true}
+                                                 [<FontAwesomeIcon key={1} icon={faToggleOn} size={"lg"} className={"text-success"}/>, true, "Change to activate scheme"],
+                                                 [<FontAwesomeIcon key={2} icon={faToggleOff} size={"lg"} className={"text-danger"}/>, false, ""]]} instantSave={true}
                                              onChange={(g: string) => this.setSchemaActive(e.id, g)}/></td>
                             <td className={"text-right"}>
 
