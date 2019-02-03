@@ -18,7 +18,7 @@ public class Utils {
     //list of users for access
     public static Map<String, String> users = new HashMap<String, String>() {{
         put("admin", "3ba7404-4bcf-48e7-a382-85be2532ed4d");
-        put("user", "Test123!");
+        put("OG54H", "1234-Heizung");
     }};
 
 

@@ -51,6 +51,18 @@ query{
 `, (e: any) => then(e.schema[0].pinmodes.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error)
     }
 
+    public getActPinModes(then: (response: any) => void, error: (e: string) => void) {
+        this.callGraphql(`
+query{
+  pins{
+    id
+    name
+    active
+  }
+}
+`, (e: any) => then(e.pins.sort((f: any, g: any) => f.id > g.id ? 1 : -1)), error)
+    }
+
     public editPins(id: number, name: string, then: (response: any) => void, error: (e: string) => void) {
         this.callGraphql(`mutation{
   editPin(id:` + id + `, name:"` + name.replace(/(\r\n|\n|\r)/gm, "") + `"){
@@ -181,7 +193,7 @@ query{
     }
 
     private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
-        const url = this.replacePlaceHolder("REACT_APP_BACKEND", this.getEnv("REACT_APP_BACKEND", "http://localhost:9000/graphql"))
+        const url = this.replacePlaceHolder("REACT_APP_BACKEND", this.getEnv("REACT_APP_BACKEND", "https://localhost:9000/graphql"))
         fetch(url, {
             method: 'post',
             body: JSON.stringify({"query": body}),

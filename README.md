@@ -4,7 +4,7 @@ This software lets you controll a heating over a website or App.
 
 ##Simulationsmodus
 Dieser ermöglicht es die Software ohne RaspberryPi zu benutzen. Hierbei werden die Pins simuliert und nicht wirklich angesteuert. 
-
+The pin state is always on.
 
 
 ##Build Server
@@ -28,7 +28,6 @@ https://{pi}:9000
 * junit tests schreiben
 * Spring security dep installieren?
 * Jest unit tests schreiben
-* status page bei teilweise definierten schemen spinnt noch
 
 
 ##Future Features

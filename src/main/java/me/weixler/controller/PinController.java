@@ -26,13 +26,13 @@ public class PinController {
     }
 
     public void setMode(boolean state) {
-        logger.info("Set mode of pin " + activePin + " to " + (state ? "off" : "on"));
+        logger.info("Set mode of pin " + activePin + " to " + (!state ? "on" : "off"));
         leds.get(activePin).setState(!state); //segation because up is off und down is on
     }
 
     public boolean getMode() {
-        boolean mode = leds.get(activePin).getState().isHigh();
-        logger.info("Mode of pin " + activePin + " is " + (mode ? "off" : "on"));
+        boolean mode = !leds.get(activePin).getState().isHigh(); //because is high is off on the controller
+        logger.info("Mode of pin " + activePin + " is " + (mode ? "on" : "off"));
         return mode;
     }
 
