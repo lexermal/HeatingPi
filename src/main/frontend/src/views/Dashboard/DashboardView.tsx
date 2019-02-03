@@ -4,9 +4,9 @@ import {Mode} from "../Pins/PinViewModal"
 import styles from "./Dashboard.module.css"
 import {Container, Table, Row} from 'reactstrap'
 import BackendCalls from '../../utils/backendCalls'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import EditableLabel from '../../components/label/editable/EditableLabel'
-import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons"
 
 class DashboardView extends React.Component<{}, PinViewStats> {
 
@@ -31,7 +31,7 @@ class DashboardView extends React.Component<{}, PinViewStats> {
                         <tbody>
 
                         {this.state.modepins.sort((e: Mode, x: Mode) => e.pin.id > x.pin.id ? 1 : -1).map((e: Mode) => <tr key={e.pin.id}>
-                            <td><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
+                            <td className={styles.names}><EditableLabel disabled={true} value={e.pin.name} onSumbit={() => null}/></td>
                             <td>
                                 {
                                     e.mode === 0 ? <FontAwesomeIcon key={1} icon={faToggleOff} size={"lg"} title={"disabled"} className={"text-danger"}/> :
@@ -43,7 +43,9 @@ class DashboardView extends React.Component<{}, PinViewStats> {
                     </Table></div>}
             </Row>
             <Row>
-                <h2>Active scheme: {this.state.name}</h2>
+                {
+                    this.state.name !== "" ? <h2>Active scheme: {this.state.name}</h2> : null
+                }
             </Row>
         </Container>
     }
