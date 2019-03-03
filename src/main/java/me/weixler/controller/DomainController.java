@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DomainController {
 
-    @GetMapping(value = {"/login", "/pins", "/schema"})
+    @GetMapping(value = {"/login", "/settings", "/schema"})
     public String redirect() {
         return "<html" +
                 "<head>\n" +

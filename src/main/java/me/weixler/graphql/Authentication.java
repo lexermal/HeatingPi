@@ -34,7 +34,7 @@ public class Authentication {
         }
 
         logger.info("User " + token + " accessed " + permission + " from " + request.getRemoteAddr());
-
+        sessionTime = LocalDateTime.now();
     }
 
     public String login(String user, String password) {

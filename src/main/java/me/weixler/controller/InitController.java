@@ -2,6 +2,7 @@ package me.weixler.controller;
 
 import me.weixler.beans.DBPin;
 import me.weixler.beans.repos.PinRepository;
+import me.weixler.beans.repos.SchemaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class InitController {
 
     @Autowired
     PinRepository pindb;
+
+    @Autowired
+    SchemaRepository schemadb;
 
     private List<DBPin> pins;
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -50,6 +54,16 @@ public class InitController {
                 log.info("Created missing pin " + i);
             }
         }
+    }
+
+    public void setDefaultSchema() {
+        schemadb.getAllActive().forEach(e -> {
+            e.setActive(false);
+            schemadb.save(e);
+        });
+
+        pindb.findAll().forEach(p -> p.setMode(p.getDefaultMode() ? 1 : 0));
+        log.info("Set pins to default setting");
     }
 
 

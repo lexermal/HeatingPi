@@ -8,6 +8,7 @@ import me.weixler.beans.DBSchema;
 import me.weixler.beans.repos.PinRepository;
 import me.weixler.beans.repos.PinModeRepository;
 import me.weixler.beans.repos.SchemaRepository;
+import me.weixler.graphql.exception.ClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +45,10 @@ public class Mutation implements GraphQLMutationResolver {
     public DBPin editPin(long id, String name) {
         authentication.checkAccess("pin.edit");
 
+        if (name.length() > 255) {
+            throw new ClientException("The name is too long");
+        }
+
         DBPin p = pindb.getOne(id);
         p.setName(name);
         pindb.save(p);
@@ -64,6 +69,10 @@ public class Mutation implements GraphQLMutationResolver {
     public DBSchema createSchema(String name, List<InputState> inputs) {
         authentication.checkAccess("schema.create");
 
+        if (name.length() > 255) {
+            throw new ClientException("The name is too long");
+        }
+
         DBSchema s = new DBSchema(name);
 
         inputs.forEach(e -> {
@@ -82,6 +91,10 @@ public class Mutation implements GraphQLMutationResolver {
     public DBSchema editSchema(long id, String name, List<InputState> inputs) {
         authentication.checkAccess("schema.edit");
 
+        if (name.length() > 255) {
+            throw new ClientException("The name is too long");
+        }
+
         Optional<DBSchema> result = schemadb.findById(id);
 
         if (result.isPresent()) {
@@ -98,6 +111,10 @@ public class Mutation implements GraphQLMutationResolver {
 
     public DBSchema editSchemaName(long id, String name) {
         authentication.checkAccess("schema.edit");
+
+        if (name.length() > 255) {
+            throw new ClientException("The name is too long");
+        }
 
         Optional<DBSchema> result = schemadb.findById(id);
 

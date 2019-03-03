@@ -55,13 +55,14 @@ public class Application extends SpringBootServletInitializer {
     @EventListener(ApplicationReadyEvent.class)
     public void initPins() {
         Logger l = LoggerFactory.getLogger(Application.class);
-        if (Utils.simulation) {
+        if (Utils.isSimulation()) {
             l.info("The server is running in simulation mode");
         }
 
         l.info("Initializing pins");
         initController.loadAll();
         initController.createMissingPins();
+        initController.setDefaultSchema();
         l.info("Program run by user " + System.getProperty("user.name"));
         l.info("The server is ready to use");
     }

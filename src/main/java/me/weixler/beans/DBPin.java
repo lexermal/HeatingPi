@@ -34,7 +34,7 @@ public class DBPin {
 
     public DBPin() {
         shutdownMode = false;
-        isSimulation = Utils.simulation;
+        isSimulation = Utils.isSimulation();
     }
 
     public void addDBPinState(DBPinMode dbPinMode) {
