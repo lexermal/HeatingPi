@@ -1,17 +1,18 @@
-#HeizungsPi
-This software lets you controll a heating over a website or App.
+#HeatingPi
+This software lets you control a heating via Raspberry Pi over a website or App.
 
 
-##Simulationsmodus
-Dieser ermöglicht es die Software ohne RaspberryPi zu benutzen. Hierbei werden die Pins simuliert und nicht wirklich angesteuert. 
-The pin state is always on.
+##Simulationmode
+Let's run the software without a Raspberry Pi. It does not really access the GPIO Sockets. 
+
+Limitations: The pin state is always on.
 
 
-##Build Server
+##Build the server
 Run build-project.sh
 
-##Setup Raspberry Pi environment
-1. Run "setup-env-sh"
+##Setup the Raspberry Pi environment
+1. Run "setup-env.sh"
 2. Cancel script after it enters the example script
 3. Run "crontab -e"
 4. Copy HeizungsPi-1.0-SNAPSHOT.jar to /home/pi
@@ -21,24 +22,96 @@ Run build-project.sh
 ##Access Server
 https://{pi}:9000
 
-(https https://drissamri.be/blog/java/enable-https-in-spring-boot/)
+https://pauger.ddns.net:9000
 
-##Todo
-* testen des shutdown states
+#Zum durchdenken
+* Es sollte einen pin geben der als kontrollpin agiert
+und bei jedem schemawächsel einen ein-aus-ein Rütmus
+sendet und dadurch checkt ob das relai richtig schaltet. Dieser ist immer gleich
+iwie koppeln mit events zb wenn diese schaltung nicht erkannt wird. 
+Dieser funktion kann in den settings aktiviert werden. 
+
+
+#Interation 1 bugfixes and improvements
+* Bug: Man wird raus gehaut wenn man sich einloggt, beim 2. Login funkts dann
 * junit tests schreiben
-* Spring security dep installieren?
-* Jest unit tests schreiben
 
 
-##Future Features
+#Interation 2 - Security & GInputs
+
+##Backend
+* Write raw Logs into files(one file per application run)
+* Write raw Logs info database
+* Remove access token from logs when valid
+* Implement userlogs(Logs that the user can see) with categories(sessions, schema activations, ...)
+* Check and log Software uptime and Internet accessibility 
+* Graphql enable cors
+* Protect graphql from brute force
+* Protect logs from brute force
+* New username and password because old is not secure anymore
+* GInputs(see below)
+
+##Frontend
+* Hidden Infopage that displays the raw Logs(protected with a password)
+* On Dashboard show device and internet uptime chart
+* Implement Redux and make Graphql querys over it
+* Write Jest unit tests
+* Logout button with on/off Symbol and circle border around.
+The circle border gets shorter with every minute.
+At 75% the border is till 9 o clock full. 
+At 45% the border is till 5 o clock full. 
+Resets to 100% every time the api call was successful.
+Auto logout at 0%
+* Pin page comes into settings
+* Flag set last schema after restart in settings
+
+##GInputs
+Adds the functionalitiy to handle GPIO Inputs
 
 ###Backend
-* Logs in db
-* Infoseite wo logs angezeigt werden
-* Log wie lange gerät online ist: eingeschaltet und ob internet down ist
+* Auto add all inputs info the database
+* Input attributes: id, name, state(not included in the db)
 
 ###Frontend
-* Dashboard:Temperaturkurve, Diagramm: wie lange es offline war, select mit schema auswählen und aktiv setzen
-* Tests: Hier kann man Tests erstellen uns ausführen: Pins durchtesten, Standard test wird schon autom angelegt, einfach alle pins im sekundentakt ein und dann wieder aus
-* Redux einbauen und Graphql querys darüber absetzen
+* Show Inputs with the current signal and rename them
 
+
+#Interation 3 - Logs & Automatisation
+
+##Backend
+* Make application stateless
+* Delete oldest logfiles if max configured storage in folder is reached
+* Manage users in db
+* Manage sessions in db 
+* force name of device on login
+* If login with same name although already logged in, kill other session 
+* Log schema activations
+* Log Logins
+* Implement Events(see below)
+* Expand userlogs with events
+
+##Frontend
+* Show schema activations from user
+* Show logged in devices
+* Show last login
+* Check accessibility from outside and fire event if not
+* Build log page with filter from category(all, sessions, schemas, events)
+
+
+##Events
+Consists of simple IF and THEN block. Not sure how to handle combined IFs or more THENs
+
+
+###Backend
+* Email shipment for events
+* Check for detected event on eg schema change and check if a schema is there
+
+
+###Frontend
+* Configure events that do something eg Email shipment on specific schema activation
+or activate schema on gpio input is on, changed, off or 
+send push on raspy rebooted or
+if schema activated and pin is not active send email 
+* Settingspage for email settings with full imap and smtp config
+* quick schema setting with select on dashboard
+* Replace the typescript plugin with the create-react-app native typescript 

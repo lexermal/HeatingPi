@@ -1,3 +1,7 @@
 a{
     outline: none;
 }
+
+.tborderless{
+    border: none;
+}

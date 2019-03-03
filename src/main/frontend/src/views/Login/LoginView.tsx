@@ -11,37 +11,43 @@ class LoginView extends React.Component<{}, LoginState> {
         super(props)
         this.login = this.login.bind(this)
         this.onError = this.onError.bind(this)
-        this.state = {isLoggedIn: BackendCalls.isLoggedIn(), user: "", password: ""}
+        this.state = {isLoggedIn: false, user: "", password: ""}
+    }
+
+    public componentWillMount(): void {
+        BackendCalls.checkLogin((result) => this.setState({isLoggedIn: result}))
     }
 
     public render() {
         if (this.state.isLoggedIn) {
             this.handleNavbar(false)
-            return <Redirect to={"/"}/>
+            console.log("[LoginView]redirect :",)
+
+            const redirect = new URL(window.location.href).searchParams.get("redirect")
+            console.log("[LoginView] :",redirect)
+            return <Redirect to={redirect ? redirect : "/"}/>
         }
 
-        return (
-            <div id="LoginForm">
-                <div className="container">
-                    <h1 className="form-heading">Login</h1>
-                    <div className="login-form">
-                        <div className="main-div">
-                            <form id="Login" onSubmit={this.login}>
-                                <div className="form-group">
-                                    <input required={true} className="form-control" id="inputEmail" placeholder="User"
-                                           onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({user: e.target.value})}/>
-                                </div>
-                                <div className="form-group">
-                                    <input required={true} type="password" value={this.state.password} className="form-control" id="inputPassword" placeholder="Password"
-                                           onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({password: e.target.value})}/>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Login</button>
-                            </form>
-                        </div>
+        return <div id="LoginForm">
+            <div className="container">
+                <h1 className="form-heading">Login</h1>
+                <div className="login-form">
+                    <div className="main-div">
+                        <form id="Login" onSubmit={this.login}>
+                            <div className="form-group">
+                                <input required={true} className="form-control" id="inputEmail" placeholder="User"
+                                       onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({user: e.target.value})}/>
+                            </div>
+                            <div className="form-group">
+                                <input required={true} type="password" value={this.state.password} className="form-control" id="inputPassword" placeholder="Password"
+                                       onChange={(e: ChangeEvent<HTMLInputElement>) => this.setState({password: e.target.value})}/>
+                            </div>
+                            <button type="submit" className="btn btn-primary">Login</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        )
+        </div>
     }
 
     public componentDidMount(): void {

@@ -17,8 +17,8 @@ class EditableLabel extends React.Component<EditableLabelProps, EditableLabelSta
         if (this.props.disabled) {
             return <div className={styles.input}>{this.state.value} </div>
         }
-        return <textarea ref={this.areaRef} className={styles.input} onKeyUp={this.autoGrow} value={this.state.value} onChange={(e: any) => this.setState({value: e.target.value})}
-                         onKeyPress={this.onChange} onBlur={e => {
+        return <textarea ref={this.areaRef} className={styles.input} onInput={this.autoGrow} value={this.state.value} onChange={(e: any) => this.setState({value: e.target.value})}
+                         onKeyPress={this.onChange} rows={1} onBlur={e => {
             if (this.state.defaultvalue !== e.target.value) {
                 this.setState({defaultvalue: e.target.value})
                 this.props.onSumbit(e.target.value)
@@ -34,7 +34,7 @@ class EditableLabel extends React.Component<EditableLabelProps, EditableLabelSta
     }
 
     private autoGrow() {
-        this.areaRef.current!.style.height = (this.areaRef.current!.scrollHeight) + "px"
+        this.areaRef.current!.style.height = this.areaRef.current!.scrollHeight + "px"
     }
 
     private onChange(e: any) {

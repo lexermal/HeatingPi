@@ -7,7 +7,7 @@ import LabelSwitch from '../../components/label/switch/LabelSwitch'
 import EditableLabel from '../../components/label/editable/EditableLabel'
 import {faToggleOff, faToggleOn} from "@fortawesome/free-solid-svg-icons"
 
-class PinView extends React.Component<PinViewProps, PinViewStats> {
+class SettingView extends React.Component<PinViewProps, PinViewStats> {
 
     private backend: BackendCalls;
 
@@ -24,11 +24,16 @@ class PinView extends React.Component<PinViewProps, PinViewStats> {
     public render() {
         return <Container>
             <br/>
-            <h1>Pins</h1>
+            <h1>Settings</h1>
             <br/>
+            <h3>Pins</h3>
             <Row>
                 <Table>
                     <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Default setting</th>
+                    </tr>
 
                     {this.state.pins!.filter((e: any) => e !== undefined && e !== null).map((e: Pins) => <tr key={e.id}>
                         <td><EditableLabel value={e.name} onSumbit={(g: string) => this.saveName(e.id, g)}/></td>
@@ -72,4 +77,4 @@ interface PinViewStats {
     pins?: [any]
 }
 
-export default PinView
+export default SettingView

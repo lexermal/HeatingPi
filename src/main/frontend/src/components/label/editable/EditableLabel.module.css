@@ -1,14 +1,13 @@
-.input{
+.input {
     width: 100%;
     border: none;
     background: transparent;
     color: black;
     resize: none;
     overflow: hidden;
-    min-height: 50px;
 }
 
 
-.input:focus{
-    background:rgba(0,0,0,0.05);
+.input:focus {
+    background: rgba(0, 0, 0, 0.05);
 }

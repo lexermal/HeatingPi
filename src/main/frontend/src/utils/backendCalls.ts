@@ -1,12 +1,37 @@
 import {Mode} from "../views/Pins/PinViewModal"
 
+interface Data {
+    key: string
+    value: string | boolean | number
+}
+
+const data = {} as Data[]
+const UserStore = {
+    set: (key: string, value: string | number | boolean) => data[key] = value,
+    get: (key: string) => data[key] !== undefined ? data[key] : null
+}
+
+Object.freeze(UserStore)
+
+
 class BackendCalls {
+
+    public static checkLogin(then: (result: boolean) => void) {
+        console.log("[backendCalls] usersotre :", UserStore.get('isLoggedIn'))
+        if (UserStore.get('isLoggedIn') === null) {
+            console.log("[backendCalls]storage empty :",)
+            new BackendCalls().testLoggedIn(then)
+        }
+        then(UserStore.get('isLoggedIn') === true)
+    }
+
     public static setSessionCookie(key: string, value: string): void {
         document.cookie = key + "=" + value + "; expires=0; path=/"
     }
 
     public static isLoggedIn(): boolean {
-        return this.getCookieValue("session") !== null
+        const result = UserStore.get('isLoggedIn')
+        return result ? result === true : false
     }
 
     private static getCookieValue(a: string): string | null {
@@ -22,8 +47,19 @@ class BackendCalls {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     }
 
+    public testLoggedIn(then: (response: boolean) => void) {
+        return this.callGraphql(`
+query{
+	pins{
+		id
+		name
+	}
+}
+`, () => then(true), () => then(false), true)
+    }
+
     public getPins(then: (response: any) => void, error: (e: string) => void, schema?: number) {
-        this.callGraphql(`
+        return this.callGraphql(`
 query{
 	pins` + (schema === undefined ? "" : "(schema:" + schema + ")") + `{
 		id
@@ -171,6 +207,7 @@ mutation{
 `, (e: { login: string }) => {
             if (e.login !== null) {
                 BackendCalls.setSessionCookie("session", e.login)
+                UserStore.set('isLoggedIn', true)
                 then()
             } else {
                 error("User or password is wrong")
@@ -192,7 +229,7 @@ query{
         }, error)
     }
 
-    private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void) {
+    private callGraphql(body: string, then: (response: any) => void, error: (err: string) => void, noRedirect?: boolean) {
         const url = this.replacePlaceHolder("REACT_APP_BACKEND", this.getEnv("REACT_APP_BACKEND", "https://localhost:9000/graphql"))
         fetch(url, {
             method: 'post',
@@ -204,11 +241,16 @@ query{
 
                 if (response.errors[0].message === "Permission not granted") {
                     BackendCalls.deleteCookie("session")
-                    window.location.href = "/"
+                    UserStore.set('isLoggedIn', false)
+                    if (!noRedirect) {
+                        console.log("[backendCalls]redirect :",)
+                        window.location.href = "/"
+                    }
                 } else {
                     error(response.errors[0].message)
                 }
             } else {
+                UserStore.set('isLoggedIn', true)
                 then(response.data)
             }
         }).catch((err: Error) => {

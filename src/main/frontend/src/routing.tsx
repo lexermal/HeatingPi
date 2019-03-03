@@ -1,5 +1,5 @@
 import * as React from "react"
-import PinView from './views/Pins/PinView'
+import SettingView from './views/Settings/SettingView'
 import SchemaView from './views/Schema/SchemaView'
 import DashboardView from './views/Dashboard/DashboardView'
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
@@ -13,7 +13,7 @@ class Routing extends React.Component<{}, {}> {
                 {this.props.children}
                 <Switch>
                     <PrivateRoute exact={true} path="/" component={DashboardView}/>
-                    <PrivateRoute exact={true} path={"/pins"} component={PinView}/>
+                    <PrivateRoute exact={true} path={"/settings"} component={SettingView}/>
                     <PrivateRoute exact={true} path={"/schema"} component={SchemaView}/>
                     <Route exact={true} path="/login" component={LoginView}/>
                     <Route component={LoginView}/>

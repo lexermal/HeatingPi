@@ -27,9 +27,15 @@ class DashboardView extends React.Component<{}, PinViewStats> {
             <Row>
                 {!this.state.modepins ? <div className={styles.notFound}>No active schema found</div> : <div className={"w-100"}>
                     <div className={styles.schemaHeading}>Pin status</div>
+                    {
+                        this.state.name !== "" ? <p>Active scheme: {this.state.name}</p> : null
+                    }
                     <Table>
                         <tbody>
-
+                        <tr>
+                            <th>Name</th>
+                            <th>Setting</th>
+                        </tr>
                         {this.state.modepins.sort((e: Mode, x: Mode) => e.id > x.id ? 1 : -1).map((e: Mode) => <tr key={e.id}>
                             <td className={styles.names}><EditableLabel disabled={true} value={e.name} onSumbit={() => null}/></td>
                             <td>
@@ -41,11 +47,6 @@ class DashboardView extends React.Component<{}, PinViewStats> {
                         </tr>)}
                         </tbody>
                     </Table></div>}
-            </Row>
-            <Row>
-                {
-                    this.state.name !== "" ? <h2>Active scheme: {this.state.name}</h2> : null
-                }
             </Row>
         </Container>
     }

@@ -15,6 +15,10 @@
     vertical-align: middle;
 }
 
+.add-button {
+    margin-bottom: 10px;
+}
+
 
 .radius-left {
     border-radius: 0 !important;

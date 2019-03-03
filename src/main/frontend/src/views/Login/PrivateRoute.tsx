@@ -2,20 +2,17 @@ import * as React from "react"
 import {Redirect, Route, RouteComponentProps, RouteProps} from "react-router-dom"
 import BackendCalls from "../../utils/backendCalls";
 
-type RouteComponent = React.StatelessComponent<RouteComponentProps<{}>> | React.ComponentClass<any>
+type RouteComponent = React.FunctionComponent<RouteComponentProps<{}>> | React.ComponentClass<any>
 
-export const PrivateRoute: React.StatelessComponent<RouteProps> = ({component, ...rest}) => {
-    const renderFn = (Component?: RouteComponent) => (props: RouteProps) => {
-        if (!Component) {
-            return null
-        }
+export const PrivateRoute: React.FunctionComponent<RouteProps> = ({component, ...rest}) => {
+    const renderFn = (Component?: RouteComponent) => () => {
 
-        if (BackendCalls.isLoggedIn()) {
-            // @ts-ignore
-            return <Component  {...props} />
-        }
+        const url = window.location.pathname
+        console.log("[PrivateRoute]security check :",url)
 
-        return <Redirect to={{pathname: "/login", state: {from: props.location}}}/>
+        // @ts-ignore
+        return BackendCalls.isLoggedIn() ? <Component {...component} /> :
+            <Redirect to={{pathname: "/login" + (url === '/' ? "" : "?redirect=" + url)}}/>;
     }
 
     return <Route {...rest} render={renderFn(component)}/>
