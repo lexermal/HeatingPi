@@ -1,45 +1,33 @@
-#HeatingPi
+# HeatingPi
 This software lets you control a heating via Raspberry Pi over a website or App.
 
 
-##Simulationmode
+## Simulationmode
 Let's run the software without a Raspberry Pi. It does not really access the GPIO Sockets. 
 
 Limitations: The pin state is always on.
 
 
-##Build the server
+## Build the server
 Run build-project.sh
 
-##Setup the Raspberry Pi environment
-1. Run "setup-env.sh"
-2. Cancel script after it enters the example script
-3. Run "crontab -e"
-4. Copy HeizungsPi-1.0-SNAPSHOT.jar to /home/pi
-5. Add "@reboot java -jar /home/pi/HeizungsPi-1.0-SNAPSHOT.jar >> /var/log/HeizungsPi.log 2>&1" to the end.
-6. Reboot to finish
+## Setup the Raspberry Pi environment
+1. Copy HeizungsPi-1.0-SNAPSHOT.jar to /home/pi
+2. Run "setup-env.sh"
+3. Reboot to finish
 
-##Access Server
+## Access Server
 https://{pi}:9000
 
-https://pauger.ddns.net:9000
 
-#Zum durchdenken
-* Es sollte einen pin geben der als kontrollpin agiert
-und bei jedem schemawächsel einen ein-aus-ein Rütmus
-sendet und dadurch checkt ob das relai richtig schaltet. Dieser ist immer gleich
-iwie koppeln mit events zb wenn diese schaltung nicht erkannt wird. 
-Dieser funktion kann in den settings aktiviert werden. 
-
-
-#Interation 1 bugfixes and improvements
+# Interation 1 bugfixes and improvements
 * Bug: Man wird raus gehaut wenn man sich einloggt, beim 2. Login funkts dann
 * junit tests schreiben
 
 
-#Interation 2 - Security & GInputs
+# Interation 2 - Security & GInputs
 
-##Backend
+## Backend
 * Write raw Logs into files(one file per application run)
 * Write raw Logs info database
 * Remove access token from logs when valid
@@ -51,7 +39,7 @@ Dieser funktion kann in den settings aktiviert werden.
 * New username and password because old is not secure anymore
 * GInputs(see below)
 
-##Frontend
+## Frontend
 * Hidden Infopage that displays the raw Logs(protected with a password)
 * On Dashboard show device and internet uptime chart
 * Implement Redux and make Graphql querys over it
@@ -65,20 +53,20 @@ Auto logout at 0%
 * Pin page comes into settings
 * Flag set last schema after restart in settings
 
-##GInputs
+## GInputs
 Adds the functionalitiy to handle GPIO Inputs
 
-###Backend
+### Backend
 * Auto add all inputs info the database
 * Input attributes: id, name, state(not included in the db)
 
-###Frontend
+### Frontend
 * Show Inputs with the current signal and rename them
 
 
-#Interation 3 - Logs & Automatisation
+# Interation 3 - Logs & Automatisation
 
-##Backend
+## Backend
 * Make application stateless
 * Delete oldest logfiles if max configured storage in folder is reached
 * Manage users in db
@@ -90,7 +78,7 @@ Adds the functionalitiy to handle GPIO Inputs
 * Implement Events(see below)
 * Expand userlogs with events
 
-##Frontend
+## Frontend
 * Show schema activations from user
 * Show logged in devices
 * Show last login
@@ -98,16 +86,16 @@ Adds the functionalitiy to handle GPIO Inputs
 * Build log page with filter from category(all, sessions, schemas, events)
 
 
-##Events
+## Events
 Consists of simple IF and THEN block. Not sure how to handle combined IFs or more THENs
 
 
-###Backend
+### Backend
 * Email shipment for events
 * Check for detected event on eg schema change and check if a schema is there
 
 
-###Frontend
+### Frontend
 * Configure events that do something eg Email shipment on specific schema activation
 or activate schema on gpio input is on, changed, off or 
 send push on raspy rebooted or

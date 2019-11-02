@@ -4,6 +4,7 @@ import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
 import graphql.servlet.GraphQLErrorHandler;
 import me.weixler.controller.InitController;
+import me.weixler.controller.TemperaturController;
 import me.weixler.graphql.exception.GraphQLErrorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,21 @@ public class Application extends SpringBootServletInitializer {
         initController.setDefaultSchema();
         l.info("Program run by user " + System.getProperty("user.name"));
         l.info("The server is ready to use");
+
+        this.initTemperaturSensor();
+    }
+
+    private void initTemperaturSensor(){
+        final TemperaturController dht = new TemperaturController();
+
+        while (true) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dht.getTemperature(7);
+        }
     }
 
 }

@@ -13,7 +13,7 @@ echo "#####################Install WiringPi#########################"
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
-curl -s get.pi4j.com | sudo bash
+curl -s get.pi4j.com | bash
 cd /opt/pi4j/examples
 ./build
 java GpioOutputExample
@@ -25,10 +25,22 @@ java GpioOutputExample
 echo "#####################Configure Raspberry#########################"
 
 #add user pi to the gpio group
-sudo usermod -a -G gpio pi
-sudo chmod 777 /var/log
-sudo touch /var/log/HeizungsPi.log
-sudo chmod 777 /var/log/HeizungsPi.log
+usermod -a -G gpio pi
+chmod 777 /var/log
+touch /var/log/HeizungsPi.log
+chmod 777 /var/log/HeizungsPi.log
+
+echo "######################Configure Cronejob##################"
+
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "@reboot java -jar /home/pi/HeizungsPi-1.0-SNAPSHOT.jar >> /var/log/HeizungsPi.log 2>&1" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
+
+
 
 
 

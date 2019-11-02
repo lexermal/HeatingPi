@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PinController {
@@ -47,19 +48,13 @@ public class PinController {
 
     @Nullable
     private Pin getPin(long pinnumber) {
-        pinnumber = pinConversion(pinnumber);
-        Pin[] pins = RaspiPin.allPins();
+        int pinNr = pinConversion(pinnumber);
 
-        for (Pin pin : pins) {
-            if (pin.getAddress() == pinnumber) {
-                return pin;
-            }
-        }
-        return null;
+        return Arrays.stream(RaspiPin.allPins()).filter(pin -> pin.getAddress()==pinNr).findFirst().orElse(null);
     }
 
     private int pinConversion(long number) {
-        return new int[]{13, 12, 3, 2, 0, 7, 9, 8}[(int) (number - 1)];
+        return new int[]{13, 12, 3, 2, 0, 14, 9, 8}[(int) (number - 1)];
     }
 
 
