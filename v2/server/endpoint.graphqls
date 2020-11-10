@@ -1,7 +1,4 @@
 type Query {
-    # A simple example comment
-    """Check if the api is accessible"""
-    ping: String
     pins(id: Int, schema:Int): [Pin]
     schema(id: Int, active: Boolean): [Schema]
 }

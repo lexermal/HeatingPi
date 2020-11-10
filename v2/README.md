@@ -1,5 +1,23 @@
-# HeatingPi
+# HeatingPi V2
 This software lets you control a heating via Raspberry Pi over a website or App.
+
+Pin 1-8: 13, 12, 3, 2, 0, 14, 9, 8 (alt, einer wurde ja umgemappt, das gehört noch geändert)
+SQL Lite implementieren
+## Requirements
+* Yarn
+* Node > v11
+
+## Setup
+1. Install hardware
+2. Install software
+3. Enter sudo nano /boot/config.txt
+4. Add "dtoverlay=w1-gpio" to the bottom of the file.
+5. Save and reboot device.
+
+# Todo
+* Raspi Backend Projekt richtig aufsetzen mit graphql
+* Sensor liefert NULL wenn er keine Temperatur erkennt
+* Frontend mit functional components schreiben
 
 
 ## Simulationmode
