@@ -1,0 +1,76 @@
+type Query {
+    pins(id: Int, schema: String): [Pin]
+    schema(id: String, active: Boolean): [Schema]
+    currentUser: User
+    temperature: Float
+    settings: Settings
+}
+
+type Mutation {
+    # Pins
+    editPin(id: Int!, name: String, activeByDefault: Boolean): Pin
+    # Schema
+    createSchema(name: String!, mode: [InputPinMode]!, temperature: InputTemperature!): Schema
+    editSchema(id: String!, name: String!, mode: [InputPinMode]!, temperature: InputTemperature!): Schema
+    deleteSchema(id: String!): Schema
+    activateSchema(id: String!): Schema
+    # Login
+    login(email: String!, password: String!): User
+    logout: Boolean
+    # Test
+    pinTest(nr: Int!, up: Boolean!): String
+    # Settings
+    applySettings(settings: InputSettings!): Settings!
+}
+
+input InputPinMode {
+    pinId: Int!
+    mode: Int!
+}
+input InputTemperature {
+    min: Int
+    max: Int
+}
+
+input InputSettings {
+    oneSchemaMode: Boolean
+    multiSchemaPriority: String
+}
+
+type Pin {
+    id: Int!
+    name: String
+    active: Boolean
+    activeByDefault: Boolean
+}
+
+type PinMode {
+    pin: Pin
+    mode: Int
+}
+
+type Schema {
+    id: String
+    name: String
+    active: Boolean
+    temperature: Temperature
+    pinModes: [PinMode]!
+}
+
+type Temperature {
+    min: Int
+    max: Int
+}
+
+type User {
+    id: String
+    name: String
+    email: String
+    token: String
+    role: Int
+}
+
+type Settings {
+    oneSchemaMode: Boolean
+    multiSchemaPriority: String
+}
