@@ -1,0 +1,84 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    activateSchema(id: String!): Schema
+    "Settings"
+    applySettings(settings: InputSettings!): Settings!
+    "Schema"
+    createSchema(mode: [InputPinMode]!, name: String!, temperature: InputTemperature!): Schema
+    deleteSchema(id: String!): Schema
+    "Pins"
+    editPin(activeByDefault: Boolean, id: Int!, name: String): Pin
+    editSchema(id: String!, mode: [InputPinMode]!, name: String!, temperature: InputTemperature!): Schema
+    "Login"
+    login(email: String!, password: String!): User
+    logout: Boolean
+    "Test"
+    pinTest(nr: Int!, up: Boolean!): String
+}
+
+type Pin {
+    active: Boolean
+    activeByDefault: Boolean
+    id: Int!
+    name: String
+}
+
+type PinMode {
+    mode: Int
+    pin: Pin
+}
+
+type Query {
+    currentUser: User
+    pins(id: Int, schema: String): [Pin]
+    schema(active: Boolean, id: String): [Schema]
+    settings: Settings
+    temperature: Float
+}
+
+type Schema {
+    active: Boolean
+    id: String
+    name: String
+    pinModes: [PinMode]!
+    temperature: Temperature
+}
+
+type Settings {
+    multiSchemaPriority: String
+    oneSchemaMode: Boolean
+}
+
+type Temperature {
+    max: Int
+    min: Int
+}
+
+type User {
+    email: String
+    id: String
+    name: String
+    role: Int
+    token: String
+}
+
+input InputPinMode {
+    mode: Int!
+    pinId: Int!
+}
+
+input InputSettings {
+    multiSchemaPriority: String
+    oneSchemaMode: Boolean
+}
+
+input InputTemperature {
+    max: Int
+    min: Int
+}

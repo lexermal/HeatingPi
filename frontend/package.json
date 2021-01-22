@@ -1,43 +1,28 @@
 {
-  "name": "HeizungsPi",
+  "name": "heatingpi",
   "version": "0.2.0",
   "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.12",
-    "@fortawesome/free-brands-svg-icons": "5.6.3",
-    "@fortawesome/free-regular-svg-icons": "5.6.3",
-    "@fortawesome/free-solid-svg-icons": "5.6.3",
-    "@fortawesome/react-fontawesome": "0.1.3",
-    "@types/react-router-dom": "4.3.1",
-    "@types/reactstrap": "6.4.2",
-    "@types/toastr": "2.1.35",
-    "react": "16.7.0",
-    "react-dom": "16.6.0",
-    "react-redux": "5.1.0",
-    "react-router-dom": "4.3.1",
-    "react-scripts": "2.0.5",
-    "react-scripts-ts": "4.0.8",
-    "reactstrap": "6.5.0",
-    "redux": "4.0.1",
-    "toastr": "^2.1.4"
-  },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "dev": "yarn install && next dev -p 3002",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.7",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.2",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "graphql": "^15.4.0",
+    "next": "10.0.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-toastify": "^6.2.0",
+    "reactstrap": "^8.8.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.8",
-    "@types/node": "^10.12.1",
-    "@types/react": "^16.4.18",
-    "@types/react-dom": "^16.0.9",
-    "typescript": "^3.1.3"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "@types/node": "^14.14.19",
+    "@types/react": "^17.0.0",
+    "typescript": "^4.1.3"
+  }
 }
