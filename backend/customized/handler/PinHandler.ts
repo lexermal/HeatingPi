@@ -44,6 +44,20 @@ export default class PinHandler extends BasicHandler {
         pinId: { dbExists: this.table }
     } as ValidationQueryConfig;
 
+    private static buildFilter(args: any) {
+        let filter = {};
+
+        if (args.id) {
+            filter = { id: args.id, ...filter };
+        }
+
+        if (args.schema) {
+            filter = { schema: args.schema, ...filter };
+        }
+
+        return filter;
+    }
+
     public getQueryConfig(): (QueryField | SelfHandledField)[] {
         return [
             {
@@ -98,10 +112,17 @@ export default class PinHandler extends BasicHandler {
                 location: { name: "activatePins" },
                 preCheck: (source, args) => Validator.validateMany(args, this.activationRules),
                 preProcessing: (source, args) => PinSchemaHandler.getToChangePins(args),
-                postProcessing: (data: Pin[], source, args) => {
-                    PinSchemaHandler.getToChangePins(args).forEach((pin) => {
-                        PinAccess.getInstance().setState(pin.id, pin.active);
-                    });
+                postProcessing: async (data: Pin[], source, args) => {
+                    if (args.active || (await new SchemaHandler().getDB().queryOne({ active: true }))) {
+                        PinSchemaHandler.getToChangePins(args).forEach((pin) => {
+                            PinAccess.getInstance().setState(pin.id, pin.active);
+                        });
+                    } else {
+                        this.log.info("No active schema. Setting default states.");
+                        data.forEach((pin) => {
+                            PinAccess.getInstance().setState(pin.id, pin.activeByDefault);
+                        });
+                    }
                 }
             },
             {
@@ -117,19 +138,5 @@ export default class PinHandler extends BasicHandler {
                 }
             }
         ];
-    }
-
-    private static buildFilter(args: any) {
-        let filter = {};
-
-        if (args.id) {
-            filter = { id: args.id, ...filter };
-        }
-
-        if (args.schema) {
-            filter = { schema: args.schema, ...filter };
-        }
-
-        return filter;
     }
 }

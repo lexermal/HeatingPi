@@ -33,85 +33,22 @@ export default class SchemaHandler extends BasicHandler {
         active: { optional: true, isBoolean: true }
     } as ValidationQueryConfig;
 
-    public getQueryConfig(): (QueryField | SelfHandledField)[] {
-        return [
-            {
-                location: { name: "schema" },
-                preCheck: (source, args) => Validator.validateOne(args, this.queryRules),
-                filter: (source, args) => {
-                    let filter = {};
-
-                    if (args.id) {
-                        filter = Object.assign(filter, { id: args.id });
-                    }
-
-                    if (args.active) {
-                        filter = Object.assign(filter, { active: args.active });
-                    }
-
-                    return filter;
-                },
-                postProcessing: (data: UnknownObject, s, args, context) => {
-                    return SchemaHandler.postProcessing(data, context, args);
-                }
-            }
-        ];
-    }
-
-    public getCrudConfig(): (CrudField | SelfHandledField)[] {
-        return [
-            {
-                location: { name: "createSchema" },
-                operation: Operation.INSERT,
-                options: { oneEntry: true },
-                preCheck: SchemaHandler.validate,
-                preProcessing: (source, args) => SchemaHandler.preProcessing(args),
-                postProcessing: (data: UnknownObject, s, a, c) => SchemaHandler.postProcessing(data, c, a, true)
-            },
-            {
-                location: { name: "editSchema" },
-                operation: Operation.UPDATE,
-                options: { oneEntry: true },
-                preCheck: SchemaHandler.validate,
-                filter: (source, args) => ({ id: args.id }),
-                preProcessing: (source, args) => SchemaHandler.preProcessing(args),
-                postProcessing: (data: UnknownObject, s, args, c) => {
-                    return SchemaHandler.postProcessing(data, c, args, true, true);
-                }
-            },
-            {
-                location: { name: "deleteSchema" },
-                operation: Operation.DELETE,
-                options: { oneEntry: true },
-                preCheck: (source, args) => Validator.validateOne(args, { id: { dbExists: this.table } }),
-                filter: (source, args) => ({ id: args.id }),
-                postProcessing: (data: UnknownObject, s, a, c) => {
-                    return SchemaHandler.postProcessing(data, c, a, false, true);
-                }
-            },
-            {
-                location: { name: "activateSchema" },
-                operation: Operation.UPDATE,
-                options: { oneEntry: true },
-                preCheck: (source, args) => Validator.validateOne(args, { id: { dbExists: this.table } }),
-                filter: (source, args) => ({ id: args.id }),
-                preProcessing: async (source, args, context, db) => {
-                    if ((await context.emit("getSettings")).oneSchemaMode) {
-                        this.log.info("Disabling all other active schemas.");
-                        await db.update({ active: true }, { active: false });
-                    }
-                    return { active: true };
-                },
-                postProcessing: (data: UnknownObject, s, args, context) => {
-                    return SchemaHandler.postProcessing(data, context, args, false, false, true);
-                }
-            }
-        ];
-    }
+    private activationRules = {
+        id: { dbExists: this.table },
+        active: { isBoolean: true }
+    } as ValidationQueryConfig;
 
     private static async validate(source, args, context, db): Promise<boolean> {
         if (args.id && !(await db.exists(args.id))) {
             throw new Error("The id is not valid.");
+        }
+
+        if (args.mode.length === 0) {
+            throw new Error("No pin modes are set.");
+        }
+
+        if (args.name.length < 3) {
+            throw new Error("The schema name is too short.");
         }
 
         const pinSchemaDB = new PinSchemaHandler().getDB();
@@ -121,7 +58,7 @@ export default class SchemaHandler extends BasicHandler {
                 throw new Error("The pin mode is not valid");
             }
 
-            if (pinSchemaDB.exists(value.pinId.toString())) {
+            if (!pinSchemaDB.exists(value.pinId.toString())) {
                 throw new Error(`The pin ${value.pinId} does not exist.`);
             }
         });
@@ -209,5 +146,83 @@ export default class SchemaHandler extends BasicHandler {
         await context
             .callHandlerMethod({ root: "mutation", name: "activatePins" }, args, pinModes)
             .catch(SchemaHandler.catch);
+    }
+
+    public getQueryConfig(): (QueryField | SelfHandledField)[] {
+        return [
+            {
+                location: { name: "schema" },
+                preCheck: (source, args) => Validator.validateOne(args, this.queryRules),
+                filter: (source, args) => {
+                    let filter = {};
+
+                    if (args.id) {
+                        filter = Object.assign(filter, { id: args.id });
+                    }
+
+                    if (args.active) {
+                        filter = Object.assign(filter, { active: args.active });
+                    }
+
+                    return filter;
+                },
+                postProcessing: (data: UnknownObject, s, args, context) => {
+                    return SchemaHandler.postProcessing(data, context, args);
+                }
+            }
+        ];
+    }
+
+    public getCrudConfig(): (CrudField | SelfHandledField)[] {
+        return [
+            {
+                location: { name: "addSchema" },
+                operation: Operation.INSERT,
+                options: { oneEntry: true },
+                preCheck: SchemaHandler.validate,
+                preProcessing: (source, args) => SchemaHandler.preProcessing(args),
+                postProcessing: (data: UnknownObject, s, a, c) => SchemaHandler.postProcessing(data, c, a, true)
+            },
+            {
+                location: { name: "editSchema" },
+                operation: Operation.UPDATE,
+                options: { oneEntry: true },
+                preCheck: SchemaHandler.validate,
+                filter: (source, args) => ({ id: args.id }),
+                preProcessing: (source, args) => SchemaHandler.preProcessing(args),
+                postProcessing: (data: UnknownObject, s, args, c) => {
+                    return SchemaHandler.postProcessing(data, c, args, true, true);
+                }
+            },
+            {
+                location: { name: "deleteSchema" },
+                operation: Operation.DELETE,
+                options: { oneEntry: true },
+                preCheck: (source, args) => Validator.validateOne(args, { id: { dbExists: this.table } }),
+                filter: (source, args) => ({ id: args.id }),
+                postProcessing: (data: UnknownObject, s, a, c) => {
+                    return SchemaHandler.postProcessing(data, c, a, false, true);
+                }
+            },
+            {
+                location: { name: "activateSchema" },
+                options: { oneEntry: true },
+                operation: Operation.UPDATE,
+
+                filter: (source, args) => ({ id: args.id }),
+                preCheck: (source, args) => Validator.validateOne(args, this.activationRules),
+
+                preProcessing: async (source, args, context, db) => {
+                    if (args.active && (await context.emit("getSettings")).oneSchemaMode) {
+                        this.log.info("Disabling all other active schemas.");
+                        await db.update({ active: true }, { active: false });
+                    }
+                    return { active: args.active };
+                },
+                postProcessing: (data: UnknownObject, s, args, context) => {
+                    return SchemaHandler.postProcessing(data, context, args, false, false, true);
+                }
+            }
+        ];
     }
 }

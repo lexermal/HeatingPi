@@ -58,15 +58,16 @@ export default class PinSchemaHandler extends BasicHandler {
                 operation: Operation.INSERT,
                 location: { name: "addPinSchema" },
                 preCheck: (source, args) => Validator.validateMany(args.mode, this.rules),
-                preProcessing: (source: Schema, args) =>
-                    args.mode.map(
+                preProcessing: (source: Schema, args) => {
+                    return args.mode.map(
                         (item) =>
                             ({
                                 mode: item.mode,
                                 pinId: item.pinId,
                                 schemaId: source.id
                             } as PinSchema)
-                    )
+                    );
+                }
             },
             {
                 role: ROLES.USER,

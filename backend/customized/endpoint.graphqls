@@ -10,10 +10,10 @@ type Mutation {
     # Pins
     editPin(id: Int!, name: String, activeByDefault: Boolean): Pin
     # Schema
-    createSchema(name: String!, mode: [InputPinMode]!, temperature: InputTemperature!): Schema
+    addSchema(name: String!, mode: [InputPinMode]!, temperature: InputTemperature!): Schema
     editSchema(id: String!, name: String!, mode: [InputPinMode]!, temperature: InputTemperature!): Schema
     deleteSchema(id: String!): Schema
-    activateSchema(id: String!): Schema
+    activateSchema(id: String!, active: Boolean!): Schema
     # Login
     login(email: String!, password: String!): User
     logout: Boolean
