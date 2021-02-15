@@ -1,6 +1,6 @@
 import { CrudField, Operation, QueryField, SelfHandledField } from "../../handlerCreation/HandlerGenerator";
 import { DbColumnTypes } from "../../dal/databases/BasicDBAccess";
-import Validator, { ValidationQueryConfig } from "../../utils/Validator";
+import { ValidationQueryConfig } from "../../utils/validator/Validator";
 import BasicHandler from "../../handler/_BasicHandler";
 import { Schema } from "./SchemaHandler";
 import PinHandler from "./PinHandler";
@@ -31,8 +31,8 @@ export default class PinSchemaHandler extends BasicHandler {
     };
 
     private rules = {
-        mode: { inList: [0, 1, 2] },
-        pinId: { dbExists: new PinHandler().table }
+        mode: { array: { inList: [0, 1, 2] } },
+        pinId: { string: { dbExists: new PinHandler().table } }
     } as ValidationQueryConfig;
 
     public static getToChangePins(data: PinMode[]): AbsolutePinMode[] {
@@ -43,7 +43,7 @@ export default class PinSchemaHandler extends BasicHandler {
     public getQueryConfig(): (QueryField | SelfHandledField)[] {
         return [
             {
-                role: ROLES.USER,
+                role: [ROLES.USER, ROLES.INTERNAL],
                 location: { root: "schema", name: "pinModes" },
                 filter: (source: Schema) => ({ schemaId: Array.isArray(source) ? source[0].id : source.id })
             }
@@ -57,10 +57,10 @@ export default class PinSchemaHandler extends BasicHandler {
                 options: { internal: true },
                 operation: Operation.INSERT,
                 location: { name: "addPinSchema" },
-                preCheck: (source, args) => Validator.validateMany(args.mode, this.rules),
+                preCheck: { preProcess: { preparation: (source, args) => args.mode, rules: this.rules } },
                 preProcessing: (source: Schema, args) => {
                     return args.mode.map(
-                        (item) =>
+                        (item: PinMode) =>
                             ({
                                 mode: item.mode,
                                 pinId: item.pinId,

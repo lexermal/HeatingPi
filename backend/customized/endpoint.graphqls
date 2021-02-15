@@ -4,6 +4,7 @@ type Query {
     currentUser: User
     temperature: Float
     settings: Settings
+    temperatureLog: [TemperatureLog]
 }
 
 type Mutation {
@@ -28,8 +29,8 @@ input InputPinMode {
     mode: Int!
 }
 input InputTemperature {
-    min: Int
-    max: Int
+    min: Float
+    max: Float
 }
 
 input InputSettings {
@@ -53,13 +54,14 @@ type Schema {
     id: String
     name: String
     active: Boolean
+    running: Boolean
     temperature: Temperature
     pinModes: [PinMode]!
 }
 
 type Temperature {
-    min: Int
-    max: Int
+    min: Float
+    max: Float
 }
 
 type User {
@@ -73,4 +75,11 @@ type User {
 type Settings {
     oneSchemaMode: Boolean
     multiSchemaPriority: String
+}
+
+type TemperatureLog {
+    id: String
+    date: String
+    value: Float
+    simulated: Boolean
 }

@@ -6,8 +6,8 @@ export const PORT = 9000;
 
 export const LOG_LEVEL = "debug"; // debug, info, warn, error
 export const LOG_FORMAT = "YYYY-MM-DD HH:mm:ss";
-
-export const GRAPHQL_SCHEMA_FILE = "./endpoint.graphqls";
+export const LOG_FILE = "heatingpi.log.txt"; // or undefined
+export const LOG_MAX_FILE_SIZE = 1024 * 20; // = 20mb
 
 export const DB_CONNECTION = {
     host: "127.0.0.1",
@@ -24,18 +24,20 @@ export const DB_ENCRYPTION_PASSWORD = "7lwMCcgVcriSWcA5qqq3YmefmMWnrF34c93eU4osV
 export const DB_ENCRYPTION_ALGORITHM = "aes-256-cbc";
 export const DB_ENCRYPTION_ALGORITHM_BYTES = 256 / 8;
 
+// the permissions are not downward rewarding
 export enum ROLES {
     PUBLIC = 0, // 0 = unrestricted
     USER = 1,
     MODERATOR = 2,
-    ADMIN = 3
+    ADMIN = 3,
+    INTERNAL = 4
 }
 
 export const USERS = [
     {
-        name: "Max Mustermann",
-        email: "max@max.com",
-        password: "test123",
+        name: "HeatingPI User",
+        email: "admin@heating.pi",
+        password: "q8NtzjQJIAB1l2j1uTqgZ7yWOw",
         role: ROLES.USER
     }
 ] as User[];

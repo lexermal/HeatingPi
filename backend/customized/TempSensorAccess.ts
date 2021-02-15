@@ -1,3 +1,4 @@
+// @ts-ignore
 import sensor from "ds18b20-raspi";
 
 export default function readTemperature(simulated: boolean) {

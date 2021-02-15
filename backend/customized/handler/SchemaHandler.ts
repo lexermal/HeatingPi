@@ -3,20 +3,34 @@ import {
     CrudField,
     Operation,
     QueryField,
+    RoutineField,
     SelfHandledField,
     UnknownObject
 } from "../../handlerCreation/HandlerGenerator";
 import { DbColumnTypes } from "../../dal/databases/BasicDBAccess";
-import Validator, { ValidationQueryConfig } from "../../utils/Validator";
+import Validator, { ValidationQueryConfig } from "../../utils/validator/Validator";
 import PinSchemaHandler, { PinMode } from "./PinSchemaHandler";
 import BasicHandler from "../../handler/_BasicHandler";
 import { Temperature } from "./TemperatureHandler";
+import DbTable from "../../dal/DbAbstractor";
+import { Settings } from "./SettingHandler";
+import { ROLES } from "../Config";
 
 export interface Schema {
     id: string;
     name: string;
     active: boolean;
+    running: boolean;
     temperature: Temperature;
+}
+
+export interface DbSchema {
+    id: string;
+    name: string;
+    active: boolean;
+    running: boolean;
+    temperatureMin: number;
+    temperatureMax: number;
 }
 
 export default class SchemaHandler extends BasicHandler {
@@ -24,21 +38,22 @@ export default class SchemaHandler extends BasicHandler {
     public columns = {
         name: DbColumnTypes.STRING,
         active: DbColumnTypes.BOOLEAN,
+        running: DbColumnTypes.BOOLEAN,
         temperatureMin: DbColumnTypes.NUMBER,
         temperatureMax: DbColumnTypes.NUMBER
     };
 
     private queryRules = {
-        id: { optional: true, dbExists: this.table },
+        id: { optional: true, string: { dbExists: this.table } },
         active: { optional: true, isBoolean: true }
     } as ValidationQueryConfig;
 
     private activationRules = {
-        id: { dbExists: this.table },
+        id: { string: { dbExists: this.table } },
         active: { isBoolean: true }
     } as ValidationQueryConfig;
 
-    private static async validate(source, args, context, db): Promise<boolean> {
+    private static async validate(source: any, args: any, context: ContextType, db: DbTable): Promise<boolean> {
         if (args.id && !(await db.exists(args.id))) {
             throw new Error("The id is not valid.");
         }
@@ -74,6 +89,7 @@ export default class SchemaHandler extends BasicHandler {
         return {
             name: args.name,
             active: false,
+            running: false,
             temperatureMin: args.temperature.min,
             temperatureMax: args.temperature.max
         };
@@ -88,29 +104,11 @@ export default class SchemaHandler extends BasicHandler {
         activate?: boolean
     ) {
         if (remove) {
-            await context
-                .callHandlerMethod(
-                    {
-                        root: "mutation",
-                        name: "deletePinSchema"
-                    },
-                    data,
-                    args
-                )
-                .catch(SchemaHandler.catch);
+            await this.callHandler(context, "deletePinSchema", data, args);
         }
 
-        if (create) {
-            await context
-                .callHandlerMethod(
-                    {
-                        root: "mutation",
-                        name: "addPinSchema"
-                    },
-                    data,
-                    args
-                )
-                .catch(SchemaHandler.catch);
+        if (create && data) {
+            await this.callHandler(context, "addPinSchema", data, args);
         }
 
         if (activate) {
@@ -123,11 +121,22 @@ export default class SchemaHandler extends BasicHandler {
         return SchemaHandler.translateData(data);
     }
 
+    private static async callHandler(context: ContextType, mutationName: string, data: any, args: any) {
+        await context
+            .callHandlerMethod({ root: "mutation", name: mutationName }, data, args)
+            .catch(SchemaHandler.catch);
+    }
+
     private static translateData(data: UnknownObject) {
+        if (!data) {
+            return data;
+        }
+
         return {
             id: data.id,
             name: data.name,
             active: data.active,
+            running: data.running,
             temperature: {
                 min: data.temperatureMin,
                 max: data.temperatureMax
@@ -151,8 +160,9 @@ export default class SchemaHandler extends BasicHandler {
     public getQueryConfig(): (QueryField | SelfHandledField)[] {
         return [
             {
+                role: ROLES.USER,
                 location: { name: "schema" },
-                preCheck: (source, args) => Validator.validateOne(args, this.queryRules),
+                preCheck: (source, args) => Validator.validate(args, this.queryRules),
                 filter: (source, args) => {
                     let filter = {};
 
@@ -198,7 +208,7 @@ export default class SchemaHandler extends BasicHandler {
                 location: { name: "deleteSchema" },
                 operation: Operation.DELETE,
                 options: { oneEntry: true },
-                preCheck: (source, args) => Validator.validateOne(args, { id: { dbExists: this.table } }),
+                preCheck: { argsRules: { id: { string: { dbExists: this.table } } } },
                 filter: (source, args) => ({ id: args.id }),
                 postProcessing: (data: UnknownObject, s, a, c) => {
                     return SchemaHandler.postProcessing(data, c, a, false, true);
@@ -210,7 +220,7 @@ export default class SchemaHandler extends BasicHandler {
                 operation: Operation.UPDATE,
 
                 filter: (source, args) => ({ id: args.id }),
-                preCheck: (source, args) => Validator.validateOne(args, this.activationRules),
+                preCheck: (source, args) => Validator.validate(args, this.activationRules),
 
                 preProcessing: async (source, args, context, db) => {
                     if (args.active && (await context.emit("getSettings")).oneSchemaMode) {
@@ -224,5 +234,61 @@ export default class SchemaHandler extends BasicHandler {
                 }
             }
         ];
+    }
+
+    getRoutines(): RoutineField[] {
+        return [
+            {
+                name: "Schema check temperature",
+                runAtStartup: true,
+                handler: async (context, db) => {
+                    // this function only executes pin changes if multiple are in range and one is selected.
+                    context.setEmitter("FETCH_TEMPERATURE", async (temp: number) => {
+                        const settings = (await context.emit("getSettings")) as Settings | undefined;
+
+                        if (!settings) {
+                            return undefined;
+                        }
+
+                        const runningSchema = await this.getRunningSchema(temp, settings, db);
+
+                        await this.getDB().update({}, { running: false });
+
+                        if (runningSchema) {
+                            await this.getDB().update({ id: runningSchema.id }, { running: true });
+
+                            this.log.info(
+                                `Schema ${runningSchema.name} is matching with the temperature and will be activated.`
+                            );
+                            await SchemaHandler.activateSchema(context, { id: runningSchema.id });
+                        }
+                        return undefined;
+                    });
+                }
+            }
+        ];
+    }
+
+    private async getRunningSchema(temp: number, settings: Settings, db: DbTable): Promise<DbSchema | undefined> {
+        const activeSchemas = await db.query<DbSchema>({ active: true });
+
+        if (!activeSchemas || activeSchemas.length === 0) {
+            return undefined;
+        }
+
+        const schemasInRange = activeSchemas.filter(
+            (schema: any) => temp >= schema.temperatureMin && temp <= schema.temperatureMax
+        );
+
+        if (schemasInRange.length === 0) {
+            this.log.debug("No schemas found that are in range for state change.");
+            return undefined;
+        }
+
+        const parameter = settings.multiSchemaPriority === "lowest" ? "temperatureMin" : "temperatureMax";
+
+        return schemasInRange.reduce((prev, curr) => {
+            return prev[parameter] < curr[parameter] ? prev : curr;
+        });
     }
 }
