@@ -56,8 +56,8 @@ type Settings {
 }
 
 type Temperature {
-    max: Int
-    min: Int
+    max: Float
+    min: Float
 }
 
 type User {
@@ -79,6 +79,6 @@ input InputSettings {
 }
 
 input InputTemperature {
-    max: Int
-    min: Int
+    max: Float
+    min: Float
 }

@@ -1,11 +1,13 @@
-import { DocumentNode, FetchResult, gql, MutationHookOptions, useMutation } from "@apollo/client";
+import { ApolloError, DocumentNode, FetchResult, gql, MutationHookOptions, useMutation } from "@apollo/client";
 import { MutationBaseOptions } from "@apollo/client/core/watchQueryOptions";
 import Toast from "./Toast";
 
 export const DASHBOARD = gql`
     query{
+        temperature
         schema(active:true){
             name
+            running
         }
         pins{
             id
@@ -22,6 +24,10 @@ export const SETTINGS = gql`
             name
             activeByDefault
         }
+        settings{
+            oneSchemaMode
+            multiSchemaPriority
+        }
     }
 `;
 
@@ -36,6 +42,10 @@ export const SCHEMA = gql`
             id
             name
             active
+            temperature{
+                min
+                max
+            }
             pinModes{
                 mode
                 pin{
@@ -47,20 +57,25 @@ export const SCHEMA = gql`
     }
 `;
 
-export const TEMPERATURE = gql`
+export const USER = gql`
     query{
-        temperature
+        currentUser{
+            token
+            id
+            name
+        }
     }
 `;
 
-export const USER = gql`
-   query{
-  currentUser{
-    token
-    id
-    name
-  }
-}
+export const TEMPERATURE_LOG = gql`
+    query{
+        temperatureLog{
+            id
+            date
+            value
+            simulated
+        }
+    }
 `;
 
 export const EDIT_PIN = gql`
@@ -75,7 +90,7 @@ export const EDIT_PIN = gql`
 `;
 
 export const ADD_SCHEMA = gql`
-    mutation($name:String!,$mode:[InputPinMode]!,$min:Int!, $max:Int!){
+    mutation($name:String!,$mode:[InputPinMode]!,$min:Float!, $max:Float!){
         addSchema(name:$name,mode:$mode,temperature:{min:$min,max:$max}){
             id
             name
@@ -96,7 +111,7 @@ export const ADD_SCHEMA = gql`
 `;
 
 export const EDIT_SCHEMA = gql`
-    mutation($id:String!,$name:String!,$mode:[InputPinMode]!,$min:Int!, $max:Int!){
+    mutation($id:String!,$name:String!,$mode:[InputPinMode]!,$min:Float!, $max:Float!){
         editSchema(id:$id,name:$name,mode:$mode,temperature:{min:$min,max:$max}){
             id
             name
@@ -137,24 +152,33 @@ export const ACTIVATE_SCHEMA = gql`
 
 export const LOGIN = gql`
     mutation($email:String!, $password:String!){
-  login(email:$email,password:$password){
-    id
-    name
-    email
-    token
-    role
-  }
-}
+        login(email:$email,password:$password){
+            id
+            name
+            email
+            token
+            role
+        }
+    }
+`;
+
+export const APPLY_SETTINGS = gql`
+    mutation($one:Boolean!,$priority:String!){
+        applySettings(settings:{oneSchemaMode:$one,multiSchemaPriority:$priority}){
+            oneSchemaMode
+            multiSchemaPriority
+        }
+    }
 `;
 
 export const SchemaFragment = gql`
-         fragment NewSchema on Schema {
-             id
-             name
-             pinModes
-             temperature
-         }
-     `;
+    fragment NewSchema on Schema {
+        id
+        name
+        pinModes
+        temperature
+    }
+`;
 
 export interface Operation {
     add?: {
@@ -172,8 +196,15 @@ export interface Operation {
     ignore?: true
 }
 
-export function mutation(gqlMutation: DocumentNode, field: string, operation: Operation) {
+interface OnFunctions {
+    onComplete?: (data: any) => any
+    onError?: (error: ApolloError) => any
+}
+
+export function mutation(gqlMutation: DocumentNode, field: string, operation: Operation, on?: OnFunctions) {
     const cacheInteraction = {
+        onCompleted: (data) => on?.onComplete(data),
+        onError: (data: ApolloError) => on?.onError(data),
         update(cache, { data }) {
             cache.modify({
                 fields: {
@@ -228,17 +259,15 @@ export type MutationMethod = (options?: MutationBaseOptions) => Promise<FetchRes
  * @return returns the mutation method that needs to be triggered if the data should be changed on the backend.
  */
 export function mutationHandler(gqlMutation: DocumentNode, field: string, operation: Operation): MutationMethod {
-    const result = mutation(gqlMutation, field, operation);
+    const result = mutation(gqlMutation, field, operation, {
+        onComplete: data => {
+            Toast.success("The changes have been successfully saved.")
+        }, onError: error => {
+            console.log("Response of mutation:", result.error)
+            Toast.error("Change could not be saved. " + result.error)
+        }
+    });
 
-    if (result.data) {
-        console.log("data successfully saved", result.data)
-        Toast.success("The changes have been successfully saved.")
-    }
-
-    if (result.error) {
-        console.log("Graphql error:", result.error)
-        Toast.error("Change could not be saved. " + result.error)
-    }
     return result.fireMutation;
 }
 

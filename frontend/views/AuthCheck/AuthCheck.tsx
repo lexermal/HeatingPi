@@ -9,6 +9,9 @@ export default function AuthCheck(props: { children: JSX.Element | JSX.Element[]
 
     useEffect(() => {
         if (error) {
+            console.log("login failed", error)
+            localStorage.removeItem('token');
+
             router.push('/login')
         }
     })

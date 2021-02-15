@@ -1,13 +1,14 @@
-import { toast, ToastOptions } from 'react-toastify';
+import { Slide, toast, ToastOptions } from 'react-toastify';
 
 export default class Toast {
     private static settings = {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 4000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
+        transition:Slide,
     } as ToastOptions;
 
     public static info(text: string) {

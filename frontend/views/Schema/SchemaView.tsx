@@ -10,8 +10,8 @@ import { faPowerOff } from "@fortawesome/free-solid-svg-icons"
 import { queryHandler } from '../BackendHandler/BackendHandler'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import EditableLabel from '../../components/label/editable/EditableLabel'
-import LabelSwitch, { SwitchListType } from '../../components/label/switch/LabelSwitch'
 import { ACTIVATE_SCHEMA, mutationHandler, SCHEMA } from '../../utils/backendCalls'
+import LabelSwitch, { SwitchListType } from '../../components/label/switch/LabelSwitch'
 
 export default function SchemaView() {
     return queryHandler(SCHEMA, (data) => {
@@ -79,9 +79,13 @@ export interface Schema {
     id: number
     name: string
     active: boolean
+    running: boolean
     pinModes: Mode[]
+    temperature:{
+        min:number
+        max:number
+    }
 }
-
 
 export interface Mode {
     mode: number

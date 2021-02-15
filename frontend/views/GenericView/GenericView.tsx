@@ -26,6 +26,11 @@ export default function GenericView() {
                             </Link>
                         </NavItem>
                         <NavItem>
+                            <Link href="/temperature">
+                                <a onClick={() => setOpen(false)} className={"nav-link " + css.link}>Temperature</a>
+                            </Link>
+                        </NavItem>
+                        <NavItem>
                             <Link href="/settings">
                                 <a onClick={() => setOpen(false)} className={"nav-link " + css.link}>
                                     <FontAwesomeIcon icon={faCog}/>

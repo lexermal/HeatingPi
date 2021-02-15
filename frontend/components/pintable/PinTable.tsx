@@ -6,7 +6,7 @@ import EditableLabel from "../label/editable/EditableLabel";
 interface Props {
     pins: Pin[],
     iconRenderer: (pin: Pin) => JSX.Element,
-    labelOnSubmit?: (pin:Pin, value: string) => void
+    labelOnSubmit?: (pin: Pin, value: string) => void
 }
 
 export default function PinTable(props: Props) {
@@ -27,7 +27,6 @@ export default function PinTable(props: Props) {
     return <Container>{rows}</Container>;
 }
 
-
 function renderColumn(e: Pin, props: Props) {
     return <Col className={css.names} md={6}>
         <Row className={"no-gutters"}>
@@ -45,5 +44,6 @@ function renderColumn(e: Pin, props: Props) {
 export interface Pin {
     id: number
     name: string
+    active: boolean
     activeByDefault: boolean
 }

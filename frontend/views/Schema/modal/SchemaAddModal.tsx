@@ -2,6 +2,7 @@ import { Mode } from "../SchemaView";
 import React, { useState } from "react";
 import Toast from "../../../utils/Toast";
 import { InputMode } from "./SchemaEditModal";
+import { Col, FormGroup, Input, Row } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PinTable, { Pin } from "../../../components/pintable/PinTable";
 import OverlayModal from "../../../components/overlay/modal/OverlayModal";
@@ -12,6 +13,8 @@ import LabelSwitch, { SwitchListType } from "../../../components/label/switch/La
 export function AddModal(props: { pins: Pin[] }) {
     const defaultModes = props.pins.map(pin => ({ mode: 2, pinId: pin.id } as InputMode));
 
+    const [min, setMin] = useState("");
+    const [max, setMax] = useState("");
     const [newName, setNewName] = useState("");
     const [modes, setModes] = useState(defaultModes);
     const addSchema = mutationHandler(ADD_SCHEMA, "schema", {
@@ -39,8 +42,15 @@ export function AddModal(props: { pins: Pin[] }) {
                 return;
             }
 
-            addSchema({ variables: { name: newName.trim(), mode: modes, min: 0, max: 1 } })
+            if (Number(min) >= Number(max)) {
+                Toast.error("The max temperature needs to be larger than min temperature.")
+                return;
+            }
+
+            addSchema({ variables: { name: newName.trim(), mode: modes, min: Number(min), max: Number(max) } })
             setModes(defaultModes);
+            setMin("");
+            setMax("")
         }}>
 
         <input placeholder={"Name"}
@@ -52,6 +62,26 @@ export function AddModal(props: { pins: Pin[] }) {
             pinId: value.pin.id
         }))))}
 
+        <Row form className={"mt-2"}>
+            <Col md={6}>
+                <FormGroup>
+                    <Input
+                        value={min}
+                        type={"number"}
+                        placeholder="Min temperature"
+                        onChange={(e) => setMin(e.target.value)}/>
+                </FormGroup>
+            </Col>
+            <Col md={6}>
+                <FormGroup>
+                    <Input
+                        value={max}
+                        type={"number"}
+                        placeholder="Max temperature"
+                        onChange={(e) => setMax(e.target.value)}/>
+                </FormGroup>
+            </Col>
+        </Row>
     </OverlayModal>
 }
 
