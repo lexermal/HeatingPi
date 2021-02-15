@@ -1,47 +1,61 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this script as root."
   exit
 fi
 
-echo "#####################Remove old/Install new Software#########################"
-apt-get purge openjdk-8-jre-headless -y
-apt-get install openjdk-8-jre-headless openjdk-8-jre git-core -y
+apt-get update
 
-echo "#####################Install WiringPi#########################"
-git clone git://git.drogon.net/wiringPi
-cd wiringPi
-./build
-curl -s get.pi4j.com | bash
-cd /opt/pi4j/examples
-./build
-java GpioOutputExample
+if ! apt-get -qq install snapd; then
 
+  echo "####################Activating sensor############################"
+  echo "" >>/boot/config.txt
+  echo "dtoverlay=w1-gpio" >>/boot/config.txt
 
-#https://funprojects.blog/2018/03/18/control-raspberry-pi-gpio-with-java/
+  echo "######################Installing snap#############################"
+  apt-get install snapd -y
+  echo "Successfully installed snap deamon."
+  echo "The system needs to restart. Afterwards run the script again."
 
+  read -n1 -p "Should the system restart now?[y/n]" doit
+  case $doit in
+  y | Y) reboot ;;
+  n | N) echo "Ok, the script will exit now." ;;
+  *) echo "Invalid character" ;;
+  esac
 
-echo "#####################Configure Raspberry#########################"
+else
+  echo "#####################Install new software#########################"
 
-#add user pi to the gpio group
-usermod -a -G gpio pi
-chmod 777 /var/log
-touch /var/log/HeizungsPi.log
-chmod 777 /var/log/HeizungsPi.log
+  snap install core
+  snap install node --classic
+  npm install --global yarn
 
-echo "######################Configure Cronejob##################"
+  echo "#####################Install HeatingPi#########################"
+  mkdir /home/pi/heatingpi
+  chmod 777 /home/pi/heatingpi
 
-#write out current crontab
-crontab -l > mycron
-#echo new cron into cron file
-echo "@reboot java -jar /home/pi/HeizungsPi-1.0-SNAPSHOT.jar >> /var/log/HeizungsPi.log 2>&1" >> mycron
-#install new cron file
-crontab mycron
-rm mycron
+  cd /home/pi/heatingpi || (echo "Cound not enter home/pi/heatingpi" && exit)
+  tar -xzvf home/pi/heatingpi.tar.gz
 
+  echo "#####################Configure raspberry#########################"
 
+  chmod 777 /var/log
+  touch /var/log/HeatingPi.log
+  chmod 777 /var/log/HeatingPi.log
 
+  echo "######################Configure cronjob##################"
 
+  #write out current crontab
+  crontab -l >mycron
+  #echo new cron into cron file
+  echo "@reboot cd /home/pi/heatingpi yarn prod >> /var/log/HeatingPi.log 2>&1" >>mycron
+  #install new cron file
+  crontab mycron
+  rm mycron
 
+fi
 
+echo "Everything was installed successfully."
+echo "Reboot to start the heatingpi at port 9000."
