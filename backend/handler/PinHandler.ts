@@ -1,7 +1,7 @@
-import { ROLES } from "../Config";
-import PinAccess from "../PinAccess";
+import { ROLES } from "../macris/config/Config";
+import PinAccess from "../bridge/PinAccess";
 import SchemaHandler from "./SchemaHandler";
-import getNewItems from "../../utils/Utils";
+import getNewItems from "../macris/utils/Utils";
 import {
     CrudField,
     Operation,
@@ -9,11 +9,11 @@ import {
     RoutineField,
     SelfHandledField,
     UnknownObject
-} from "../../handlerCreation/HandlerGenerator";
+} from "../macris/handlerCreation/HandlerGenerator";
 import PinSchemaHandler from "./PinSchemaHandler";
-import BasicHandler from "../../handler/_BasicHandler";
-import { DbColumnTypes } from "../../dal/databases/BasicDBAccess";
-import Validator, { ValidationQueryConfig } from "../../utils/validator/Validator";
+import BasicHandler from "../macris/handler/_BasicHandler";
+import { DbColumnTypes } from "../macris/dal/databases/BasicDBAccess";
+import Validator, { ValidationQueryConfig } from "../macris/utils/validator/Validator";
 
 export interface Pin {
     id: number;

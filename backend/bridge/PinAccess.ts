@@ -1,8 +1,8 @@
 import fs from "fs";
 import rpio from "rpio";
-import Log from "../utils/Logger";
-import { Pin } from "./handler/PinHandler";
-import { GPIO_PINS } from "./CustomConfig";
+import Log from "../macris/utils/Logger";
+import { Pin } from "../handler/PinHandler";
+import { GPIO_PINS } from "../CustomConfig";
 
 export default class PinAccess {
     private log = Log.getInstance();

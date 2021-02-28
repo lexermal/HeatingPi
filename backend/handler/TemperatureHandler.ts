@@ -1,9 +1,9 @@
-import PinAccess from "../PinAccess";
-import readTemperature from "../TempSensorAccess";
-import BasicHandler from "../../handler/_BasicHandler";
-import { DbColumnTypes } from "../../dal/databases/BasicDBAccess";
-import { QueryField, RoutineField, SelfHandledField } from "../../handlerCreation/HandlerGenerator";
-import { ROLES } from "../Config";
+import PinAccess from "../bridge/PinAccess";
+import readTemperature from "../bridge/TempSensorAccess";
+import BasicHandler from "../macris/handler/_BasicHandler";
+import { DbColumnTypes } from "../macris/dal/databases/BasicDBAccess";
+import { QueryField, RoutineField, SelfHandledField } from "../macris/handlerCreation/HandlerGenerator";
+import { ROLES } from "../macris/config/Config";
 
 export interface Temperature {
     min: number;

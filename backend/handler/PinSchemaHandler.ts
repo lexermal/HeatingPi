@@ -1,10 +1,10 @@
-import { CrudField, Operation, QueryField, SelfHandledField } from "../../handlerCreation/HandlerGenerator";
-import { DbColumnTypes } from "../../dal/databases/BasicDBAccess";
-import { ValidationQueryConfig } from "../../utils/validator/Validator";
-import BasicHandler from "../../handler/_BasicHandler";
+import { CrudField, Operation, QueryField, SelfHandledField } from "../macris/handlerCreation/HandlerGenerator";
+import { DbColumnTypes } from "../macris/dal/databases/BasicDBAccess";
+import { ValidationQueryConfig } from "../macris/utils/validator/Validator";
+import BasicHandler from "../macris/handler/_BasicHandler";
 import { Schema } from "./SchemaHandler";
 import PinHandler from "./PinHandler";
-import { ROLES } from "../Config";
+import { ROLES } from "../macris/config/Config";
 
 export interface PinSchema {
     pinId: number;
