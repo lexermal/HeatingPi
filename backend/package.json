@@ -2,8 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "dependencies": {
+    "ds18b20-raspi": "^0.3.6",
+    "rpio": "^2.4.2"
   },
   "scripts": {
-    "dev": "yarn --cwd _macris/ dev"
+    "dev": "yarn install && yarn --cwd _macris/ dev"
   }
 }
