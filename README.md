@@ -67,85 +67,11 @@ Run build-project.sh
 https://{ip-of-pi}:9000
 
 # To solve
-wenn db nicht existiert kommen fehler
-bei temperatur reading wenn echte temp kommt ...°C. false
-
-
-Nach Schema erstellen, dass alles aktiviert:
-2021-02-22 18:12:44 [debug] RdbAccess:   	Inserting data into table schema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 1 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 2 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 3 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 4 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 5 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 6 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 7 does not exist in table pinschema.
-2021-02-22 18:12:44 [debug] RdbAccess:   	Id 8 does not exist in table pinschema.
-
-Aktivieren des schemas von oben:
-Updated 1 entries in table schema.
-2021-02-22 18:13:02 [debug] RdbAccess:   	Fetching some data from table schema.
-2021-02-22 18:13:11 [info] HandlerGenerator: 	User 1c90b9d9-00ad-456f-ada9-bb2fb59e959a is accessing mutation activateSchema.
-2021-02-22 18:13:11 [debug] RdbAccess:   	Fetching some data from table schema.
-2021-02-22 18:13:11 [error] RdbAccess:   	Could not find the column type of name. This is a bug.
-2021-02-22 18:13:11 [error] RdbAccess:   	Could not find the column type of active. This is a bug.
-2021-02-22 18:13:11 [error] RdbAccess:   	Could not find the column type of running. This is a bug.
-2021-02-22 18:13:11 [error] RdbAccess:   	Could not find the column type of temperatureMin. This is a bug.
-2021-02-22 18:13:11 [error] RdbAccess:   	Could not find the column type of temperatureMax. This is a bug.
-2021-02-22 18:13:11 [info] SchemaHandler: 	Disabling all other active schemas.
-2021-02-22 18:13:11 [debug] RdbAccess:   	Updating data in table schema.
-2021-02-22 18:13:11 [debug] RdbAccess:   	Updated 0 entries in table schema.
-
-Danach gings aber auf einmal und alles wird erfolgriehch auf 0 gesetzt.
-
 pin 1 ist relai 8 ka warum
 
 /settings oder /temperature,.... liefern fehler, dass kein file hinterlegt ist
 
 pin active status wird nicht geupdatet wenn sich schema aktiviert oder es deaktiviert wird
-
-Settings icon soll nur angezeigt werden wenn großer screen. bei Burger "Settings"
-
-
-Bei default state ändern kommt folgender Fehler:
-2021-02-22 18:27:26 [info] HandlerGenerator: 	User 1c90b9d9-00ad-456f-ada9-bb2fb59e959a is accessing mutation editPin.
-2021-02-22 18:27:26 [debug] RdbAccess:   	Fetching some data from table pin.
-2021-02-22 18:27:26 [error] RdbAccess:   	Could not find the column type of name. This is a bug.
-2021-02-22 18:27:26 [error] RdbAccess:   	Could not find the column type of active. This is a bug.
-2021-02-22 18:27:26 [error] RdbAccess:   	Could not find the column type of gpioPin. This is a bug.
-2021-02-22 18:27:26 [error] RdbAccess:   	Could not find the column type of activeByDefault. This is a bug.
-2021-02-22 18:27:26 [debug] RdbAccess:   	Fetching some data from table pin.
-2021-02-22 18:27:26 [debug] RdbAccess:   	Updating data in table pin.
-2021-02-22 18:27:27 [debug] RdbAccess:   	Updated 1 entries in table pin.
-2021-02-22 18:27:27 [debug] RdbAccess:   	Fetching some data from table pin.
-
-# Fehler beim aktivieren von 2 schemen:
-HandlerGenerator: 	User 1c90b9d9-00ad-456f-ada9-bb2fb59e959a is accessing mutation activateSchema.
-2021-02-22 18:30:24 [debug] RdbAccess:   	Fetching some data from table schema.
-2021-02-22 18:30:24 [error] RdbAccess:   	Could not find the column type of name. This is a bug.
-2021-02-22 18:30:24 [error] RdbAccess:   	Could not find the column type of active. This is a bug.
-2021-02-22 18:30:24 [error] RdbAccess:   	Could not find the column type of running. This is a bug.
-2021-02-22 18:30:24 [error] RdbAccess:   	Could not find the column type of temperatureMin. This is a bug.
-2021-02-22 18:30:24 [error] RdbAccess:   	Could not find the column type of temperatureMax. This is a bug.
-2021-02-22 18:30:24 [debug] RdbAccess:   	Updating data in table schema.
-2021-02-22 18:30:24 [debug] RdbAccess:   	Updated 1 entries in table schema.
-2021-02-22 18:30:24 [debug] RdbAccess:   	Fetching some data from table schema.
-
-# Fehler bei löschen eines schemas
-021-02-22 18:31:32 [info] HandlerGenerator: 	User 1c90b9d9-00ad-456f-ada9-bb2fb59e959a is accessing mutation deleteSchema.
-2021-02-22 18:31:32 [debug] RdbAccess:   	Fetching some data from table schema.
-2021-02-22 18:31:32 [error] RdbAccess:   	Could not find the column type of name. This is a bug.
-2021-02-22 18:31:32 [error] RdbAccess:   	Could not find the column type of active. This is a bug.
-2021-02-22 18:31:32 [error] RdbAccess:   	Could not find the column type of running. This is a bug.
-2021-02-22 18:31:32 [error] RdbAccess:   	Could not find the column type of temperatureMin. This is a bug.
-2021-02-22 18:31:32 [error] RdbAccess:   	Could not find the column type of temperatureMax. This is a bug.
-2021-02-22 18:31:32 [debug] RdbAccess:   	Deleting data in table schema.
-2021-02-22 18:31:32 [debug] RdbAccess:   	Fetching some data from table schema.
-2021-02-22 18:31:32 [debug] RdbAccess:   	Deleted 1 entries in table schema.
-
-# Weiterer Bug
-TypeError: Cannot read property 'toFixed' of null
-at Object.handler (/home/pi/heatingpi/customized/handler/TemperatureHandler.js:1:1211)
 
 
 # Temp switschen nur wenn es nicht bereits aktiv ist

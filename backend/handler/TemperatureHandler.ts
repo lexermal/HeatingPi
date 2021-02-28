@@ -55,9 +55,11 @@ export default class TemperatureHandler extends BasicHandler {
                 // runAtCron: "*/1 * * * * *",
                 runAtCron: "1 * * * * *",
                 handler: async (context, db) => {
-                    const temperature = readTemperature(simulated).toFixed(2);
+                    const sensorTemp = readTemperature(simulated);
 
-                    this.log.info(`The current temperature is ${temperature}°C. ${simulated && "It is simulated."}`);
+                    const temperature = Number.isNaN(sensorTemp) ? 1000 : sensorTemp.toFixed(2);
+
+                    this.log.info(`The current temperature is ${temperature}°C. ${simulated ? "It is simulated." : ""}`);
 
                     db.insert({ value: temperature, simulated });
                     if (temperature !== this.temperature) {
