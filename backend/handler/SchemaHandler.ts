@@ -6,15 +6,15 @@ import {
     RoutineField,
     SelfHandledField,
     UnknownObject
-} from "../macris/handlerCreation/HandlerGenerator";
-import { DbColumnTypes } from "../macris/dal/databases/BasicDBAccess";
-import Validator, { ValidationQueryConfig } from "../macris/utils/validator/Validator";
+} from "../_macris/handlerCreation/HandlerGenerator";
+import { DbColumnTypes } from "../_macris/dal/databases/BasicDBAccess";
+import Validator, { ValidationQueryConfig } from "../_macris/utils/validator/Validator";
 import PinSchemaHandler, { PinMode } from "./PinSchemaHandler";
-import BasicHandler from "../macris/handler/_BasicHandler";
+import BasicHandler from "../_macris/handler/_BasicHandler";
 import { Temperature } from "./TemperatureHandler";
 import { Settings } from "./SettingHandler";
-import DbTable from "../macris/dal/DBTable";
-import { ROLES } from "../macris/config/Config";
+import DbTable from "../_macris/dal/DBTable";
+import { ROLES } from "../_macris/config/Config";
 
 export interface Schema {
     id: string;

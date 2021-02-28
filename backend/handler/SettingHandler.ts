@@ -5,12 +5,12 @@ import {
     QueryField,
     RoutineField,
     SelfHandledField
-} from "../macris/handlerCreation/HandlerGenerator";
-import { DbColumnTypes } from "../macris/dal/databases/BasicDBAccess";
-import Validator, { ValidationQueryConfig } from "../macris/utils/validator/Validator";
+} from "../_macris/handlerCreation/HandlerGenerator";
+import { DbColumnTypes } from "../_macris/dal/databases/BasicDBAccess";
+import Validator, { ValidationQueryConfig } from "../_macris/utils/validator/Validator";
 import { MULTI_SCHEMA_PRIORITY, ONE_SCHEMA_MODE } from "../CustomConfig";
-import BasicHandler from "../macris/handler/_BasicHandler";
-import { ROLES } from "../macris/config/Config";
+import BasicHandler from "../_macris/handler/_BasicHandler";
+import { ROLES } from "../_macris/config/Config";
 
 export type DbSetting = { key: string; value: any };
 

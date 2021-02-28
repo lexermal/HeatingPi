@@ -1,6 +1,6 @@
 import fs from "fs";
 import rpio from "rpio";
-import Log from "../macris/utils/Logger";
+import Log from "../_macris/utils/Logger";
 import { Pin } from "../handler/PinHandler";
 import { GPIO_PINS } from "../CustomConfig";
 

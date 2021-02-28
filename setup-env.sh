@@ -37,7 +37,7 @@ else
   chmod 777 /home/pi/heatingpi
 
   cd /home/pi/heatingpi || (echo "Cound not enter home/pi/heatingpi" && exit)
-  tar -xzvf home/pi/heatingpi.tar.gz
+  tar -xzvf /home/pi/heatingpi.tar.gz
 
   echo "#####################Configure raspberry#########################"
 

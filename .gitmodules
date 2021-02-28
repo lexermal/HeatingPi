@@ -1,3 +1,0 @@
-[submodule "backend/macris"]
-	path = backend/macris
-	url = https://github.com/lexermal/macris.git

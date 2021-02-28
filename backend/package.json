@@ -4,6 +4,6 @@
   "dependencies": {
   },
   "scripts": {
-    "dev": "yarn --cwd macris/ dev"
+    "dev": "yarn --cwd _macris/ dev"
   }
 }
