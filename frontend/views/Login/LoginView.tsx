@@ -1,19 +1,25 @@
 import * as React from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import css from './Login.module.css';
 import Toast from "../../utils/Toast";
 import { useRouter } from "next/router";
-import { ChangeEvent, FormEvent, useState } from "react"
 import { LOGIN, mutation } from "../../utils/backendCalls";
+import { Col, Row } from "reactstrap";
 
 export default function LoginView() {
     return <div className={css.background}>
         <div className="container">
-            <h1 className={css.formHeading}>Login</h1>
-            <div className={css.loginForm}>
-                <div className={css.mainDiv}>
-                    {renderForm()}
-                </div>
-            </div>
+            <Row>
+                <Col md={3}/>
+                <Col md={6}>
+                    <h1 className={css.formHeading}>Login</h1>
+                    <div className={css.loginForm}>
+                        <div className={css.mainDiv}>
+                            {renderForm()}
+                        </div>
+                    </div>
+                </Col>
+            </Row>
         </div>
     </div>
 }

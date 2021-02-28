@@ -2,6 +2,7 @@
     background-image: linear-gradient(-30deg, #f794a4 0%, #576076 100%);
     padding: 10px;
     height: 100vh;
+    padding-top: 100px;
 }
 
 .form-heading {
@@ -61,7 +62,7 @@
     margin-bottom: 30px;
 }
 
-.botto-text {
+.botton-text {
     color: #ffffff;
     font-size: 14px;
     margin: auto;

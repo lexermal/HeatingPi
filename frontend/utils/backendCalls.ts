@@ -262,9 +262,6 @@ export function mutationHandler(gqlMutation: DocumentNode, field: string, operat
     const result = mutation(gqlMutation, field, operation, {
         onComplete: data => {
             Toast.success("The changes have been successfully saved.")
-        }, onError: error => {
-            console.log("Response of mutation:", result.error)
-            Toast.error("Change could not be saved. " + result.error)
         }
     });
 

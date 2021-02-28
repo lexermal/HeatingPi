@@ -14,7 +14,7 @@ export function queryHandler(query:DocumentNode, onComplete: (data: any) => JSX.
 
     if (error) {
         console.log("Graphqlerror", error)
-        return <p>An error accured. Please reload the page</p>;
+        return <p>An error occurred. Please reload the page.</p>;
     }
     return onComplete(JSON.parse(JSON.stringify(data)));
 }
