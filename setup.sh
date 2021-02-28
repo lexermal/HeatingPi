@@ -7,36 +7,37 @@ fi
 
 apt-get update
 
-if ! apt-get -qq install snapd; then
+if ! which node; then
 
-  echo "####################Activating sensor############################"
+  echo "####################Activating the temperature sensor############################"
   echo "" >>/boot/config.txt
   echo "dtoverlay=w1-gpio" >>/boot/config.txt
 
-  echo "######################Installing snap#############################"
-  apt-get install snapd -y
-  echo "Successfully installed snap deamon."
-  echo "The system needs to restart. Afterwards run the script again."
+  echo "######################Installing node v15.8#############################"
 
-  read -n1 -p "Should the system restart now?[y/n]" doit
-  case $doit in
-  y | Y) reboot ;;
-  n | N) echo "Ok, the script will exit now." ;;
-  *) echo "Invalid character" ;;
-  esac
+  wget https://unofficial-builds.nodejs.org/download/release/v15.8.0/node-v15.8.0-linux-armv6l.tar.gz
 
-else
-  echo "#####################Install new software#########################"
+  tar -xf node-v15.8.0-linux-armv6l.tar.gz
+  mv node-v15.8.0-linux-armv6l /usr/local/node
 
-  snap install core
-  snap install node --classic
+  cd /usr/bin || (echo "Could not enter /usr/bin" && exit)
+  ln -s /usr/local/node/bin/node node
+  ln -s /usr/local/node/bin/npm npm
+
+  echo "Verifying if installation worked."
+  node -v # Verifying that the Node.js install worked
+  npm -v  # Verifying that the npm install worked
+
+fi
+
+  echo "#####################Install yarn#########################"
   npm install --global yarn
 
   echo "#####################Install HeatingPi#########################"
   mkdir /home/pi/heatingpi
   chmod 777 /home/pi/heatingpi
 
-  cd /home/pi/heatingpi || (echo "Cound not enter home/pi/heatingpi" && exit)
+  cd /home/pi/heatingpi || (echo "Could not enter /home/pi/heatingpi" && exit)
   tar -xzvf /home/pi/heatingpi.tar.gz
 
   echo "#####################Configure raspberry#########################"
@@ -55,7 +56,5 @@ else
   crontab mycron
   rm mycron
 
-fi
-
 echo "Everything was installed successfully."
-echo "Reboot to start the heatingpi at port 9000."
+echo "Reboot to start HeatingPi at port 9000."
