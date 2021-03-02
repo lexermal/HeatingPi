@@ -1,11 +1,21 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "license": "ISC",
   "dependencies": {
     "ds18b20-raspi": "^0.3.6",
     "rpio": "^2.4.2"
   },
+  "devDependencies": {
+    "@types/rpio": "^0.0.3",
+    "typescript": "^3.9.7",
+    "uglifyjs-folder": "^2.0.0"
+  },
   "scripts": {
-    "dev": "yarn install && yarn --cwd _macris/ dev"
+    "dev": "yarn install && yarn --cwd _macris/ dev",
+    "prod": "yarn install && yarn --cwd _macris/ prod",
+    "build": "yarn install && tsc -p . --pretty",
+    "minimize": "uglifyjs-folder dist -e -x .js -o dist",
+    "copy-files": "cp public dist/public/ -r && cp endpoint.graphqls dist/endpoint.graphqls && cp package.json dist/package.json&& cp _macris/package.json dist/_macris/package.json"
   }
 }

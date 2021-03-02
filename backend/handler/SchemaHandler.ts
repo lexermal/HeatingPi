@@ -261,6 +261,10 @@ export default class SchemaHandler extends BasicHandler {
                                 `Schema ${runningSchema.name} is matching with the temperature and will be activated.`
                             );
                             await SchemaHandler.activateSchema(context, { id: runningSchema.id });
+                        } else {
+                            this.log.info("No schema is matching. Setting pins back to default state.")
+
+                            context.callHandlerMethod({ root: "mutation", name: "setPinsToDefault" }, {}, {})
                         }
                         return undefined;
                     });

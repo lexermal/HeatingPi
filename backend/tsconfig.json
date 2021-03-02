@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": false,
+        "esModuleInterop": true,
+        "module": "commonjS",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "outDir": "dist",
+        "rootDir": ".",
+        "lib": ["ES2019"]
+    }
+}

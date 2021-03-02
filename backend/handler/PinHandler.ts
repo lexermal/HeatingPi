@@ -150,7 +150,7 @@ export default class PinHandler extends BasicHandler {
                         return [];
                     }
 
-                    return pins.map((pin) => ({ ...{ active: pin.activeByDefault }, ...pin }));
+                    return pins.map((pin) => ({ ...pin, ...{ active: pin.activeByDefault } }));
                 },
                 postProcessing: (data) => {
                     data.forEach((pin: Pin) => PinAccess.getInstance().setState(pin.id, pin.activeByDefault));

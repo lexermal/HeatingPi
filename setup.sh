@@ -42,7 +42,6 @@ fi
 
   echo "#####################Configure raspberry#########################"
 
-  chmod 777 /var/log
   touch /var/log/HeatingPi.log
   chmod 777 /var/log/HeatingPi.log
 
@@ -51,7 +50,8 @@ fi
   #write out current crontab
   crontab -l >mycron
   #echo new cron into cron file
-  echo "@reboot cd /home/pi/heatingpi yarn prod >> /var/log/HeatingPi.log 2>&1" >>mycron
+  echo "@reboot cd /home/pi/heatingpi &&  /usr/bin/yarn prod >> /var/log/HeatingPi.log 2>&1" >>mycron
+
   #install new cron file
   crontab mycron
   rm mycron
