@@ -12,6 +12,7 @@
     "uglifyjs-folder": "^2.0.0"
   },
   "scripts": {
+    "prepare": "yarn install && yarn --cwd _macris/ install",
     "dev": "yarn install && yarn --cwd _macris/ dev",
     "prod": "yarn install && yarn --cwd _macris/ prod",
     "build": "yarn install && tsc -p . --pretty",

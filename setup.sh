@@ -56,5 +56,9 @@ fi
   crontab mycron
   rm mycron
 
+  echo "###################### Install deps of HeatingPi ##################"
+  yarn prepare
+
+echo "############################# Finished #############################"
 echo "Everything was installed successfully."
 echo "Reboot to start HeatingPi at port 9000."
