@@ -35,7 +35,10 @@ export default function SettingView() {
 }
 
 const iconSwitchList = [
+        //@ts-ignore
+
     [<FontAwesomeIcon key={1} icon={faPowerOff} size={"lg"} className={"text-success"}/>, true, ""],
+    //@ts-ignore
     [<FontAwesomeIcon key={1} icon={faPowerOff} size={"lg"} className={"text-danger"}/>, false]
 ] as SwitchListType;
 

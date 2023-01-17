@@ -30,11 +30,14 @@ export function AddModal(props: { pins: Pin[] }) {
     } as Mode));
 
     return <OverlayModal
-        icon={faPlus}
+            //@ts-ignore
+icon={faPlus}
         buttonLabel={"Add"}
         title={"New schema"}
-        iconSubmit={faCheck}
-        iconCancel={faTimes}
+    //@ts-ignore
+    iconSubmit={faCheck}
+    //@ts-ignore
+    iconCancel={faTimes}
         className={"btn btn-primary add-button"}
         onSubmit={() => {
             if (newName.trim().length === 0) {
@@ -103,7 +106,10 @@ export function renderPins(pins: Pin[], modes: Mode[], setModes: (data: Mode[]) 
 }
 
 export const switchList = [
-    [<FontAwesomeIcon icon={faPowerOff} key={1} size={"lg"} color={"red"}/>, 0, "Change to disable pin"],
+      //@ts-ignore
+      [<FontAwesomeIcon icon={faPowerOff} key={1} size={"lg"} color={"red"}/>, 0, "Change to disable pin"],
+    //@ts-ignore
     [<FontAwesomeIcon icon={faPowerOff} key={2} size={"lg"} color={"green"}/>, 1, "Change to enable pin"],
+    //@ts-ignore
     [<FontAwesomeIcon icon={faPowerOff} key={3} size={"lg"} color={"orange"}/>, 2, "Change to leave pin unchanged"]
 ] as SwitchListType;

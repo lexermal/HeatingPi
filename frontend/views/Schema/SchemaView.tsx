@@ -71,7 +71,9 @@ function Schema(props: { schema: Schema, pins: Pin[] }) {
 }
 
 const iconSwitchList = [
+    //@ts-ignore
     [<FontAwesomeIcon key={1} icon={faPowerOff} size={"lg"} className={"text-success"}/>, true],
+    //@ts-ignore
     [<FontAwesomeIcon key={2} icon={faPowerOff} size={"lg"} className={"text-danger"}/>, false, ""]
 ] as SwitchListType;
 

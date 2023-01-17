@@ -24,10 +24,6 @@ function triggerOnlineCycle(fetching: () => void) {
 export default function DashboardView() {
     const [fetchData, { data, loading }] = useLazyQuery(DASHBOARD, { fetchPolicy: "cache-and-network" });
 
-    if (isLoaded === null) {
-        fetchData();
-    }
-
     useEffect(() => {
         isLoaded = true
         triggerOnlineCycle(() => fetchData());
@@ -82,8 +78,10 @@ function renderActiveSchemas(schemas: Schema[]) {
 
 function renderIcon(active: boolean, inactiveClass?: string) {
     if (active) {
+        //@ts-ignore
         return <FontAwesomeIcon key={1} icon={faCircle} size={"lg"} title={"activ"} className={"text-success"}/>
     }
+    //@ts-ignore
     return <FontAwesomeIcon key={1} icon={faCircle} size={"lg"} title={"disabled"}
                             className={inactiveClass || "text-danger"}/>
 }

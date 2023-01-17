@@ -33,6 +33,7 @@ export default function GenericView() {
                         <NavItem>
                             <Link href="/settings">
                                 <a onClick={() => setOpen(false)} className={"nav-link " + css.link}>
+                                   {/* @ts-ignore */}
                                     <FontAwesomeIcon icon={faCog}/>
                                 </a>
                             </Link>

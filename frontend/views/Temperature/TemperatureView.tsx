@@ -13,7 +13,9 @@ interface Temperature {
 export default function TemperatureView() {
     const [fetchData, { data }] = useLazyQuery(TEMPERATURE_LOG);
 
-    useEffect(() => fetchData(), []);
+    useEffect(() => {
+         fetchData();
+    }, []);
 
     return <Container className={"mt-5"}>
         <Row>

@@ -17,11 +17,14 @@ export function SchemaEditModal(props: { schema: Schema, pins: Pin[] }) {
 
     return <OverlayModal
         title={newName}
-        icon={faPencilAlt}
+         //@ts-ignore
+   icon={faPencilAlt}
         submitText={"Save"}
         buttonLabel={"Edit"}
-        iconSubmit={faCheck}
-        iconCancel={faTimes}
+    //@ts-ignore
+    iconSubmit={faCheck}
+    //@ts-ignore
+    iconCancel={faTimes}
         className={"btn btn-warning hoverbutton float-right radius-left"}
         onSubmit={() => {
             if (newName.trim().length === 0) {
