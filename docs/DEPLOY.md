@@ -1,6 +1,6 @@
 # HeatingPi v3 — Setup, Deploy & Operations
 
-v3 replaces the legacy macris/Node 12 app (`backend/`, `frontend/`) with:
+v3 replaces the legacy macris/Node 12 app (still installed on the Pi under `/home/pi/heatingpi` for rollback) with:
 
 - `server/` — Node 18 backend, REST API, relay control, temperature logging, monthly mail.
 - `web/` — React frontend (Vite), built on the dev machine, served as static files by the server.

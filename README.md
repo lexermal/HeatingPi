@@ -33,7 +33,6 @@ Built to run on a Raspberry Pi 1 B: ~45 MB RAM, one native dependency, no build 
 - `web/` — React frontend (Vite)
 - `deploy/` — install / update / rollback scripts for the Pi
 - [docs/DEPLOY.md](docs/DEPLOY.md) — setup, deployment, HTTPS, operations, users
-- `backend/`, `frontend/` — the legacy v2 app (macris + Next.js), kept for reference and rollback
 
 ## Pins (Raspberry Pi 1 B, physical numbering, active-low relays)
 Relay 1..8 = physical pins 3, 5, 11, 13, 15, 19, 21, 23 (BCM 2, 3, 17, 27, 22, 10, 9, 11 on rev 2 boards).
