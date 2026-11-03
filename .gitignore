@@ -2,3 +2,7 @@
 /backend/node_modules/
 /backend/yarn.lock
 /backend/heatingpi.log.txt.gz
+.env
+/server/node_modules/
+/web/node_modules/
+/web/dist/

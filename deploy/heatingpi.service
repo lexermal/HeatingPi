@@ -1,0 +1,23 @@
+[Unit]
+Description=HeatingPi v3 (relay control + web UI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+Group=pi
+# gpio group = access to /sys/class/gpio; pi group = read /etc/heatingpi/config.env (root:pi 640).
+SupplementaryGroups=gpio
+WorkingDirectory=/opt/heatingpi/server
+EnvironmentFile=/etc/heatingpi/config.env
+Environment=HEATINGPI_CONFIG=/etc/heatingpi/config.env
+Environment=NODE_ENV=production
+# Small V8 heap: the Pi 1 has ~430 MB RAM; the app needs far less than this.
+ExecStart=/opt/node-v18.20.8-linux-armv6l/bin/node --max-old-space-size=64 src/index.js
+Restart=always
+RestartSec=5
+MemoryMax=150M
+Nice=-5
+
+[Install]
+WantedBy=multi-user.target
